@@ -32,7 +32,7 @@ export default function Home() {
               Learning
             </a>{" "}
             center.
-          </p>
+      /usr/local/lib/node_modules/npm    </p>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
