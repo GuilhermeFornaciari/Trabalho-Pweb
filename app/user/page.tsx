@@ -11,11 +11,11 @@ import {
 
 import { useEffect, useState } from "react";
 import * as UserService from "./UserService";
-import { User } from '../lib/prisma/generated/client';
+import { user } from '../lib/prisma/generated/client';
 
 export default function UserPage(){
     
-    const [usuarios, setUsers] = useState<User[]>([]);
+    const [usuarios, setUsers] = useState<user[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(()=>{
         UserService.find_many().then((values)=>{
@@ -37,7 +37,7 @@ function loading(){
     )
 }
 
-function table(values:User[]){
+function table(values:user[]){
     return (
         <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>
