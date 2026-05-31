@@ -1,4 +1,13 @@
 'use client'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 import { useEffect, useState } from "react";
 import * as UserService from "./UserService";
@@ -13,9 +22,9 @@ export default function UserPage(){
             setUsers(values);
             setIsLoading(false)
         })
-    })
+    }, [])
     return (
-        <div>
+        <div className="bg-black">
             <div>Pagina do usuario</div>
             {isLoading? loading(): table(usuarios)}
             
@@ -30,17 +39,23 @@ function loading(){
 
 function table(values:User[]){
     return (
-        <table>
-            <tr>
-                <th>Nome</th>   
-                <th>Email</th>   
-            </tr>
-            {values.map((td)=> 
-                <tr>
-                    <td>{td.nome}</td>
-                    <td>{td.email}</td>
-                </tr>
-            )}
-        </table>
+        <Table>
+            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableHeader>
+                <TableRow>
+                    <TableHead className="w-[100px]">Nome</TableHead>
+                    <TableHead>Email</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+
+                {values.map((td)=> 
+                    <TableRow>
+                        <TableCell>{td.nome}</TableCell>
+                        <TableCell>{td.email}</TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
     )
 }
