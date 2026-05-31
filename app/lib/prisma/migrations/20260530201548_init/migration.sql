@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE "user" (
+    "id" SERIAL NOT NULL,
+    "nome" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "senha" TEXT NOT NULL,
+    "foto" TEXT NOT NULL,
+
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
