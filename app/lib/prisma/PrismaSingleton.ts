@@ -1,14 +1,26 @@
 import "dotenv/config";
 import { PrismaClient } from "./generated/client";
-import { PrismaPg } from "@prisma/adapter-pg"
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+import fs from "fs";
 
 export default class PrismaSingleton {
   private static instance: PrismaSingleton;
 
   prismaClient: PrismaClient
   private constructor() {
-    const connectionString = `${process.env.DATABASE_URL}`;
-    const adapter = new PrismaPg({ connectionString });
+ 
+   const pool = new Pool({
+     connectionString: process.env.DATABASE_URL,
+     ssl: {
+       ca: fs.readFileSync("./ca.pem", "utf8"),
+       rejectUnauthorized: true,
+      },
+    });
+
+    console.log("conectou");
+  
+    const adapter = new PrismaPg( pool );
     this.prismaClient = new PrismaClient({ adapter });
 
   }
