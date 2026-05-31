@@ -13,7 +13,7 @@ export default function UserPage(){
             setUsers(values);
             setIsLoading(false)
         })
-    })
+    }, [])
     return (
         <div>
             <div>Pagina do usuario</div>
@@ -31,16 +31,21 @@ function loading(){
 function table(values:User[]){
     return (
         <table>
+            <thead>
+
             <tr>
                 <th>Nome</th>   
                 <th>Email</th>   
             </tr>
+            </thead>
+            <tbody>
             {values.map((td)=> 
                 <tr>
                     <td>{td.nome}</td>
                     <td>{td.email}</td>
                 </tr>
             )}
+            </tbody>
         </table>
     )
 }
