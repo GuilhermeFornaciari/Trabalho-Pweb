@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { findUser } from "./LoginService";
+import { findUser } from "../lib/api/usuario/usuarioApi";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export default function LoginPage() {
     const user = await findUser(email, senha);
 
     if (user !== null) {
-      router.push("/user");
+      router.push("/catalogo");
     } else {
         alert("Usuário não encontrado")
     }
