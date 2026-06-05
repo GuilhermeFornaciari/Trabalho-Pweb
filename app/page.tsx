@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="h-screen items-center justify-center bg-[url('/images/banner-bg.jpg')] bg-cover bg-center font-sans dark:bg-black">
-      <div className="flex flex-col items-begin justify-center bg-black/50 w-full h-full">
+      <div className="flex flex-col items-start justify-center bg-black/50 w-full h-full">
         <div className="h-full w-sm flex flex-col items-center justify-around bg-amber-50 text-black text-center">
             <Image src="/libris-lg.png" width={100} height={100} alt="Libris logo"/>
             <div className="p-2">

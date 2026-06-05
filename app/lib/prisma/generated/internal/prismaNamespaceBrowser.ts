@@ -51,7 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  user: 'user'
+  User: 'User',
+  Livro: 'Livro',
+  Colecao: 'Colecao',
+  Pertence_a_colecao: 'Pertence_a_colecao',
+  Autor: 'Autor',
+  Escrito_por: 'Escrito_por'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -79,6 +84,51 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const LivroScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  ano: 'ano',
+  genero: 'genero',
+  paginas: 'paginas',
+  capa: 'capa'
+} as const
+
+export type LivroScalarFieldEnum = (typeof LivroScalarFieldEnum)[keyof typeof LivroScalarFieldEnum]
+
+
+export const ColecaoScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome'
+} as const
+
+export type ColecaoScalarFieldEnum = (typeof ColecaoScalarFieldEnum)[keyof typeof ColecaoScalarFieldEnum]
+
+
+export const Pertence_a_colecaoScalarFieldEnum = {
+  livroId: 'livroId',
+  colecaoId: 'colecaoId',
+  posicao: 'posicao'
+} as const
+
+export type Pertence_a_colecaoScalarFieldEnum = (typeof Pertence_a_colecaoScalarFieldEnum)[keyof typeof Pertence_a_colecaoScalarFieldEnum]
+
+
+export const AutorScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome'
+} as const
+
+export type AutorScalarFieldEnum = (typeof AutorScalarFieldEnum)[keyof typeof AutorScalarFieldEnum]
+
+
+export const Escrito_porScalarFieldEnum = {
+  livroId: 'livroId',
+  autorId: 'autorId'
+} as const
+
+export type Escrito_porScalarFieldEnum = (typeof Escrito_porScalarFieldEnum)[keyof typeof Escrito_porScalarFieldEnum]
 
 
 export const SortOrder = {

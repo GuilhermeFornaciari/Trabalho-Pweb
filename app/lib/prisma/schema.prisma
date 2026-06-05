@@ -7,10 +7,72 @@ datasource db {
   provider = "postgresql"
 }
 
-model user {
+model User {
   id    Int    @id @default(autoincrement())
   nome  String
   email String @unique
-  senha String
-  foto  String
+  senha String 
+  foto String
+
+  @@map("usuarios")
+}
+
+model Livro {
+  id      Int    @id @default(autoincrement())
+  titulo  String
+  ano     Int
+  genero  String
+  paginas Int
+  capa    String
+
+  colecoes Pertence_a_colecao[]
+  autores  Escrito_por[]
+
+  @@map("livros")
+}
+
+model Colecao {
+  id    Int    @id @default(autoincrement())
+  nome  String
+
+  livros Pertence_a_colecao[]
+
+  @@map("colecao")
+}
+
+model Pertence_a_colecao {
+  livroId   Int
+  colecaoId Int
+
+  livro     Livro   @relation(fields: [livroId], references: [id])
+  colecao   Colecao @relation(fields: [colecaoId], references: [id])
+
+  posicao   Float
+
+  @@unique([colecaoId, posicao])
+
+  @@id([livroId, colecaoId])
+
+  @@map("pertence_a_colecao")
+}
+
+model Autor {
+  id    Int    @id @default(autoincrement())
+  nome String
+
+  livros Escrito_por[]
+
+  @@map("autor")
+}
+
+model Escrito_por {
+  livroId Int
+  autorId Int
+
+  livro Livro @relation(fields: [livroId], references: [id])
+  autor Autor @relation(fields: [autorId], references: [id])
+
+  @@id([livroId, autorId])
+
+  @@map("escrito_por")
 }
