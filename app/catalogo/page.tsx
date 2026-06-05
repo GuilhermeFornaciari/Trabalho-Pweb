@@ -1,0 +1,133 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Livro } from "../lib/prisma/generated/client";
+import { findLivros } from "./CatalogoService";
+
+type LivroCatalogo = Livro & {
+  autoresTexto: string;
+};
+
+export default function CatalogoPage() {
+  const [busca, setBusca] = useState("");
+  const [filtro, setFiltro] = useState("ano");
+  const [livros, setLivros] = useState<LivroCatalogo[]>([]);
+
+
+    useEffect(() => {
+        const carregarLivros = async () => {
+            const resultado = await findLivros(busca, filtro);
+
+            if (resultado) {
+                setLivros(resultado);
+            }
+        };
+
+        carregarLivros();
+    }, [busca, filtro]);
+
+  return (
+    <main className="min-h-screen bg-[#FFF8EB] px-6 py-8">
+      <div className="max-w-7xl mx-auto">
+
+        <h1 className="text-4xl font-bold text-[#4F442E] mb-8">
+          Catálogo
+        </h1>
+
+        <div className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-3xl shadow-lg p-6 mb-8">
+
+          <input
+            type="text"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder="Pesquisar livros..."
+            className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
+          />
+
+          <div className="flex flex-wrap gap-3 mt-4">
+
+            <button
+              onClick={() => setFiltro("ano")}
+              className={`px-4 py-2 rounded-xl transition ${
+                filtro === "ano"
+                  ? "bg-[#F7D774] text-[#4F442E]"
+                  : "bg-white border border-[#E8D89A]"
+              }`}
+            >
+              Ano
+            </button>
+
+            <button
+              onClick={() => setFiltro("titulo")}
+              className={`px-4 py-2 rounded-xl transition ${
+                filtro === "titulo"
+                  ? "bg-[#F7D774] text-[#4F442E]"
+                  : "bg-white border border-[#E8D89A]"
+              }`}
+            >
+              Título
+            </button>
+
+            <button
+              onClick={() => setFiltro("autor")}
+              className={`px-4 py-2 rounded-xl transition ${
+                filtro === "autor"
+                  ? "bg-[#F7D774] text-[#4F442E]"
+                  : "bg-white border border-[#E8D89A]"
+              }`}
+            >
+              Autor
+            </button>
+
+            <button
+              onClick={() => setFiltro("genero")}
+              className={`px-4 py-2 rounded-xl transition ${
+                filtro === "genero"
+                  ? "bg-[#F7D774] text-[#4F442E]"
+                  : "bg-white border border-[#E8D89A]"
+              }`}
+            >
+              Gênero
+            </button>
+
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+
+          {livros.map((livro) => (
+            <div
+              key={livro.id}
+              className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
+            >
+              <div className="relative h-64">
+                <Image
+                  src={livro.capa}
+                  alt={livro.titulo}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="p-4">
+                <h2 className="font-semibold text-[#4F442E] line-clamp-2">
+                  {livro.titulo}
+                </h2>
+
+                <p className="text-sm text-[#8A7A5B] mt-1">
+                  {livro.autoresTexto}
+                </p>
+
+                <p className="text-sm text-[#8A7A5B]">
+                  {livro.ano}
+                </p>
+              </div>
+            </div>
+          ))}
+
+        </div>
+      </div>
+    </main>
+  );
+}

@@ -1,6 +1,5 @@
 "use server"
 
-import { user } from "../lib/prisma/generated/client";
 import PrismaSingleton from "../lib/prisma/PrismaSingleton";
 
 import bcrypt from "bcryptjs";
