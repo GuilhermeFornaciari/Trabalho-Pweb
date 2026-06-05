@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { findUser } from "./LoginService";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginPage() {
-  const backgroundImage = "/livros.jpeg";
+  const backgroundImage = "/images/registro-bg.jpg";
   const router = useRouter();
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -31,18 +33,16 @@ const registerUser = async () => {
     <main
       className="min-h-screen flex items-center justify-center bg-cover bg-center px-4"
       style={{
-        backgroundImage: `linear-gradient(rgba(255,248,235,0.30), rgba(255,248,235,0.75)), url(${backgroundImage})`,
+        backgroundImage: `linear-gradient(rgba(255,248,235,0.10), rgba(255,248,235,0.50)), url(${backgroundImage})`,
       }}
     >
       <div className="w-full max-w-md">
         <div className="backdrop-blur-sm bg-[#FFFDF8]/90 border border-[#F3E5AB] rounded-3xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-[#6B5B3E]">
-              Libris
-            </h1>
+            <Link href="/"><Image src="/libris-lg.png" className="m-auto" width={100} height={100} alt="Libris logo"/></Link>
 
             <p className="text-[#8A7A5B] mt-2">
-              Resenhas, notas e discussões sobre livros
+              Acesse sua conta e registre o progresso de suas leituras.
             </p>
           </div>
 
