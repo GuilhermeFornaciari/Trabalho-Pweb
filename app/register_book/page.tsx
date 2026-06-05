@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Header from "@/components/header";
+import Link from "next/link";
 
 export default function RegisterBook() {
   const [form, setForm] = useState({
@@ -55,51 +56,54 @@ async function cadastrar() {
     }));
   }
 
-  const labelStyle = "block py-2";
+  const labelStyle = "block py-2 flex flex-col";
   const spanStyle = "mr-2 color-black";
-  const inputStyle = "px-2 py-px outline-0 bg-slate-900 text-amber-100 rounded-sm";
+  const inputStyle = "px-2 border border-yellow-300 py-px outline-0 bg-white text-amber-100 rounded-sm";
 
   return (
-    <div className="min-h-screen bg-amber-100 min-h-screen">
+    <div className="min-h-screen bg-olive-50 min-h-screen">
       <Header></Header>
       <div className="flex flex-col items-center justify-center p-10">
         <h1 className="text-yellow-700 text-3xl font-semibold mb-3">Cadastro de livro</h1>
-        <div className="w-7xl m-auto bg-amber-50 p-3 rounded-2xl shadow-xs">
+        <div className="w-md my-5 mx-auto border border-yellow-300 bg-amber-50 p-3 rounded-2xl">
           <form 
             id="formulario"
             name="formulario"
-            
           >
             <label className={labelStyle}>
-              <span className={spanStyle}>Titulo:</span>
+              <span className={spanStyle}>Título</span>
               <input type="text" name="titulo" id="titulo" className={inputStyle} value={form.titulo} onChange={handleChange} required/>
             </label>
             <label className={labelStyle}>
-              <span className={spanStyle}>Ano:</span>
+              <span className={spanStyle}>Ano</span>
               <input type="number" name="ano" id="ano" className={inputStyle} value={form.ano} onChange={handleChange} required/>
             </label>
             <label className={labelStyle}>
-              <span className={spanStyle}>Gênero:</span>
+              <span className={spanStyle}>Gênero</span>
               <input type="text" name="genero" id="genero" className={inputStyle} value={form.genero} onChange={handleChange} required/>
             </label>
             <label className={labelStyle}>
-              <span className={spanStyle}>Quantidade de páginas:</span>
+              <span className={spanStyle}>Quantidade de páginas</span>
               <input type="number" name="paginas" id="paginas" className={inputStyle} value={form.paginas} onChange={handleChange} required/>
             </label>
             <label className={labelStyle}>
-              <span className={spanStyle}>Capa:</span>
+              <span className={spanStyle}>Capa</span>
               <input type="text" name="capa" id="capa" className={inputStyle} value={form.capa} onChange={handleChange} required/>
             </label>
             <label className={labelStyle}>
-              <span className={spanStyle}>Autor:</span>
+              <span className={spanStyle}>Autor</span>
               <input type="text" name="autor" id="autor" className={inputStyle} value={form.autor} onChange={handleChange} required/>
             </label>
 
           </form>
 
-          <button className="p-3 font-semibold bg-yellow-500 rounded-lg" onClick={cadastrar}>
+        </div>
+        <div className="w-md flex justify-between">
+          <button className="p-3 font-semibold bg-yellow-500 border border-yellow-500 ease-in-out durantion-500 hover:bg-yellow-400 hover:shadow-[0_0_3px_rgb(3,3,3)] hover:border-slate-700 shadow-indigo-950 rounded-lg" 
+          onClick={cadastrar}>
             Confirmar
           </button>
+          <Link href="/" className="p-3 font-semibold bg-red-600 hover:bg-rose-700 rounded-lg text-olive-50">Cancelar</Link>
         </div>
       </div>
     </div>
