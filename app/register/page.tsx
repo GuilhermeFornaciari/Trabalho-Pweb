@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react";
+import { createUser } from "../lib/api/usuario/usuarioApi";
 import { useRouter } from "next/navigation";
-import { createUser } from "./RegisterService";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,26 +18,22 @@ export default function LoginPage() {
     const [mostrarSenha, setMostrarSenha] = useState(false);
     const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
 
-    const voltar = () => {
-        router.push("/login");
-    }
-
     const handleSubmit = async () => {
 
-        if (senha !== confirmarSenha) {
-            alert("As senhas não coincidem");
-            return;
-        }
+      if (senha !== confirmarSenha) {
+        alert("As senhas não coincidem");
+        return;
+      }
 
-        if(email == "" || senha =="" || nome ==""){
-            alert("Preencha todos os campos!")
-        }else {
+      if(email == "" || senha =="" || nome ==""){
+        alert("Preencha todos os campos!")
+      }else {
 
-            const newUser = await createUser(email, senha, nome);
-            if(newUser !== null){
-                router.push("/login");
-            }
+        const newUser = await createUser(email, senha, nome);
+        if(newUser !== null){
+          router.push("/login");
         }
+      }
     };
 
   return (
