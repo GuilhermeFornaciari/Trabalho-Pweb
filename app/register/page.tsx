@@ -11,30 +11,43 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [nome, setNome] = useState("");
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
 
-    const [mostrarSenha, setMostrarSenha] = useState(false);
-    const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
+  async function createUser() {
+    const response = await fetch("../api/usuario/create/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome,
+        email,
+        senha,
+      }),
+    });
+  
+    return response.json();
+  }
 
-    const handleSubmit = async () => {
+  const handleSubmit = async () => {
+    if (senha !== confirmarSenha) {
+      alert("As senhas não coincidem");
+      return;
+    }
 
-      if (senha !== confirmarSenha) {
-        alert("As senhas não coincidem");
-        return;
+    if(email == "" || senha =="" || nome ==""){
+      alert("Preencha todos os campos!")
+    } else {
+      const newUser = await createUser();
+      if(newUser !== null){
+        router.push("/login");
       }
-
-      if(email == "" || senha =="" || nome ==""){
-        alert("Preencha todos os campos!")
-      }else {
-
-        const newUser = await createUser(email, senha, nome);
-        if(newUser !== null){
-          router.push("/login");
-        }
-      }
-    };
+    }
+  };
 
   return (
     <main

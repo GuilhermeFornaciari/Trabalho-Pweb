@@ -14,8 +14,25 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
+  async function findUser() {
+    console.log("opa\n\n\n\n");
+
+    const response = await fetch("../api/usuario/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        senha,
+      }),
+    });
+
+    return response.json();
+  }
+
   const handleSubmit = async () => {
-    const user = await findUser(email, senha);
+    const user = await findUser();
 
     if (user !== null) {
       router.push("/catalogo");
