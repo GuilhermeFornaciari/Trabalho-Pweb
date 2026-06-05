@@ -1,0 +1,18 @@
+import { createLivro } from "@/lib/data/livroDAO";
+import Livro from "@/(entidades)/livro";
+
+export async function POST(request: Request) {
+  const req = await request.json();
+  if(req.titulo && req.ano && req.genero && req.paginas && req.capa) {
+    const livro = new Livro(req.titulo, Number(req.ano), req.genero, Number(req.paginas), req.capa);
+    try {
+      const res = await createLivro(livro);
+      return Response.json(res);
+    } catch(e) {
+      console.log(e);
+      return Response.json({message: "Não foi possível registrar o livro."});
+    }
+  } else {
+    return Response.json({message: "Falta dados necessários para o efetuar o registro."});
+  }
+}
