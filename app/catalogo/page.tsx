@@ -14,18 +14,24 @@ export default function CatalogoPage() {
   const [filtro, setFiltro] = useState("ano");
   const [livros, setLivros] = useState<LivroCatalogo[]>([]);
 
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `/api/livro/read?valor=${encodeURIComponent(busca)}&filtro=${filtro}`
+        );
 
-    useEffect(() => {
-        const carregarLivros = async () => {
-            const resultado = await findLivros(busca, filtro);
-
-            if (resultado) {
-                setLivros(resultado);
-            }
+        const data = await response.json();
+        if(Array.isArray(data)) {
+          setLivros(data);
         };
+      } catch (error) {
+        console.error(error);
+      }
+    }, 300);
 
-        carregarLivros();
-    }, [busca, filtro]);
+    return () => clearTimeout(timeout);
+  }, [busca, filtro]);
 
   return (
     <main className="min-h-screen bg-[#FFF8EB] px-6 py-8">
