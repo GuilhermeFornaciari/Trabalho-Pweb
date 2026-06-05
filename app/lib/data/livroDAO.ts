@@ -47,3 +47,48 @@ export async function getLivroById(id: number) {
   });
 }
 
+export async function getLivros(valor: string, filtro: string) {
+  let where = {};
+
+  if (["titulo", "genero"].includes(filtro)) {
+    where = {
+      [filtro]: {
+        contains: valor,
+        mode: "insensitive",
+      },
+    };
+  } else if (filtro === "ano") {
+    where = { ano: Number(valor) };
+  } else if (filtro === "autor") {
+    where = {
+      autores: {
+        some: {
+          autor: {
+            nome: {
+              contains: valor,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+    };
+  }
+
+  const livros = await prisma.livro.findMany({
+    where,
+    include: {
+      autores: {
+        include: {
+          autor: true,
+        },
+      },
+    },
+  });
+
+  return livros.map(livro => ({
+    ...livro,
+    autoresTexto: livro.autores
+      .map(a => a.autor.nome)
+      .join(", "),
+  }));
+}
