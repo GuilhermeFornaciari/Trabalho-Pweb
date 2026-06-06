@@ -1,6 +1,5 @@
 import Livro from "@/(entidades)/livro";
 import PrismaSingleton from "@/lib/prisma/PrismaSingleton";
-import { connect } from "node:http2";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
@@ -91,4 +90,14 @@ export async function getLivros(valor: string, filtro: string) {
       .map(a => a.autor.nome)
       .join(", "),
   }));
+}
+
+export async function getLivrosRecentes(quantidade: number){
+  const livrosRecentes = await prisma.livro.findMany({
+    orderBy:{
+      createdAt: "asc"
+    },
+    take: quantidade
+  })
+  return livrosRecentes;
 }

@@ -1,6 +1,3 @@
-
-"use server";
-
 import bcrypt from "bcryptjs";
 import * as dataDAO from "../../data/userDAO";
 

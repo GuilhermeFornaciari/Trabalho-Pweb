@@ -1,5 +1,3 @@
-"use server"
-
 import { colecaoCreate } from "@/lib/data/colecaoDAO";
 
 type LivroColecao = {

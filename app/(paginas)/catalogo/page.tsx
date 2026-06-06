@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Livro } from "../../lib/prisma/generated/client";
-import { findLivros } from "./CatalogoService";
+import Header from "@/components/header";
 
 type LivroCatalogo = Livro & {
   autoresTexto: string;
@@ -13,6 +13,12 @@ export default function CatalogoPage() {
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState("ano");
   const [livros, setLivros] = useState<LivroCatalogo[]>([]);
+
+  useEffect(() => {
+    const livrosRecentes = async () => {
+      const response = await fetch(`api/livro?`)
+    }
+  })
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
@@ -34,13 +40,9 @@ export default function CatalogoPage() {
   }, [busca, filtro]);
 
   return (
-    <main className="min-h-screen bg-[#FFF8EB] px-6 py-8">
-      <div className="max-w-7xl mx-auto">
-
-        <h1 className="text-4xl font-bold text-[#4F442E] mb-8">
-          Catálogo
-        </h1>
-
+    <main className="min-h-screen bg-olive-50">
+      <Header></Header>
+      <div className="max-w-7xl mx-auto py-2">
         <div className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-3xl shadow-lg p-6 mb-8">
 
           <input
