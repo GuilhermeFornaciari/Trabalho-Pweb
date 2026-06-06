@@ -38,13 +38,44 @@ export async function createLivro(livro: Livro) {
   };
 }
 
-export async function getLivroById(id: number) {
-  return await prisma.livro.findUnique({
+export async function updateLivro(livro: Livro) {
+  console.log("UPDATE RECEBIDO:");
+  console.log(JSON.stringify(livro, null, 2));
+
+
+  return prisma.livro.update({
     where: {
-      id: id
-    }
+      id: livro.id,
+    },
+    data: {
+      titulo: livro.titulo,
+      ano: livro.ano,
+      genero: livro.genero,
+      paginas: livro.paginas,
+      capa: livro.capa,
+    },
   });
 }
+
+export async function getLivroById(id: number) {
+  const livro = await prisma.livro.findUnique({
+    where: { id },
+    include: {
+      autores: {
+        include: {
+          autor: true,
+        },
+      },
+    },
+  });
+
+  return {
+    ...livro,
+    autores: livro?.autores.map((a) => a.autor) ?? [],
+};
+}
+
+
 
 export async function getLivros(valor: string, filtro: string) {
   let where = {};
