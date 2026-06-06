@@ -14,8 +14,6 @@ export default function LoginPage() {
   const [senha, setSenha] = useState("");
 
   async function findUser() {
-    console.log("opa\n\n\n\n");
-
     const response = await fetch("../api/usuario/login", {
       method: "POST",
       headers: {
@@ -27,13 +25,20 @@ export default function LoginPage() {
       }),
     });
 
-    return response.json();
+    return {
+      ok: response.ok,
+      data: response.json(),
+    }
   }
 
   const handleSubmit = async () => {
-    const user = await findUser();
+    if(email === "" || senha === ""){
+      alert("Preencha os campos")
+      return
+    }
+    const resultado = await findUser();
 
-    if (user !== null) {
+    if (resultado.ok) {
       router.push("/catalogo");
     } else {
         alert("Usuário não encontrado")
