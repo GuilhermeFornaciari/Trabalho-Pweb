@@ -102,7 +102,7 @@ export async function getLivrosRecentes(quantidade: number){
       },
     },
     orderBy:{
-      createdAt: "asc"
+      createdAt: "desc"
     },
     take: quantidade
   })

@@ -124,11 +124,10 @@ function exibirLivros(livros: LivroCatalogo[]) {
         className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
       >
         <div className="relative h-64">
-          <Image
+          <img
             src={livro.capa}
             alt={livro.titulo}
-            fill
-            className="object-cover"
+            className="h-65 w-100 object-fill"
           />
         </div>
         <div className="p-4">
