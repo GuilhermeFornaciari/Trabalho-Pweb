@@ -4,9 +4,9 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { dado, livros } = body;
+    const { nome, livros } = body;
 
-    const usuario = await colecao( dado, livros );
+    const usuario = await colecao( nome, livros );
 
     if (!usuario) {
       return Response.json(

@@ -1,7 +1,6 @@
 "use server"
 
 import { colecaoCreate } from "@/lib/data/colecaoDAO";
-import { Colecao } from "@/lib/prisma/generated/client";
 
 type LivroColecao = {
   id: number;
@@ -9,7 +8,7 @@ type LivroColecao = {
 };
 
 
-export async function colecao( dado: Colecao, livros: LivroColecao[]) {
+export async function colecao( dado: string, livros: LivroColecao[]) {
   const colection = await colecaoCreate(dado, livros);
 
   if (!colection) {

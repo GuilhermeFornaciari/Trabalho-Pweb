@@ -8,13 +8,13 @@ type LivroColecao = {
   posicao: number;
 };
 
-export async function colecaoCreate( data: Colecao, livros: LivroColecao[] ){
+export async function colecaoCreate( data: string, livros: LivroColecao[] ){
 
     const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
 
     return await prisma.create({
       data: {
-        nome: data.nome,
+        nome: data,
         livros: {
           create: livros.map((livro) => ({
             livroId: livro.id,
