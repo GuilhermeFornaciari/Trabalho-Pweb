@@ -20,6 +20,3 @@ export async function login(email: string, senha: string) {
 
   return user;
 }
-
-
-
