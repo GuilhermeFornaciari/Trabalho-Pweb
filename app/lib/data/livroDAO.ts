@@ -86,7 +86,7 @@ export async function getLivros(valor: string, filtro: string) {
 
   return livros.map(livro => ({
     ...livro,
-    autoresTexto: livro.autores
+    autores: livro.autores
       .map(a => a.autor.nome)
       .join(", "),
   }));
@@ -94,10 +94,22 @@ export async function getLivros(valor: string, filtro: string) {
 
 export async function getLivrosRecentes(quantidade: number){
   const livrosRecentes = await prisma.livro.findMany({
+    include: {
+      autores: {
+        include: {
+          autor: true,
+        },
+      },
+    },
     orderBy:{
       createdAt: "asc"
     },
     take: quantidade
   })
-  return livrosRecentes;
+  return livrosRecentes.map(livro => ({
+    ...livro, 
+    autores: livro.autores
+      .map(a => a.autor.nome)
+      .join(", "),
+  }));
 }

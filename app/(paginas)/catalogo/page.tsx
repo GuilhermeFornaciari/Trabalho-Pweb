@@ -6,19 +6,25 @@ import { Livro } from "../../lib/prisma/generated/client";
 import Header from "@/components/header";
 
 type LivroCatalogo = Livro & {
-  autoresTexto: string;
+  autores: string;
 };
 
 export default function CatalogoPage() {
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState("ano");
   const [livros, setLivros] = useState<LivroCatalogo[]>([]);
+  const [livrosRecentes, setLivrosRecentes] = useState<LivroCatalogo[]>([]);
 
   useEffect(() => {
-    const livrosRecentes = async () => {
-      const response = await fetch(`api/livro?`)
+    const carregarLivrosRecentes = async () => {
+      const response = await fetch(`api/livro/recently`)
+      const data =  await response.json();
+      if(Array.isArray(data)) {
+        setLivrosRecentes(data);
+      }
     }
-  })
+    carregarLivrosRecentes()
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
@@ -30,7 +36,7 @@ export default function CatalogoPage() {
         const data = await response.json();
         if(Array.isArray(data)) {
           setLivros(data);
-        };
+        }
       } catch (error) {
         console.error(error);
       }
@@ -103,39 +109,40 @@ export default function CatalogoPage() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-
-          {livros.map((livro) => (
-            <div
-              key={livro.id}
-              className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
-            >
-              <div className="relative h-64">
-                <Image
-                  src={livro.capa}
-                  alt={livro.titulo}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              <div className="p-4">
-                <h2 className="font-semibold text-[#4F442E] line-clamp-2">
-                  {livro.titulo}
-                </h2>
-
-                <p className="text-sm text-[#8A7A5B] mt-1">
-                  {livro.autoresTexto}
-                </p>
-
-                <p className="text-sm text-[#8A7A5B]">
-                  {livro.ano}
-                </p>
-              </div>
-            </div>
-          ))}
-
+          {(livros.length === 0) ? exibirLivros(livrosRecentes) : exibirLivros(livros)}
         </div>
       </div>
     </main>
   );
+}
+
+function exibirLivros(livros: LivroCatalogo[]) {
+  return <>
+    {livros.map((livro) => (
+      <div
+        key={livro.id}
+        className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
+      >
+        <div className="relative h-64">
+          <Image
+            src={livro.capa}
+            alt={livro.titulo}
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <h2 className="font-semibold text-[#4F442E] line-clamp-2">
+            {livro.titulo}
+          </h2>
+          <p className="text-sm text-[#8A7A5B] mt-1">
+            {livro.autores}
+          </p>
+          <p className="text-sm text-[#8A7A5B]">
+            {livro.ano}
+          </p>
+        </div>
+      </div>
+    ))}
+  </>
 }
