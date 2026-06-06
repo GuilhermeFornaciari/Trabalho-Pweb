@@ -38,11 +38,8 @@ export async function createLivro(livro: Livro) {
   };
 }
 
+
 export async function updateLivro(livro: Livro) {
-  console.log("UPDATE RECEBIDO:");
-  console.log(JSON.stringify(livro, null, 2));
-
-
   return prisma.livro.update({
     where: {
       id: livro.id,
@@ -53,9 +50,21 @@ export async function updateLivro(livro: Livro) {
       genero: livro.genero,
       paginas: livro.paginas,
       capa: livro.capa,
+      autores: {
+        // Deleta os vínculos antigos desse livro na tabela intermediária
+        deleteMany: {}, 
+        // Cria os novos vínculos com os IDs atuais
+        create: livro.autores.map((id: number) => ({
+          autor: {
+            connect: { id: id }
+          }
+        }))
+      }
     },
   });
 }
+
+
 
 export async function getLivroById(id: number) {
   const livro = await prisma.livro.findUnique({
@@ -72,7 +81,7 @@ export async function getLivroById(id: number) {
   return {
     ...livro,
     autores: livro?.autores.map((a) => a.autor) ?? [],
-};
+  };
 }
 
 

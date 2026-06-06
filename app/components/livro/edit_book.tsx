@@ -14,8 +14,7 @@ export default function EditBook() {
   const [resultadosAutores, setResultadosAutores] = useState<Autor[]>([]);
   const [buscaAutor, setBuscaAutor] = useState("");
 
-  const [livroSelecionado, setLivroSelecionado] = useState<number | null>(null);
-  const livroSelecionadoRef = useRef<number | null>(null);
+  const [livroSelecionado, setLivroSelecionado] = useState<number>(-1);
 
   const [form, setForm] = useState({
     titulo: "",
@@ -72,7 +71,6 @@ export default function EditBook() {
       const livro = await response.json();
 
       setLivroSelecionado(id);
-      livroSelecionadoRef.current = id;
 
       setForm({
         titulo: livro.titulo,
@@ -89,11 +87,10 @@ export default function EditBook() {
   }
 
   async function editarLivro() {
-    const id = livroSelecionadoRef.current;
-    if (!id) return;
+    if (livroSelecionado < 0) return;
 
     const body = {
-      id,
+      id: livroSelecionado,
       titulo: form.titulo,
       ano: Number(form.ano),
       genero: form.genero,
@@ -102,22 +99,27 @@ export default function EditBook() {
       autores: autores.map((autor) => autor.id),
     };
 
-    console.log("livroSelecionado", livroSelecionado);
-    console.log(body);
+    try {
+      const response = await fetch("/api/livro/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-    const response = await fetch("/api/livro/update", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+      const data = await response.json();
 
-    const data = await response.json();
-
-    alert(`Livro ${data.titulo} atualizado com sucesso.`);
+      if (response.ok) {
+        alert(`Livro "${data.titulo}" atualizado com sucesso.`);
+      } else {
+        alert(`Erro: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      alert("Erro interno ao atualizar o livro.");
+    }
   }
 
+  
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
@@ -198,7 +200,7 @@ export default function EditBook() {
       {/* DIREITA */}
       <div className="border border-yellow-300 rounded-2xl p-4 bg-amber-50">
 
-        {!livroSelecionado ? (
+        {livroSelecionado < 0 ? (
           <div className="text-gray-500">
             Selecione um livro para editar.
           </div>
