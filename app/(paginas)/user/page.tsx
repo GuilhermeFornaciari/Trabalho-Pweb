@@ -11,7 +11,7 @@ import {
 
 import { useEffect, useState } from "react";
 import * as UserService from "./UserService";
-import { user } from '../lib/prisma/generated/client';
+import { user } from '../../lib/prisma/generated/client';
 
 export default function UserPage(){
     

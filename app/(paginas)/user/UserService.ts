@@ -1,7 +1,7 @@
 "use server"
 
-import { user } from "../lib/prisma/generated/client";
-import PrismaSingleton from "../lib/prisma/PrismaSingleton";
+import { user } from "../../lib/prisma/generated/client";
+import PrismaSingleton from "../../lib/prisma/PrismaSingleton";
 export async function find_many(filters: any = {}):Promise<user[]>{
     return table().findMany({
         where: filters

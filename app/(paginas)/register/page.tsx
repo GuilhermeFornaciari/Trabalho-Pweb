@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react";
-import { createUser } from "../lib/api/usuario/usuarioApi";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Livro } from "../lib/prisma/generated/client";
+import { Livro } from "../../lib/prisma/generated/client";
 import { findLivros } from "./CatalogoService";
 
 type LivroCatalogo = Livro & {

@@ -10,3 +10,14 @@ export async function createAutor(autor: Autor): Promise<Autor> {
     },
   });
 }
+
+export async function findAutoresPorNome(nome: string): Promise<Autor[]> {
+  return await prisma.autor.findMany({
+    where: {
+      nome: {
+        contains: nome,
+        mode: "insensitive"
+      }
+    }
+  });
+}

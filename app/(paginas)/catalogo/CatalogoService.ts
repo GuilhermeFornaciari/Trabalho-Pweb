@@ -1,6 +1,6 @@
 "use server"
 
-import PrismaSingleton from "../lib/prisma/PrismaSingleton";
+import PrismaSingleton from "../../lib/prisma/PrismaSingleton";
 
 export async function findLivros(valor: string, filtro: string) {
 
