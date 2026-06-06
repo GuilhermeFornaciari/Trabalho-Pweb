@@ -1,13 +1,12 @@
-import { colecao } from "@/lib/service/colecao/colecaoService";
-
+import { colecao } from "@/lib/service/colecao/ColecaoService";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { nome } = body;
+    const { dado, livros } = body;
 
-    const usuario = await colecao( nome );
+    const usuario = await colecao( dado, livros );
 
     if (!usuario) {
       return Response.json(

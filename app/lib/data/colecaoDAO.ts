@@ -1,11 +1,27 @@
 "use server";
 
+import { Colecao } from "../prisma/generated/client";
 import PrismaSingleton from "../prisma/PrismaSingleton";
 
-export async function colecaoCreate( nome: string ){
+type LivroColecao = {
+  id: number;
+  posicao: number;
+};
+
+export async function colecaoCreate( data: Colecao, livros: LivroColecao[] ){
 
     const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
-    
-    return prisma.create({data:{nome}});
+
+    return await prisma.create({
+      data: {
+        nome: data.nome,
+        livros: {
+          create: livros.map((livro) => ({
+            livroId: livro.id,
+            posicao: livro.posicao,
+          })),
+        },
+      },
+    });
 }
 
