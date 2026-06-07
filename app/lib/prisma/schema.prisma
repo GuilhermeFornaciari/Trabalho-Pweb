@@ -24,6 +24,7 @@ model Livro {
   genero  String
   paginas Int
   capa    String
+  sinopse String
   createdAt DateTime @default(now())
 
   colecoes Pertence_a_colecao[]

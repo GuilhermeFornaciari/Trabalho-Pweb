@@ -119,9 +119,8 @@ export default function CatalogoPage() {
 function exibirLivros(livros: LivroCatalogo[]) {
   return <>
     {livros.map((livro) => (
-      <Link href={`livro/${livro.id}`}>
+      <Link href={`livro/${livro.id}`} key={livro.id}>
         <div
-          key={livro.id}
           className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
           >
           <div className="relative h-64">

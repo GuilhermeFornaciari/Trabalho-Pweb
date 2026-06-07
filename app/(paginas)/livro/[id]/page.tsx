@@ -37,9 +37,25 @@ export default function DetalhesLivro({
 
 function informacoesDoLivro(livro: LivroDetalhes) {
   return(
-    <div>
-      <h1>{livro.titulo}</h1>
-      <img src={livro.capa} alt="Capa" />
+    <div className="w-4xl my-5 p-5 m-auto flex border border-amber-300 rounded-md">
+      <div className="me-5">
+        <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
+      </div>
+      <div className="flex flex-col justify-between">
+        <div>
+          <h1 className="font-bold text-xl">{livro.titulo}</h1>
+          <p>
+            {livro.autores.map(a => a.nome)
+                        .join(",")
+                      }
+          </p>
+        </div>
+        <div>
+          <p>Gênero: {livro.genero}</p>
+          <p>Páginas: {livro.paginas}</p>
+          <p>Ano de lançamento da edição: {livro.ano}</p>
+        </div>
+      </div>
     </div>
   );
 }
