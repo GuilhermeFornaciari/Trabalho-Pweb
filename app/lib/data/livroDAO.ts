@@ -78,6 +78,8 @@ export async function getLivroById(id: number) {
     },
   });
 
+  if(!livro) return null;
+
   return {
     ...livro,
     autores: livro?.autores.map((a) => a.autor) ?? [],

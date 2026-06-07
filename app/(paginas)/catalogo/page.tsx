@@ -30,7 +30,7 @@ export default function CatalogoPage() {
     const timeout = setTimeout(async () => {
       try {
         const response = await fetch(
-          `/api/livro/read?valor=${encodeURIComponent(busca)}&filtro=${filtro}`
+          `/api/livro/search?valor=${encodeURIComponent(busca)}&filtro=${filtro}`
         );
 
         const data = await response.json();
