@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { Livro } from "../../lib/prisma/generated/client";
 import Header from "@/components/header";
 
@@ -119,29 +119,31 @@ export default function CatalogoPage() {
 function exibirLivros(livros: LivroCatalogo[]) {
   return <>
     {livros.map((livro) => (
-      <div
-        key={livro.id}
-        className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
-      >
-        <div className="relative h-64">
-          <img
-            src={livro.capa}
-            alt={livro.titulo}
-            className="h-65 w-100 object-fill"
-          />
+      <Link href={`livro/${livro.id}`}>
+        <div
+          key={livro.id}
+          className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition"
+          >
+          <div className="relative h-64">
+            <img
+              src={livro.capa}
+              alt={livro.titulo}
+              className="h-65 w-100 object-fill"
+              />
+          </div>
+          <div className="p-4">
+            <h2 className="font-semibold text-[#4F442E] line-clamp-2">
+              {livro.titulo}
+            </h2>
+            <p className="text-sm text-[#8A7A5B] mt-1">
+              {livro.autores}
+            </p>
+            <p className="text-sm text-[#8A7A5B]">
+              {livro.ano}
+            </p>
+          </div>
         </div>
-        <div className="p-4">
-          <h2 className="font-semibold text-[#4F442E] line-clamp-2">
-            {livro.titulo}
-          </h2>
-          <p className="text-sm text-[#8A7A5B] mt-1">
-            {livro.autores}
-          </p>
-          <p className="text-sm text-[#8A7A5B]">
-            {livro.ano}
-          </p>
-        </div>
-      </div>
+      </Link>
     ))}
   </>
 }
