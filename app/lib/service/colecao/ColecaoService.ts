@@ -1,4 +1,4 @@
-import { colecaoCreate } from "@/lib/data/colecaoDAO";
+import { colecaoCreate, colecaoId } from "@/lib/data/colecaoDAO";
 import { stringify } from "querystring";
 
 type LivroColecao = {
@@ -20,4 +20,14 @@ export async function colecao( dado: string, livros: LivroColecao[]) {
 }
 
 
-
+export async function getById(id: number) {
+  try {
+    const res = await colecaoId(id);
+    if(res === null) {
+      return {status: 404, message: 'colecao não encontrado'}
+    }
+    return res;
+  } catch(e) {
+    return {status:500, message: 'Não foi possível buscar esta colecao.'}
+  }
+}

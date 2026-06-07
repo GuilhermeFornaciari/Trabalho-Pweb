@@ -93,6 +93,7 @@ export const LivroScalarFieldEnum = {
   genero: 'genero',
   paginas: 'paginas',
   capa: 'capa',
+  sinopse: 'sinopse',
   createdAt: 'createdAt'
 } as const
 

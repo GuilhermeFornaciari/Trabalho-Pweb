@@ -1,5 +1,6 @@
 "use server";
 
+import { stringify } from "querystring";
 import PrismaSingleton from "../prisma/PrismaSingleton";
 
 type LivroColecao = {
@@ -29,4 +30,49 @@ export async function colecaoCreate( data: string, livros: LivroColecao[] ){
       },
     });
 }
+
+export async function colecaoId(id: number) {
+  const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
+
+  return await prisma.findUnique({
+    where: { id },
+    include: {
+      livros: {
+        include: {
+          livro: true,
+        },
+        orderBy: {
+          posicao: "asc",
+        },
+      },
+    },
+  });
+}
+
+export async function searchColecoes( nome: string ){
+
+    const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
+
+    const ret = await prisma.findMany({
+      where: {
+        nome: {
+          contains: nome,
+          mode: "insensitive"
+        }
+      },
+      include: {
+        livros: true
+      }
+    });
+
+
+    console.log(JSON.stringify(ret))
+
+    if(ret.length === 0){
+      console.log("ERRO no id da coleção");
+    }
+
+    return ret;
+}
+
 
