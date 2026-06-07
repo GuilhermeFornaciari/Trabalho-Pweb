@@ -1,6 +1,9 @@
+import Livro from "@/(entidades)/livro";
 import { colecao } from "@/lib/service/colecao/ColecaoService";
 
 export async function POST(request: Request) {
+
+  console.log("\n\n chgeou na rtota")
   try {
     const body = await request.json();
 

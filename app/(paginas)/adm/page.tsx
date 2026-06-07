@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/header";
 import RegisterBook from "@/components/livro/register_book";
 import EditBook from "@/components/livro/edit_book";
+import RegisterColection from "@/components/colecao/register_colecao";
 
 
 export default function AdminPage() {
@@ -76,7 +77,7 @@ const [entidade, setEntidade] = useState<
       {entidade === "autor" && modo === "criar" && <CreateAuthor />}
       {entidade === "autor" && modo === "editar" && <EditAuthor />}
 
-      {entidade === "colecao" && modo === "criar" && <CreateCollection />}
+      {entidade === "colecao" && modo === "criar" && <RegisterColection />}
       {entidade === "colecao" && modo === "editar" && <EditCollection />}
     </>
   );
