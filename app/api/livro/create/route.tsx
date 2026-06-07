@@ -6,8 +6,8 @@ import Livro from "@/(entidades)/livro";
 
 export async function POST(request: Request) {
   const req = await request.json();
-  if(req.titulo && req.ano && req.genero && req.paginas && req.capa && req.autores) {
-    const livro = new Livro(req.titulo, Number(req.ano), req.genero, Number(req.paginas), req.capa, req.autores);
+  if(req.titulo && req.ano && req.genero && req.paginas && req.capa && req.autores && req.sinopse) {
+    const livro = new Livro(req.titulo, Number(req.ano), req.genero, Number(req.paginas), req.capa, req.autores, req.sinopse);
     try {
       const res = await createLivro(livro);
       return Response.json(res);

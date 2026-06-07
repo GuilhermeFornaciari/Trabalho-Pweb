@@ -11,6 +11,7 @@ export async function createLivro(livro: Livro) {
       genero: livro.genero,
       paginas: livro.paginas,
       capa: livro.capa,
+      sinopse: livro.sinopse,
       autores: {
         create: livro.autores.map((id: number) => {
           return {

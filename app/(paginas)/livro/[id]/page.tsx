@@ -51,6 +51,10 @@ function informacoesDoLivro(livro: LivroDetalhes) {
           </p>
         </div>
         <div>
+          <h2>Sinopse:</h2>
+          <p className="w-inherit">{livro.sinopse}</p>
+        </div>
+        <div>
           <p>Gênero: {livro.genero}</p>
           <p>Páginas: {livro.paginas}</p>
           <p>Ano de lançamento da edição: {livro.ano}</p>

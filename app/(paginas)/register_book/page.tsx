@@ -33,6 +33,7 @@ export default function RegisterBook() {
       genero: form.genero,
       paginas: Number(form.paginas),
       capa: form.capa,
+      sinopse: form.sinopse,
       autores: autores.map(autor => autor.id)
     };
 
@@ -49,7 +50,7 @@ export default function RegisterBook() {
     console.log(data);
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
 
     setForm(prev => ({
@@ -170,7 +171,7 @@ export default function RegisterBook() {
               }
               <label className={labelStyle + "flex flex-col flex-1"}>
                 <span className={spanStyle}>Sinopse</span>
-                <textarea name="sinopse" id="sinopse" className={textareaStyle}></textarea>
+                <textarea name="sinopse" id="sinopse" value={form.sinopse} onChange={handleChange} className={textareaStyle}></textarea>
               </label>
             </div>
 
