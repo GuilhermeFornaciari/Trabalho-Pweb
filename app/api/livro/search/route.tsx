@@ -4,7 +4,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const valor = searchParams.get("valor") ?? "";
-  const filtro = searchParams.get("filtro");
+  const filtro = searchParams.get("filtro") ?? "";
   if(filtro) {
     try{
       const res = await getLivros(valor, filtro);
