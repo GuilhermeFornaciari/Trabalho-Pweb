@@ -27,6 +27,7 @@ export default function DetalhesLivro({
     carregarLivro();
   }, [])
 
+  
   return(
     <div className="min-h-screen bg-olive-50">
       <Header></Header>
@@ -36,12 +37,13 @@ export default function DetalhesLivro({
 }
 
 function informacoesDoLivro(livro: LivroDetalhes) {
+  const spanStyle = "font-semibold";
   return(
     <div className="w-4xl my-5 p-5 m-auto flex border border-amber-300 rounded-md">
       <div className="me-5">
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
       </div>
-      <div className="flex flex-col justify-between">
+      <div className="w-1/2 flex flex-col flex-1 justify-between">
         <div>
           <h1 className="font-bold text-xl">{livro.titulo}</h1>
           <p>
@@ -50,10 +52,14 @@ function informacoesDoLivro(livro: LivroDetalhes) {
                       }
           </p>
         </div>
+        <div className="my-5">
+          <h2 className="font-semibold">Sinopse:</h2>
+          <p className="text-ellipsis overflow-hidden">{livro.sinopse}</p>
+        </div>
         <div>
-          <p>Gênero: {livro.genero}</p>
-          <p>Páginas: {livro.paginas}</p>
-          <p>Ano de lançamento da edição: {livro.ano}</p>
+          <p><span className={spanStyle}>Gênero:</span> {livro.genero}</p>
+          <p><span className={spanStyle}>Páginas:</span> {livro.paginas}</p>
+          <p><span className={spanStyle}>Ano de lançamento da edição:</span> {livro.ano}</p>
         </div>
       </div>
     </div>
