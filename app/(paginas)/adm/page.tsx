@@ -6,6 +6,8 @@ import RegisterBook from "@/components/livro/register_book";
 import EditBook from "@/components/livro/edit_book";
 import RegisterColection from "@/components/colecao/register_colecao";
 import EditColection from "@/components/colecao/edit_colecao";
+import RegisterAuthor from "@/components/autor/register_author";
+import EditAuthor from "@/components/autor/edit_author";
 
 
 export default function AdminPage() {
@@ -75,7 +77,7 @@ const [entidade, setEntidade] = useState<
       {entidade === "livro" && modo === "criar" && <RegisterBook />}
       {entidade === "livro" && modo === "editar" && <EditBook />}
 
-      {entidade === "autor" && modo === "criar" && <CreateAuthor />}
+      {entidade === "autor" && modo === "criar" && <RegisterAuthor />}
       {entidade === "autor" && modo === "editar" && <EditAuthor />}
 
       {entidade === "colecao" && modo === "criar" && <RegisterColection />}

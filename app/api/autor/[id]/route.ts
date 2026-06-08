@@ -1,4 +1,4 @@
-import { getById } from "@/lib/service/colecao/ColecaoService";
+import { getAutorId } from "@/lib/service/autor/AutorService";
 
 export async function GET( request: Request, { params } : {params: Promise<{id: string}>}) {
 
@@ -7,15 +7,15 @@ export async function GET( request: Request, { params } : {params: Promise<{id: 
     return Response.json({message: 'Parâmetro inválido.'});
   }
 
-  const search = await getById(Number(id));
-  if("message" in search) {
+  const search = await getAutorId(Number(id));
+  if("message" in search ) {
     return Response.json({
-        message: search.message
-      },
-      {
-        status: search.status
-      }
-    )
+      message: search.message
+    },
+    {
+      status: search.status
+    }
+  )
   }
   return Response.json(search);
 }
