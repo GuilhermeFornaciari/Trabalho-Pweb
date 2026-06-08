@@ -9,6 +9,7 @@ import EditColection from "@/components/colecao/edit_colecao";
 import RegisterAuthor from "@/components/autor/register_author";
 import EditAuthor from "@/components/autor/edit_author";
 import DeleteBook from "@/components/livro/delete_livro";
+import DeleteAuthor from "@/components/autor/delet_author";
 
 
 export default function AdminPage() {
@@ -80,7 +81,7 @@ const [entidade, setEntidade] = useState<
               ? "bg-blue-600 text-white p-2 rounded"
               : "bg-gray-200 p-2 rounded"}
           >
-            Editar
+            Deletar
           </button>
         </div>
 
@@ -90,7 +91,7 @@ const [entidade, setEntidade] = useState<
 
       {entidade === "autor" && modo === "criar" && <RegisterAuthor />}
       {entidade === "autor" && modo === "editar" && <EditAuthor />}
-      {entidade === "autor" && modo === "deletar" && <EditAuthor />}
+      {entidade === "autor" && modo === "deletar" && <DeleteAuthor />}
 
       {entidade === "colecao" && modo === "criar" && <RegisterColection />}
       {entidade === "colecao" && modo === "editar" && < EditColection/>}
