@@ -52,7 +52,7 @@ export async function colecaoId(id: number) {
 export async function searchColecoes( nome: string ){
 
     const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
-
+    
     const ret = await prisma.findMany({
       where: {
         nome: {
@@ -64,15 +64,24 @@ export async function searchColecoes( nome: string ){
         livros: true
       }
     });
-
-
+    
+    
     console.log(JSON.stringify(ret))
-
+    
     if(ret.length === 0){
       console.log("ERRO no id da coleção");
     }
-
+    
     return ret;
+  }
+  
+
+export async function deleteColecao(id: number) {
+  
+  const prisma = PrismaSingleton.getInstance().prismaClient;
+  return prisma.colecao.delete({
+    where: {
+      id,
+    },
+  });
 }
-
-

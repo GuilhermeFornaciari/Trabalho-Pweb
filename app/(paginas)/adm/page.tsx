@@ -9,7 +9,7 @@ import EditColection from "@/components/colecao/edit_colecao";
 import RegisterAuthor from "@/components/autor/register_author";
 import EditAuthor from "@/components/autor/edit_author";
 import DeleteBook from "@/components/livro/delete_livro";
-import DeleteAuthor from "@/components/autor/delet_author";
+import DeleteAuthor from "@/components/autor/delete_author";
 
 
 export default function AdminPage() {
