@@ -25,11 +25,14 @@ model Livro {
   paginas Int
   capa    String
   sinopse String
+  colecaoId Int? 
+  posicao_colecao Float?
   createdAt DateTime @default(now())
 
-  colecoes Pertence_a_colecao[]
+  colecao Colecao? @relation(fields: [colecaoId], references: [id])
   autores  Escrito_por[]
 
+  @@unique([colecaoId, posicao_colecao])
   @@map("livros")
 }
 
@@ -37,25 +40,9 @@ model Colecao {
   id    Int    @id @default(autoincrement())
   nome  String
 
-  livros Pertence_a_colecao[]
+  livros Livro[]
 
   @@map("colecao")
-}
-
-model Pertence_a_colecao {
-  livroId   Int
-  colecaoId Int
-
-  livro     Livro   @relation(fields: [livroId], references: [id])
-  colecao   Colecao @relation(fields: [colecaoId], references: [id])
-
-  posicao   Float
-
-  @@unique([colecaoId, posicao])
-
-  @@id([livroId, colecaoId])
-
-  @@map("pertence_a_colecao")
 }
 
 model Autor {

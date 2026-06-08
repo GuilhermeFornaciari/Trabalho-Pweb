@@ -54,7 +54,6 @@ export const ModelName = {
   User: 'User',
   Livro: 'Livro',
   Colecao: 'Colecao',
-  Pertence_a_colecao: 'Pertence_a_colecao',
   Autor: 'Autor',
   Escrito_por: 'Escrito_por'
 } as const
@@ -94,6 +93,8 @@ export const LivroScalarFieldEnum = {
   paginas: 'paginas',
   capa: 'capa',
   sinopse: 'sinopse',
+  colecaoId: 'colecaoId',
+  posicao_colecao: 'posicao_colecao',
   createdAt: 'createdAt'
 } as const
 
@@ -106,15 +107,6 @@ export const ColecaoScalarFieldEnum = {
 } as const
 
 export type ColecaoScalarFieldEnum = (typeof ColecaoScalarFieldEnum)[keyof typeof ColecaoScalarFieldEnum]
-
-
-export const Pertence_a_colecaoScalarFieldEnum = {
-  livroId: 'livroId',
-  colecaoId: 'colecaoId',
-  posicao: 'posicao'
-} as const
-
-export type Pertence_a_colecaoScalarFieldEnum = (typeof Pertence_a_colecaoScalarFieldEnum)[keyof typeof Pertence_a_colecaoScalarFieldEnum]
 
 
 export const AutorScalarFieldEnum = {
@@ -147,4 +139,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

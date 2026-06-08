@@ -192,13 +192,13 @@ export type ColecaoWhereInput = {
   NOT?: Prisma.ColecaoWhereInput | Prisma.ColecaoWhereInput[]
   id?: Prisma.IntFilter<"Colecao"> | number
   nome?: Prisma.StringFilter<"Colecao"> | string
-  livros?: Prisma.Pertence_a_colecaoListRelationFilter
+  livros?: Prisma.LivroListRelationFilter
 }
 
 export type ColecaoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   nome?: Prisma.SortOrder
-  livros?: Prisma.Pertence_a_colecaoOrderByRelationAggregateInput
+  livros?: Prisma.LivroOrderByRelationAggregateInput
 }
 
 export type ColecaoWhereUniqueInput = Prisma.AtLeast<{
@@ -207,7 +207,7 @@ export type ColecaoWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ColecaoWhereInput[]
   NOT?: Prisma.ColecaoWhereInput | Prisma.ColecaoWhereInput[]
   nome?: Prisma.StringFilter<"Colecao"> | string
-  livros?: Prisma.Pertence_a_colecaoListRelationFilter
+  livros?: Prisma.LivroListRelationFilter
 }, "id">
 
 export type ColecaoOrderByWithAggregationInput = {
@@ -230,24 +230,24 @@ export type ColecaoScalarWhereWithAggregatesInput = {
 
 export type ColecaoCreateInput = {
   nome: string
-  livros?: Prisma.Pertence_a_colecaoCreateNestedManyWithoutColecaoInput
+  livros?: Prisma.LivroCreateNestedManyWithoutColecaoInput
 }
 
 export type ColecaoUncheckedCreateInput = {
   id?: number
   nome: string
-  livros?: Prisma.Pertence_a_colecaoUncheckedCreateNestedManyWithoutColecaoInput
+  livros?: Prisma.LivroUncheckedCreateNestedManyWithoutColecaoInput
 }
 
 export type ColecaoUpdateInput = {
   nome?: Prisma.StringFieldUpdateOperationsInput | string
-  livros?: Prisma.Pertence_a_colecaoUpdateManyWithoutColecaoNestedInput
+  livros?: Prisma.LivroUpdateManyWithoutColecaoNestedInput
 }
 
 export type ColecaoUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nome?: Prisma.StringFieldUpdateOperationsInput | string
-  livros?: Prisma.Pertence_a_colecaoUncheckedUpdateManyWithoutColecaoNestedInput
+  livros?: Prisma.LivroUncheckedUpdateManyWithoutColecaoNestedInput
 }
 
 export type ColecaoCreateManyInput = {
@@ -262,6 +262,11 @@ export type ColecaoUpdateManyMutationInput = {
 export type ColecaoUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nome?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ColecaoNullableScalarRelationFilter = {
+  is?: Prisma.ColecaoWhereInput | null
+  isNot?: Prisma.ColecaoWhereInput | null
 }
 
 export type ColecaoCountOrderByAggregateInput = {
@@ -287,21 +292,18 @@ export type ColecaoSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
-export type ColecaoScalarRelationFilter = {
-  is?: Prisma.ColecaoWhereInput
-  isNot?: Prisma.ColecaoWhereInput
-}
-
 export type ColecaoCreateNestedOneWithoutLivrosInput = {
   create?: Prisma.XOR<Prisma.ColecaoCreateWithoutLivrosInput, Prisma.ColecaoUncheckedCreateWithoutLivrosInput>
   connectOrCreate?: Prisma.ColecaoCreateOrConnectWithoutLivrosInput
   connect?: Prisma.ColecaoWhereUniqueInput
 }
 
-export type ColecaoUpdateOneRequiredWithoutLivrosNestedInput = {
+export type ColecaoUpdateOneWithoutLivrosNestedInput = {
   create?: Prisma.XOR<Prisma.ColecaoCreateWithoutLivrosInput, Prisma.ColecaoUncheckedCreateWithoutLivrosInput>
   connectOrCreate?: Prisma.ColecaoCreateOrConnectWithoutLivrosInput
   upsert?: Prisma.ColecaoUpsertWithoutLivrosInput
+  disconnect?: Prisma.ColecaoWhereInput | boolean
+  delete?: Prisma.ColecaoWhereInput | boolean
   connect?: Prisma.ColecaoWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ColecaoUpdateToOneWithWhereWithoutLivrosInput, Prisma.ColecaoUpdateWithoutLivrosInput>, Prisma.ColecaoUncheckedUpdateWithoutLivrosInput>
 }
@@ -367,7 +369,7 @@ export type ColecaoCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  * ColecaoCountOutputType without action
  */
 export type ColecaoCountOutputTypeCountLivrosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.Pertence_a_colecaoWhereInput
+  where?: Prisma.LivroWhereInput
 }
 
 
@@ -404,7 +406,7 @@ export type ColecaoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type $ColecaoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Colecao"
   objects: {
-    livros: Prisma.$Pertence_a_colecaoPayload<ExtArgs>[]
+    livros: Prisma.$LivroPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -803,7 +805,7 @@ readonly fields: ColecaoFieldRefs;
  */
 export interface Prisma__ColecaoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  livros<T extends Prisma.Colecao$livrosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Colecao$livrosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$Pertence_a_colecaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  livros<T extends Prisma.Colecao$livrosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Colecao$livrosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1232,23 +1234,23 @@ export type ColecaoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
  */
 export type Colecao$livrosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Pertence_a_colecao
+   * Select specific fields to fetch from the Livro
    */
-  select?: Prisma.Pertence_a_colecaoSelect<ExtArgs> | null
+  select?: Prisma.LivroSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Pertence_a_colecao
+   * Omit specific fields from the Livro
    */
-  omit?: Prisma.Pertence_a_colecaoOmit<ExtArgs> | null
+  omit?: Prisma.LivroOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.Pertence_a_colecaoInclude<ExtArgs> | null
-  where?: Prisma.Pertence_a_colecaoWhereInput
-  orderBy?: Prisma.Pertence_a_colecaoOrderByWithRelationInput | Prisma.Pertence_a_colecaoOrderByWithRelationInput[]
-  cursor?: Prisma.Pertence_a_colecaoWhereUniqueInput
+  include?: Prisma.LivroInclude<ExtArgs> | null
+  where?: Prisma.LivroWhereInput
+  orderBy?: Prisma.LivroOrderByWithRelationInput | Prisma.LivroOrderByWithRelationInput[]
+  cursor?: Prisma.LivroWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.Pertence_a_colecaoScalarFieldEnum | Prisma.Pertence_a_colecaoScalarFieldEnum[]
+  distinct?: Prisma.LivroScalarFieldEnum | Prisma.LivroScalarFieldEnum[]
 }
 
 /**

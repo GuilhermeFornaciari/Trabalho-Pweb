@@ -387,7 +387,6 @@ export const ModelName = {
   User: 'User',
   Livro: 'Livro',
   Colecao: 'Colecao',
-  Pertence_a_colecao: 'Pertence_a_colecao',
   Autor: 'Autor',
   Escrito_por: 'Escrito_por'
 } as const
@@ -405,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "livro" | "colecao" | "pertence_a_colecao" | "autor" | "escrito_por"
+    modelProps: "user" | "livro" | "colecao" | "autor" | "escrito_por"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -631,80 +630,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Pertence_a_colecao: {
-      payload: Prisma.$Pertence_a_colecaoPayload<ExtArgs>
-      fields: Prisma.Pertence_a_colecaoFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.Pertence_a_colecaoFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.Pertence_a_colecaoFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>
-        }
-        findFirst: {
-          args: Prisma.Pertence_a_colecaoFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.Pertence_a_colecaoFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>
-        }
-        findMany: {
-          args: Prisma.Pertence_a_colecaoFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>[]
-        }
-        create: {
-          args: Prisma.Pertence_a_colecaoCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>
-        }
-        createMany: {
-          args: Prisma.Pertence_a_colecaoCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.Pertence_a_colecaoCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>[]
-        }
-        delete: {
-          args: Prisma.Pertence_a_colecaoDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>
-        }
-        update: {
-          args: Prisma.Pertence_a_colecaoUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>
-        }
-        deleteMany: {
-          args: Prisma.Pertence_a_colecaoDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.Pertence_a_colecaoUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.Pertence_a_colecaoUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>[]
-        }
-        upsert: {
-          args: Prisma.Pertence_a_colecaoUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$Pertence_a_colecaoPayload>
-        }
-        aggregate: {
-          args: Prisma.Pertence_a_colecaoAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePertence_a_colecao>
-        }
-        groupBy: {
-          args: Prisma.Pertence_a_colecaoGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Pertence_a_colecaoGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.Pertence_a_colecaoCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Pertence_a_colecaoCountAggregateOutputType> | number
-        }
-      }
-    }
     Autor: {
       payload: Prisma.$AutorPayload<ExtArgs>
       fields: Prisma.AutorFieldRefs
@@ -911,6 +836,8 @@ export const LivroScalarFieldEnum = {
   paginas: 'paginas',
   capa: 'capa',
   sinopse: 'sinopse',
+  colecaoId: 'colecaoId',
+  posicao_colecao: 'posicao_colecao',
   createdAt: 'createdAt'
 } as const
 
@@ -923,15 +850,6 @@ export const ColecaoScalarFieldEnum = {
 } as const
 
 export type ColecaoScalarFieldEnum = (typeof ColecaoScalarFieldEnum)[keyof typeof ColecaoScalarFieldEnum]
-
-
-export const Pertence_a_colecaoScalarFieldEnum = {
-  livroId: 'livroId',
-  colecaoId: 'colecaoId',
-  posicao: 'posicao'
-} as const
-
-export type Pertence_a_colecaoScalarFieldEnum = (typeof Pertence_a_colecaoScalarFieldEnum)[keyof typeof Pertence_a_colecaoScalarFieldEnum]
 
 
 export const AutorScalarFieldEnum = {
@@ -964,6 +882,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1001,20 +927,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1025,6 +937,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 /**
@@ -1140,7 +1066,6 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   livro?: Prisma.LivroOmit
   colecao?: Prisma.ColecaoOmit
-  pertence_a_colecao?: Prisma.Pertence_a_colecaoOmit
   autor?: Prisma.AutorOmit
   escrito_por?: Prisma.Escrito_porOmit
 }

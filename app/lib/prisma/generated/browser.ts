@@ -33,11 +33,6 @@ export type Livro = Prisma.LivroModel
  */
 export type Colecao = Prisma.ColecaoModel
 /**
- * Model Pertence_a_colecao
- * 
- */
-export type Pertence_a_colecao = Prisma.Pertence_a_colecaoModel
-/**
  * Model Autor
  * 
  */
