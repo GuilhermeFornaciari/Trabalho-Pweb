@@ -109,8 +109,8 @@ async function selecionarColecao(id: number) {
     setColecaoSelecionado(id);
     setColecao(colecao.nome);
 
-    setLivros(colecao.livros.map((item: any) => item.livro));
-    setResultadosLivros(colecao.livros.map((item: any) => item.livro));
+    setLivros(colecao.livros);
+    setResultadosLivros(colecao.livros);
 
   } catch (error) {
     console.error(error);

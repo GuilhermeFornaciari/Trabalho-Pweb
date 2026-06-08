@@ -67,7 +67,7 @@ export default function EditBook() {
 
   async function selecionarLivro(id: number) {
     try {
-      const response = await fetch(`/api/livro/id?id=${id}`);
+      const response = await fetch(`/api/livro/${id}`);
       const livro = await response.json();
 
       setLivroSelecionado(id);
