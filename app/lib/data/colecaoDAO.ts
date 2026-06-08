@@ -8,41 +8,41 @@ type LivroColecao = {
   posicao: number;
 };
 
-export async function colecaoCreate( data: string, livros: LivroColecao[] ){
+export async function colecaoCreate(nome: string, livros: LivroColecao[]) {
+  const prisma = PrismaSingleton.getInstance().prismaClient;
 
-    const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
-    console.log(data) // nome da colecao
-    console.log(livros) // id e posicao do livro
+  const colecao = await prisma.colecao.create({
+    data: {
+      nome,
+    },
+  });
 
-    return await prisma.create({
-      data: {
-        nome: data,
-        livros: {
-          create: livros.map((livro) => ({
-            posicao: livro.posicao,
-            livro: {
-              connect: {
-                id: livro.id,
-              },
-            },
-          })),
+  await Promise.all(
+    livros.map((livro) =>
+      prisma.livro.update({
+        where: { id: livro.id },
+        data: {
+          colecaoId: colecao.id,
+          posicao_colecao: livro.posicao,
         },
-      },
-    });
+      })
+    )
+  );
+
+  return colecao;
 }
+
+
 
 export async function colecaoId(id: number) {
   const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
 
-  return await prisma.findUnique({
+  return prisma.findUnique({
     where: { id },
     include: {
       livros: {
-        include: {
-          livro: true,
-        },
         orderBy: {
-          posicao: "asc",
+          posicao_colecao: "asc",
         },
       },
     },
