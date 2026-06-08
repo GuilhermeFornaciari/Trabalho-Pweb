@@ -11,44 +11,41 @@ model User {
   id    Int    @id @default(autoincrement())
   nome  String
   email String @unique
-  senha String 
-  foto String
+  senha String
+  foto  String
 
   @@map("usuarios")
 }
 
 model Livro {
-  id      Int    @id @default(autoincrement())
-  titulo  String
-  ano     Int
-  genero  String
-  paginas Int
-  capa    String
-  sinopse String
-  colecaoId Int? 
+  id              Int           @id @default(autoincrement())
+  titulo          String
+  ano             Int
+  genero          String
+  paginas         Int
+  capa            String
+  createdAt       DateTime      @default(now())
+  sinopse         String
+  colecaoId       Int?
   posicao_colecao Float?
-  createdAt DateTime @default(now())
-
-  colecao Colecao? @relation(fields: [colecaoId], references: [id])
-  autores  Escrito_por[]
+  autores         Escrito_por[]
+  colecao         Colecao?      @relation(fields: [colecaoId], references: [id])
 
   @@unique([colecaoId, posicao_colecao])
   @@map("livros")
 }
 
 model Colecao {
-  id    Int    @id @default(autoincrement())
-  nome  String
-
+  id     Int     @id @default(autoincrement())
+  nome   String
   livros Livro[]
 
   @@map("colecao")
 }
 
 model Autor {
-  id    Int    @id @default(autoincrement())
-  nome String
-
+  id     Int           @id @default(autoincrement())
+  nome   String
   livros Escrito_por[]
 
   @@map("autor")
@@ -57,11 +54,9 @@ model Autor {
 model Escrito_por {
   livroId Int
   autorId Int
-
-  livro Livro @relation(fields: [livroId], references: [id])
-  autor Autor @relation(fields: [autorId], references: [id])
+  autor   Autor @relation(fields: [autorId], references: [id])
+  livro   Livro @relation(fields: [livroId], references: [id])
 
   @@id([livroId, autorId])
-
   @@map("escrito_por")
 }

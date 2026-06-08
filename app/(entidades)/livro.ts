@@ -10,6 +10,7 @@ export default class Livro {
   public autores;
   public sinopse;
   public created_at?:Date;
+  public colecaoId?:number; // depois ajeite aqui tabares
 
   constructor(titulo:string, ano:number, genero:string, paginas:number, capa:string, autores:number[], sinopse: string) {
     this.titulo = titulo;

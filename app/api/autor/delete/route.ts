@@ -1,5 +1,5 @@
-import { createAutor } from "@/lib/data/autorDAO";
 import Autor from "@/(entidades)/autor";
+import { deleteAutor } from "@/lib/data/autorDAO";
 
 export async function DELETE(request: Request) {
   const req = await request.json();

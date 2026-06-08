@@ -65,6 +65,26 @@ export async function updateLivro(livro: Livro) {
   });
 }
 
+// se der erro, retorna excessao
+export async function deleteLivro(id: number, colecaoId: number | null){
+  await prisma.livro.delete({
+    where: { id }
+  });
+
+  const quantidade = await prisma.livro.count({
+    where: {
+      colecaoId
+    }
+  });
+
+  if(quantidade === 0 && colecaoId === 0){
+    await prisma.colecao.delete({
+      where: { id: colecaoId }
+    });
+  }
+}
+
+
 
 
 export async function getLivroById(id: number) {

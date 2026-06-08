@@ -196,15 +196,15 @@ export type Escrito_porWhereInput = {
   NOT?: Prisma.Escrito_porWhereInput | Prisma.Escrito_porWhereInput[]
   livroId?: Prisma.IntFilter<"Escrito_por"> | number
   autorId?: Prisma.IntFilter<"Escrito_por"> | number
-  livro?: Prisma.XOR<Prisma.LivroScalarRelationFilter, Prisma.LivroWhereInput>
   autor?: Prisma.XOR<Prisma.AutorScalarRelationFilter, Prisma.AutorWhereInput>
+  livro?: Prisma.XOR<Prisma.LivroScalarRelationFilter, Prisma.LivroWhereInput>
 }
 
 export type Escrito_porOrderByWithRelationInput = {
   livroId?: Prisma.SortOrder
   autorId?: Prisma.SortOrder
-  livro?: Prisma.LivroOrderByWithRelationInput
   autor?: Prisma.AutorOrderByWithRelationInput
+  livro?: Prisma.LivroOrderByWithRelationInput
 }
 
 export type Escrito_porWhereUniqueInput = Prisma.AtLeast<{
@@ -214,8 +214,8 @@ export type Escrito_porWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.Escrito_porWhereInput | Prisma.Escrito_porWhereInput[]
   livroId?: Prisma.IntFilter<"Escrito_por"> | number
   autorId?: Prisma.IntFilter<"Escrito_por"> | number
-  livro?: Prisma.XOR<Prisma.LivroScalarRelationFilter, Prisma.LivroWhereInput>
   autor?: Prisma.XOR<Prisma.AutorScalarRelationFilter, Prisma.AutorWhereInput>
+  livro?: Prisma.XOR<Prisma.LivroScalarRelationFilter, Prisma.LivroWhereInput>
 }, "livroId_autorId">
 
 export type Escrito_porOrderByWithAggregationInput = {
@@ -237,8 +237,8 @@ export type Escrito_porScalarWhereWithAggregatesInput = {
 }
 
 export type Escrito_porCreateInput = {
-  livro: Prisma.LivroCreateNestedOneWithoutAutoresInput
   autor: Prisma.AutorCreateNestedOneWithoutLivrosInput
+  livro: Prisma.LivroCreateNestedOneWithoutAutoresInput
 }
 
 export type Escrito_porUncheckedCreateInput = {
@@ -247,8 +247,8 @@ export type Escrito_porUncheckedCreateInput = {
 }
 
 export type Escrito_porUpdateInput = {
-  livro?: Prisma.LivroUpdateOneRequiredWithoutAutoresNestedInput
   autor?: Prisma.AutorUpdateOneRequiredWithoutLivrosNestedInput
+  livro?: Prisma.LivroUpdateOneRequiredWithoutAutoresNestedInput
 }
 
 export type Escrito_porUncheckedUpdateInput = {
@@ -507,22 +507,22 @@ export type Escrito_porUncheckedUpdateManyWithoutAutorInput = {
 export type Escrito_porSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   livroId?: boolean
   autorId?: boolean
-  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
   autor?: boolean | Prisma.AutorDefaultArgs<ExtArgs>
+  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["escrito_por"]>
 
 export type Escrito_porSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   livroId?: boolean
   autorId?: boolean
-  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
   autor?: boolean | Prisma.AutorDefaultArgs<ExtArgs>
+  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["escrito_por"]>
 
 export type Escrito_porSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   livroId?: boolean
   autorId?: boolean
-  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
   autor?: boolean | Prisma.AutorDefaultArgs<ExtArgs>
+  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["escrito_por"]>
 
 export type Escrito_porSelectScalar = {
@@ -532,23 +532,23 @@ export type Escrito_porSelectScalar = {
 
 export type Escrito_porOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"livroId" | "autorId", ExtArgs["result"]["escrito_por"]>
 export type Escrito_porInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
   autor?: boolean | Prisma.AutorDefaultArgs<ExtArgs>
+  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
 }
 export type Escrito_porIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
   autor?: boolean | Prisma.AutorDefaultArgs<ExtArgs>
+  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
 }
 export type Escrito_porIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
   autor?: boolean | Prisma.AutorDefaultArgs<ExtArgs>
+  livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
 }
 
 export type $Escrito_porPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Escrito_por"
   objects: {
-    livro: Prisma.$LivroPayload<ExtArgs>
     autor: Prisma.$AutorPayload<ExtArgs>
+    livro: Prisma.$LivroPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     livroId: number
@@ -947,8 +947,8 @@ readonly fields: Escrito_porFieldRefs;
  */
 export interface Prisma__Escrito_porClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  livro<T extends Prisma.LivroDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LivroDefaultArgs<ExtArgs>>): Prisma.Prisma__LivroClient<runtime.Types.Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   autor<T extends Prisma.AutorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AutorDefaultArgs<ExtArgs>>): Prisma.Prisma__AutorClient<runtime.Types.Result.GetResult<Prisma.$AutorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  livro<T extends Prisma.LivroDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LivroDefaultArgs<ExtArgs>>): Prisma.Prisma__LivroClient<runtime.Types.Result.GetResult<Prisma.$LivroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

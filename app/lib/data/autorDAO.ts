@@ -52,7 +52,6 @@ export async function updateAutor(autor: Autor) {
 }
 
 export async function deleteAutor(autor: Autor) {
-  // tem que ver ainda 
   return prisma.autor.delete({
     where: {
       id: autor.id,
