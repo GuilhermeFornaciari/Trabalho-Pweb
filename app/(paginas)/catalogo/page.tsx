@@ -6,7 +6,7 @@ import { Livro } from "../../lib/prisma/generated/client";
 import Header from "@/components/header";
 
 type LivroCatalogo = Livro & {
-  autores: string;
+  autores: Array<{id: number, nome: string}> 
 };
 
 export default function CatalogoPage() {
@@ -135,7 +135,7 @@ function exibirLivros(livros: LivroCatalogo[]) {
               {livro.titulo}
             </h2>
             <p className="text-sm text-[#8A7A5B] mt-1">
-              {livro.autores}
+              {(livro.autores) ? livro.autores.map(a => a.nome).join(", ") : ""}
             </p>
             <p className="text-sm text-[#8A7A5B]">
               {livro.ano}

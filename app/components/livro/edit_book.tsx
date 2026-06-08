@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Autor, Livro } from "@/lib/prisma/generated/client";
 
 type LivroCatalogo = Livro & {
-  autores: string;
+  autores: Array<{id: number, nome: string}> 
 };
 
 export default function EditBook() {
@@ -30,7 +30,7 @@ export default function EditBook() {
     const timeout = setTimeout(async () => {
         try {
             const response = await fetch(
-              `/api/livro/read?valor=${encodeURIComponent(busca)}&filtro=${"titulo"}`
+              `/api/livro/search?valor=${encodeURIComponent(busca)}&filtro=${"titulo"}`
             );
 
             const data = await response.json();
@@ -185,7 +185,7 @@ export default function EditBook() {
               </div>
 
               <div className="text-sm">
-                {livro.autores}
+                {(livro.autores) ? livro.autores.map(a => a.nome).join(", ") : ""}
               </div>
 
               <div className="text-sm text-gray-500">

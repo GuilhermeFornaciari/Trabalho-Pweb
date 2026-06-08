@@ -130,8 +130,7 @@ export async function getLivros(valor: string, filtro: string) {
   return livros.map(livro => ({
     ...livro,
     autores: livro.autores
-      .map(a => a.autor.nome)
-      .join(", "),
+      .map(a => a.autor)
   }));
 }
 
@@ -152,7 +151,6 @@ export async function getLivrosRecentes(quantidade: number){
   return livrosRecentes.map(livro => ({
     ...livro, 
     autores: livro.autores
-      .map(a => a.autor.nome)
-      .join(", "),
+      .map(a => a.autor)
   }));
 }
