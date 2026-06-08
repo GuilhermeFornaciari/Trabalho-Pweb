@@ -10,6 +10,7 @@ import RegisterAuthor from "@/components/autor/register_author";
 import EditAuthor from "@/components/autor/edit_author";
 import DeleteBook from "@/components/livro/delete_livro";
 import DeleteAuthor from "@/components/autor/delete_author";
+import DeleteColecao from "@/components/colecao/delete_colecao";
 
 
 export default function AdminPage() {
@@ -95,7 +96,7 @@ const [entidade, setEntidade] = useState<
 
       {entidade === "colecao" && modo === "criar" && <RegisterColection />}
       {entidade === "colecao" && modo === "editar" && < EditColection/>}
-      {entidade === "colecao" && modo === "deletar" && < EditColection/>}
+      {entidade === "colecao" && modo === "deletar" && < DeleteColecao/>}
     </>
   );
 }

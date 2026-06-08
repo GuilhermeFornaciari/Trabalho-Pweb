@@ -1,3 +1,5 @@
+import { deleteColecao } from "@/lib/data/colecaoDAO";
+
 export async function DELETE(request: Request) {
   const { searchParams } = new URL(request.url);
 
