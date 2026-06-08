@@ -18,7 +18,7 @@ const [entidade, setEntidade] = useState<
     >("livro");
 
     const [modo, setModo] = useState<
-      "criar" | "editar"
+      "criar" | "editar" | "deletar"
     >("criar");
 
   return (
@@ -72,16 +72,28 @@ const [entidade, setEntidade] = useState<
           >
             Editar
           </button>
+
+          <button
+            onClick={() => setModo("deletar")}
+            className={modo === "deletar"
+              ? "bg-blue-600 text-white p-2 rounded"
+              : "bg-gray-200 p-2 rounded"}
+          >
+            Editar
+          </button>
         </div>
 
       {entidade === "livro" && modo === "criar" && <RegisterBook />}
       {entidade === "livro" && modo === "editar" && <EditBook />}
+      {entidade === "livro" && modo === "deletar" && <EditBook />}
 
       {entidade === "autor" && modo === "criar" && <RegisterAuthor />}
       {entidade === "autor" && modo === "editar" && <EditAuthor />}
+      {entidade === "autor" && modo === "deletar" && <EditAuthor />}
 
       {entidade === "colecao" && modo === "criar" && <RegisterColection />}
       {entidade === "colecao" && modo === "editar" && < EditColection/>}
+      {entidade === "colecao" && modo === "deletar" && < EditColection/>}
     </>
   );
 }

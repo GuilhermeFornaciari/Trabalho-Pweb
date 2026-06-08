@@ -13,7 +13,7 @@ export async function GET( request: Request, { params } : {params: Promise<{id: 
       message: search.message
     },
     {
-      status: search.status
+      status: search.status 
     }
   )
   }
