@@ -123,7 +123,7 @@ function exibirLivros(livros: LivroCatalogo[]) {
               />
           </div>
           <div className="p-4">
-            <h2 className="font-semibold text-[#4F442E] line-clamp-2">
+            <h2 className="font-semibold text-[#4F442E] line-clamp-2 truncate">
               {livro.titulo}
             </h2>
             <p className="text-sm text-[#8A7A5B] mt-1">
