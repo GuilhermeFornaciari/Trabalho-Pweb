@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import Link from "next/link";
 import Header from "@/components/header";
 import RegisterBook from "@/components/livro/register_book";
 import EditBook from "@/components/livro/edit_book";
@@ -24,9 +25,19 @@ const [entidade, setEntidade] = useState<
       "criar" | "editar" | "deletar"
     >("criar");
 
+    const navItemStyle = "p-5 border border-yellow-500"
+
   return (
     <>
       <Header />
+      <div>
+        <Link href="/adm/livro/register"className={navItemStyle} >Adicionar livro</Link>
+        <Link href="/adm/autor/register" className={navItemStyle}>Adicionar autor</Link>
+        <Link href="/adm/colecao/register" className={navItemStyle}>Adicionar coleção</Link>
+      </div>
+
+
+
 
       <div className="flex cgap-2 mb-4">
           <button
