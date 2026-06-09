@@ -1,5 +1,3 @@
-"use server";
-
 import { stringify } from "querystring";
 import PrismaSingleton from "../prisma/PrismaSingleton";
 
@@ -8,8 +6,9 @@ type LivroColecao = {
   posicao: number;
 };
 
+const prisma = PrismaSingleton.getInstance().prismaClient;
+
 export async function colecaoCreate(nome: string, livros: LivroColecao[]) {
-  const prisma = PrismaSingleton.getInstance().prismaClient;
 
   const colecao = await prisma.colecao.create({
     data: {
@@ -35,9 +34,7 @@ export async function colecaoCreate(nome: string, livros: LivroColecao[]) {
 
 
 export async function colecaoId(id: number) {
-  const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
-
-  return prisma.findUnique({
+  return await prisma.colecao.findUnique({
     where: { id },
     include: {
       livros: {
@@ -49,39 +46,67 @@ export async function colecaoId(id: number) {
   });
 }
 
-export async function searchColecoes( nome: string ){
-
-    const prisma = PrismaSingleton.getInstance().prismaClient.colecao;
-    
-    const ret = await prisma.findMany({
-      where: {
-        nome: {
-          contains: nome,
-          mode: "insensitive"
-        }
-      },
-      include: {
-        livros: true
+export async function searchColecoes( nome: string ){    
+  const ret = await prisma.colecao.findMany({
+    where: {
+      nome: {
+        contains: nome,
+        mode: "insensitive"
       }
-    });
-    
-    
-    console.log(JSON.stringify(ret))
-    
-    if(ret.length === 0){
-      console.log("ERRO no id da coleção");
+    },
+    include: {
+      livros: true
     }
+  });
     
-    return ret;
+    
+  console.log(JSON.stringify(ret))
+  
+  if(ret.length === 0){
+    console.log("ERRO no id da coleção");
   }
+  
+  return ret;
+}
   
 
 export async function deleteColecao(id: number) {
-  
-  const prisma = PrismaSingleton.getInstance().prismaClient;
-  return prisma.colecao.delete({
+  return await prisma.colecao.delete({
     where: {
       id,
     },
+  });
+}
+
+export async function updateColecao(
+  id: number,
+  nome: string,
+  livros: { id: number; posicao: number }[]
+) {
+  return await prisma.$transaction(async (tx) => {
+    const colecao = await tx.colecao.update({
+      where: { id },
+      data: { nome }
+    });
+
+    await tx.livro.updateMany({
+      where: { colecaoId: id },
+      data: {
+        colecaoId: null,
+        posicao_colecao: null
+      }
+    });
+
+    for (const livro of livros) {
+      await tx.livro.update({
+        where: { id: livro.id },
+        data: {
+          colecaoId: id,
+          posicao_colecao: livro.posicao
+        }
+      });
+    }
+
+    return colecao;
   });
 }

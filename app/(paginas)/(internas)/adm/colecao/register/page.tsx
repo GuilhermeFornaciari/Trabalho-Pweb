@@ -2,8 +2,10 @@
 
 import { Livro } from "@/lib/prisma/generated/client";
 import ColecaoForm from "@/components/colecao/colecaoForm";
+import { useRouter } from "next/navigation";
 
 export default function RegisterColection() {
+  const route = useRouter();
   async function cadastrar(nome: string, livros: Livro[]) {
     const body = {
       nome: nome,
@@ -20,7 +22,7 @@ export default function RegisterColection() {
 
     const data = await res.json();
     alert(`A colecao ${data.nome} foi criado com sucesso. Id: ${data.id}`)
-    console.log(data);
+    route.push("/adm")
   }
 
   return (

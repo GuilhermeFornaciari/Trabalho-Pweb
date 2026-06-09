@@ -4,6 +4,7 @@ import { use, useEffect, useState } from "react";
 import { Livro } from "@/lib/prisma/generated/client";
 import LivroForm from "@/components/livro/livroForm";
 import { Autor } from "@/lib/prisma/generated/client";
+import { useRouter } from "next/navigation";
 
 type LivroDetalhes = Livro & {
   autores: Array<{id: number, nome: string}> 
@@ -18,7 +19,7 @@ type LivroFormData = {
   capa: string;
 };
 
-export default function DetalhesLivro({
+export default function EditarLivro({
   params,
 }: {
   params: Promise<{ id: string }>
@@ -34,6 +35,7 @@ export default function DetalhesLivro({
     capa: ""
   })
   const [autores, setAutores] = useState([]);
+  const route = useRouter();
   
   useEffect(() => {
     const carregarLivro = async () => {
@@ -81,6 +83,7 @@ export default function DetalhesLivro({
       } else {
         alert(`Erro: ${data.message}`);
       }
+      route.push("/adm")
     } catch (error) {
       console.error("Erro na requisição:", error);
       alert("Erro interno ao atualizar o livro.");

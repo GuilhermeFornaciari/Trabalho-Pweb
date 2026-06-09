@@ -184,7 +184,7 @@ export default function LivroForm({
           onClick={handleSubmit}>
             Confirmar
           </button>
-          <Link href="/" className="p-3 font-semibold bg-red-600 hover:bg-rose-700 rounded-lg text-olive-50">Cancelar</Link>
+          <Link href="/catalogo" className="p-3 font-semibold bg-red-600 hover:bg-rose-700 rounded-lg text-olive-50">Cancelar</Link>
         </div>
       </div>
   );

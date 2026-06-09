@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 import Link from "next/link";
 
 export default function RegisterAuthor() {
   const [autor, setAutor] = useState("");
+  const route = useRouter();
   
   async function cadastrar() {
       if(!autor) {
@@ -26,7 +28,7 @@ export default function RegisterAuthor() {
 
     const data = await res.json();
     alert(`O autor ${data.nome} foi criado com sucesso. Id: ${data.id}`)
-    console.log(data);
+    route.push('/adm');
   }
 
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Autor } from "@/lib/prisma/generated/client";
 import LivroForm from "@/components/livro/livroForm";
+import { useRouter } from "next/navigation";
 
 type LivroFormData = {
   titulo: string;
@@ -22,6 +23,7 @@ export default function RegisterBook() {
     sinopse: "",
     capa: ""
   })
+  const route = useRouter();
   
   async function cadastrar(form: LivroFormData, autores: Autor[]) {
     const body = {
@@ -44,7 +46,7 @@ export default function RegisterBook() {
 
     const data = await res.json();
     alert(`O livro ${data.titulo} foi criado com sucesso. Id: ${data.id}`)
-    console.log(data);
+    route.push("/adm");
   }
 
   return (

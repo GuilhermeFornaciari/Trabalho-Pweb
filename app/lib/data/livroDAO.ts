@@ -85,13 +85,11 @@ export async function deleteLivro(id: number, colecaoId: number | null){
   }
 }
 
-
-
-
 export async function getLivroById(id: number) {
   const livro = await prisma.livro.findUnique({
     where: { id },
     include: {
+      colecao: true,
       autores: {
         include: {
           autor: true,

@@ -1,13 +1,13 @@
 'use client'
 
 import { use, useEffect, useState } from "react";
-import { Livro } from "@/lib/prisma/generated/client";
+import { Colecao, Livro } from "@/lib/prisma/generated/client";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
-import { Router } from "next/router";
 
 type LivroDetalhes = Livro & {
-  autores: Array<{id: number, nome: string}> 
+  autores: Array<{id: number, nome: string}> ;
+  colecao: Colecao;
 }
 
 export default function DetalhesLivro({
@@ -17,7 +17,7 @@ export default function DetalhesLivro({
 }) {
   const {id} = use(params);
   const [livro, setLivro] = useState<LivroDetalhes | null>(null);
-  const buttonStyle = "px-5 py-3 rounded-md"
+  const buttonStyle = "px-5 py-3 rounded-md";
 
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -46,7 +46,6 @@ export default function DetalhesLivro({
     }
     
     route.push("/catalogo");
-    // alert("Livro apagado com sucesso");
   }
 
   return(
@@ -110,6 +109,9 @@ function informacoesDoLivro(livro: LivroDetalhes) {
                         .join(",")
                       }
           </p>
+          {livro.colecao ? 
+            <Link href={`/colecao/${livro.colecao.id}`}>{livro.colecao.nome} #{livro.posicao_colecao}</Link>
+          : ''}
         </div>
         <div className="my-5">
           <h2 className="font-semibold">Sinopse:</h2>
