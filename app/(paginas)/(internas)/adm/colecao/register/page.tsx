@@ -93,22 +93,42 @@ export default function RegisterColection() {
               <span className={spanStyle}>Livros</span>
               <input type="text" name="autor" id="autor"placeholder="Pesquisar Livros" className={inputStyle} value={buscaLivros} onChange={(e) => setBuscaLivros(e.target.value)} required/>
             </label>
-            <div className="flex justify-start items-center flex-wrap p-1">
-              {livros.map((livro) => (
+            <div className="flex flex-col justify-start items-center flex-wrap p-1">
+              {livros.map((item) => (
                 <span
-                  key={livro.id}
-                  className="px-2 py-1 rounded bg-yellow-200"
+                  key={item.id}
+                  className="flex items-center gap-2 px-4 py-1 rounded bg-yellow-200 w-full"
                 >
-                  {livro.titulo}
+                  <span className="flex-1">
+                    {item.titulo}
+                  </span>
+
+                  <input
+                    type="number"
+                    min={0}
+                    value={item.posicao_colecao ?? ""}
+                    onChange={(e) =>
+                      setLivros(prev =>
+                        prev.map(l =>
+                          l.id === item.id
+                            ? {
+                                ...l,
+                                posicao_colecao:
+                                  e.target.value === ""
+                                    ? null
+                                    : Number(e.target.value)
+                              }
+                            : l
+                        )
+                      )
+                    }
+                    className="w-16 border rounded px-1"
+                  />
 
                   <button
                     type="button"
-                    onClick={() =>
-                      removerLivro(livro.id)
-                    }
-                    className="mx-2"
-                  >
-                    <Image unoptimized src="/remover.png" width={20} height={20} alt="Remover"></Image>
+                    onClick={() => removerLivro(item.id)}
+                  className="mx-2 ml-auto" > <Image unoptimized src="/remover.png" width={20} height={20} alt="Remover"></Image>
                   </button>
                 </span>
               ))}
