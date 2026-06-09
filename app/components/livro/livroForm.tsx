@@ -96,7 +96,7 @@ export default function LivroForm({
   const spanStyle = "mr-2 color-black";
   const inputStyle = "px-2 border border-yellow-300 py-px outline-0 bg-white rounded-sm text-base";
   const formContainerStyle = "w-1/2 py-3 px-5 flex flex-col";
-  const textareaStyle = inputStyle + " resize-none flex-1";
+  const textareaStyle = inputStyle + " resize-none flex-1 min-h-20";
 
   return (
       <div className="flex flex-col flex-1 items-center justify-center h-full p-10">
