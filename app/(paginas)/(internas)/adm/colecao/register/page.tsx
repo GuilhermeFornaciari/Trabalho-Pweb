@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Header from "@/components/header";
 import { Livro } from "@/lib/prisma/generated/client";
 
 export default function RegisterColection() {
