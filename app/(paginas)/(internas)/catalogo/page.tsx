@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Livro } from "../../lib/prisma/generated/client";
-import Header from "@/components/header";
+import { Livro } from "@/lib/prisma/generated/client";
 
 type LivroCatalogo = Livro & {
   autores: Array<{id: number, nome: string}> 

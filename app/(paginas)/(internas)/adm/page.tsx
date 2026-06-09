@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Header from "@/components/header";
 import RegisterBook from "@/components/livro/register_book";
 import EditBook from "@/components/livro/edit_book";
 import RegisterColection from "@/components/colecao/register_colecao";
