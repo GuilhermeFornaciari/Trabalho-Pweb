@@ -1,32 +1,32 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Colecao } from "@/lib/prisma/generated/client";
+import { Autor } from "@/lib/prisma/generated/client";
 
-export default function DeleteColecao() {
+export default function DeleteAuthor() {
   const [busca, setBusca] = useState("");
-  const [resultados, setResultados] = useState<Colecao[]>([]);
+  const [resultados, setResultados] = useState<Autor[]>([]);
 
-  async function apagarColecao(id: number, nome: string) {
+  async function apagarAutor(id: number, nome: string) {
     const confirmar = window.confirm(
       `Deseja realmente apagar "${nome}"?`
     );
 
     if (!confirmar) return;
 
-    const res = await fetch(`/api/colecao/delete?id=${id}`, {
+    const res = await fetch(`/api/autor/delete?id=${id}`, {
       method: "DELETE",
     });
 
     if (!res.ok) {
-      alert("Erro ao apagar coleção");
+      alert("Erro ao apagar autor");
       return;
     }
 
-    alert("Coleção apagada com sucesso");
+    alert("Autor apagado com sucesso");
 
     setResultados(prev =>
-      prev.filter(colecao => colecao.id !== id)
+      prev.filter(autor => autor.id !== id)
     );
   }
 
@@ -39,7 +39,7 @@ export default function DeleteColecao() {
     const timeout = setTimeout(async () => {
       try {
         const res = await fetch(
-          `/api/colecao/read?nome=${encodeURIComponent(busca)}`
+          `/api/autor/read?nome=${encodeURIComponent(busca)}`
         );
 
         const data = await res.json();
@@ -64,7 +64,7 @@ export default function DeleteColecao() {
         <div className="w-md border border-yellow-300 bg-amber-50 p-4 rounded-2xl">
 
           <label className="flex flex-col gap-2">
-            <span>Pesquisar coleção</span>
+            <span>Pesquisar autor</span>
 
             <input
               type="text"
@@ -76,24 +76,21 @@ export default function DeleteColecao() {
           </label>
 
           <div className="mt-4 flex flex-col gap-2">
-            {resultados.map((colecao) => (
+            {resultados.map((autor) => (
               <div
-                key={colecao.id}
+                key={autor.id}
                 className="flex justify-between items-center border p-2 rounded"
               >
                 <div>
-                  <div>{colecao.nome}</div>
+                  <div>{autor.nome}</div>
                   <div className="text-sm text-gray-600">
-                    ID: {colecao.id}
+                    ID: {autor.id}
                   </div>
                 </div>
 
                 <button
                   onClick={() =>
-                    apagarColecao(
-                      colecao.id,
-                      colecao.nome
-                    )
+                    apagarAutor(autor.id, autor.nome)
                   }
                   className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700"
                 >
