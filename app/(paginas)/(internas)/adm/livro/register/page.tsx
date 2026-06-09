@@ -48,6 +48,6 @@ export default function RegisterBook() {
   }
 
   return (
-    <LivroForm livro={form} onSubmit={cadastrar}/>
+    <LivroForm descricao="Cadastrar livro" livro={form} onSubmit={cadastrar}/>
   );
 }

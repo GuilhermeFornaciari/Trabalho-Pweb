@@ -2,10 +2,21 @@
 
 import { use, useEffect, useState } from "react";
 import { Livro } from "@/lib/prisma/generated/client";
+import LivroForm from "@/components/livro/livroForm";
+import { Autor } from "@/lib/prisma/generated/client";
 
 type LivroDetalhes = Livro & {
   autores: Array<{id: number, nome: string}> 
 }
+
+type LivroFormData = {
+  titulo: string;
+  ano: string;
+  genero: string;
+  paginas: string;
+  sinopse: string;
+  capa: string;
+};
 
 export default function DetalhesLivro({
   params,
@@ -14,6 +25,15 @@ export default function DetalhesLivro({
 }) {
   const {id} = use(params);
   const [livro, setLivro] = useState<LivroDetalhes | null>(null);
+  const [form, setForm] = useState({
+    titulo: "",
+    ano: "",
+    genero: "",
+    paginas: "",
+    sinopse: "",
+    capa: ""
+  })
+  const [autores, setAutores] = useState([]);
   
   useEffect(() => {
     const carregarLivro = async () => {
@@ -21,14 +41,53 @@ export default function DetalhesLivro({
       if(response.ok) {
         const data = await response.json();
         setLivro(data);
+        setForm({
+          titulo: data.titulo,
+          ano: data.ano.toString(),
+          genero: data.genero,
+          paginas: data.paginas.toString(),
+          sinopse: data.sinopse,
+          capa: data.capa
+        })
+        setAutores(data.autores);
       }
     }
     carregarLivro();
   }, []);
-  
+
+  async function editarLivro(form: LivroFormData, autores: Autor[] ) {
+    const body = {
+      id: id,
+      titulo: form.titulo,
+      ano: Number(form.ano),
+      genero: form.genero,
+      paginas: Number(form.paginas),
+      capa: form.capa,
+      sinopse: form.sinopse,
+      autores: autores.map((autor) => autor.id),
+    };
+
+    try {
+      const response = await fetch("/api/livro/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(`Livro "${data.titulo}" atualizado com sucesso.`);
+      } else {
+        alert(`Erro: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      alert("Erro interno ao atualizar o livro.");
+    }
+  }
+
   return (  
-    <div className="flex flex-col flex-1 items-center justify-center h-full p-10">
-      <h1 className="text-slate-700 text-3xl font-semibold mb-3">Editar livro</h1>
-    </div>
+    (livro) ? <LivroForm descricao="Editar livro" livro={form} autoresIniciais={autores} onSubmit={editarLivro}/> : ''
   )
 }

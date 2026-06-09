@@ -51,6 +51,7 @@ export async function updateLivro(livro: Livro) {
       genero: livro.genero,
       paginas: livro.paginas,
       capa: livro.capa,
+      sinopse: livro.sinopse,
       autores: {
         // Deleta os vínculos antigos desse livro na tabela intermediária
         deleteMany: {}, 

@@ -15,12 +15,16 @@ type LivroFormData = {
 };
 
 type LivroFormProps = {
-  livro?: LivroFormData;
+  descricao: string;
+  livro: LivroFormData;
+  autoresIniciais?: Autor[];
   onSubmit: (dados: LivroFormData, autores: Autor[]) => Promise<void>;
 };
 
 export default function LivroForm({
+  descricao,
   livro,
+  autoresIniciais = [],
   onSubmit
 }:LivroFormProps ) {
    const [form, setForm] = useState<LivroFormData>(
@@ -34,7 +38,7 @@ export default function LivroForm({
     }
   );
 
-  const [autores, setAutores] = useState<Autor[]>([]);
+  const [autores, setAutores] = useState<Autor[]>(autoresIniciais);
   const [resultadosAutores, setResultadosAutores] = useState<Autor[]>([]);
   const [buscaAutor, setBuscaAutor] = useState("");
 
@@ -96,7 +100,7 @@ export default function LivroForm({
 
   return (
       <div className="flex flex-col flex-1 items-center justify-center h-full p-10">
-        <h1 className="text-slate-700 text-3xl font-semibold mb-3">Cadastro de livro</h1>
+        <h1 className="text-slate-700 text-3xl font-semibold mb-3">{descricao}</h1>
         <div className="w-5xl my-5 mx-auto border border-yellow-300 bg-amber-50 rounded-2xl">
           <form 
             id="formulario"

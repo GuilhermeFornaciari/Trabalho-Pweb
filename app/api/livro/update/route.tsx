@@ -6,9 +6,9 @@ import Livro from "@/(entidades)/livro";
 export async function PUT(request: Request) {
   const req = await request.json();
 
-  if(req.id && req.titulo && req.ano && req.genero && req.paginas && req.capa && req.autores) {
+  if(req.id && req.titulo && req.ano && req.genero && req.paginas && req.capa && req.autores && req.sinopse) {
     
-    const livro = new Livro(req.titulo, Number(req.ano), req.genero, Number(req.paginas), req.capa, req.autores);
+    const livro = new Livro(req.titulo, Number(req.ano), req.genero, Number(req.paginas), req.capa, req.autores, req.sinopse);
     livro.id = Number(req.id); 
 
     try {
