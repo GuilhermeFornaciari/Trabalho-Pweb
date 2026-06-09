@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { Livro } from "@/lib/prisma/generated/client";
 import Header from "@/components/header";
+import Link from "next/link";
 
 type LivroDetalhes = Livro & {
   autores: Array<{id: number, nome: string}> 
@@ -15,6 +16,7 @@ export default function DetalhesLivro({
 }) {
   const {id} = use(params);
   const [livro, setLivro] = useState<LivroDetalhes | null>(null);
+  const buttonStyle = "px-5 py-3 rounded-md"
 
   useEffect(() => {
     const carregarLivro = async () => {
@@ -29,10 +31,15 @@ export default function DetalhesLivro({
 
   
   return(
-    <div className="min-h-screen bg-olive-50">
-      <Header></Header>
-      {(livro) ? informacoesDoLivro(livro) : ''}
-    </div>
+      (livro) ? 
+        <>
+          {informacoesDoLivro(livro)}
+          <div className="w-2xl m-auto flex justify-around">
+            <Link href={`/adm/livro/edit/${id}`} className={buttonStyle + " bg-yellow-400"}>Editar</Link>
+            <button className={buttonStyle + " bg-red-500"}>Apagar</button>
+          </div>
+        </>
+      : ''
   );
 }
 

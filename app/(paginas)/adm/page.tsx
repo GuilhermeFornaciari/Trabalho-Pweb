@@ -29,7 +29,6 @@ const [entidade, setEntidade] = useState<
 
   return (
     <>
-      <Header />
       <div>
         <Link href="/adm/livro/register"className={navItemStyle} >Adicionar livro</Link>
         <Link href="/adm/autor/register" className={navItemStyle}>Adicionar autor</Link>

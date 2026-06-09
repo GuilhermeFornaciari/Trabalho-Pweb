@@ -96,8 +96,6 @@ export default function RegisterBook() {
   const textareaStyle = inputStyle + " resize-none flex-1";
 
   return (
-    <div className="min-h-screen bg-olive-50 min-h-screen flex flex-col">
-      <Header></Header>
       <div className="flex flex-col flex-1 items-center justify-center h-full p-10">
         <h1 className="text-slate-700 text-3xl font-semibold mb-3">Cadastro de livro</h1>
         <div className="w-5xl my-5 mx-auto border border-yellow-300 bg-amber-50 rounded-2xl">
@@ -186,6 +184,5 @@ export default function RegisterBook() {
           <Link href="/" className="p-3 font-semibold bg-red-600 hover:bg-rose-700 rounded-lg text-olive-50">Cancelar</Link>
         </div>
       </div>
-    </div>
   );
 }

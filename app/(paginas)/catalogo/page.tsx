@@ -46,73 +46,66 @@ export default function CatalogoPage() {
   }, [busca, filtro]);
 
   return (
-    <main className="min-h-screen bg-olive-50">
-      <Header></Header>
-      <div className="max-w-7xl mx-auto py-2">
-        <div className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-3xl shadow-lg p-6 mb-8">
+    <div className="max-w-7xl mx-auto py-2">
+      <div className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-3xl shadow-lg p-6 mb-8">
+        <input
+          type="text"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          placeholder="Pesquisar livros..."
+          className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
+        />
+        <div className="flex flex-wrap gap-3 mt-4">
+          <button
+            onClick={() => setFiltro("ano")}
+            className={`px-4 py-2 rounded-xl transition ${
+              filtro === "ano"
+                ? "bg-[#F7D774] text-[#4F442E]"
+                : "bg-white border border-[#E8D89A]"
+            }`}
+          >
+            Ano
+          </button>
 
-          <input
-            type="text"
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-            placeholder="Pesquisar livros..."
-            className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
-          />
+          <button
+            onClick={() => setFiltro("titulo")}
+            className={`px-4 py-2 rounded-xl transition ${
+              filtro === "titulo"
+                ? "bg-[#F7D774] text-[#4F442E]"
+                : "bg-white border border-[#E8D89A]"
+            }`}
+          >
+            Título
+          </button>
 
-          <div className="flex flex-wrap gap-3 mt-4">
+          <button
+            onClick={() => setFiltro("autor")}
+            className={`px-4 py-2 rounded-xl transition ${
+              filtro === "autor"
+                ? "bg-[#F7D774] text-[#4F442E]"
+                : "bg-white border border-[#E8D89A]"
+            }`}
+          >
+            Autor
+          </button>
 
-            <button
-              onClick={() => setFiltro("ano")}
-              className={`px-4 py-2 rounded-xl transition ${
-                filtro === "ano"
-                  ? "bg-[#F7D774] text-[#4F442E]"
-                  : "bg-white border border-[#E8D89A]"
-              }`}
-            >
-              Ano
-            </button>
-
-            <button
-              onClick={() => setFiltro("titulo")}
-              className={`px-4 py-2 rounded-xl transition ${
-                filtro === "titulo"
-                  ? "bg-[#F7D774] text-[#4F442E]"
-                  : "bg-white border border-[#E8D89A]"
-              }`}
-            >
-              Título
-            </button>
-
-            <button
-              onClick={() => setFiltro("autor")}
-              className={`px-4 py-2 rounded-xl transition ${
-                filtro === "autor"
-                  ? "bg-[#F7D774] text-[#4F442E]"
-                  : "bg-white border border-[#E8D89A]"
-              }`}
-            >
-              Autor
-            </button>
-
-            <button
-              onClick={() => setFiltro("genero")}
-              className={`px-4 py-2 rounded-xl transition ${
-                filtro === "genero"
-                  ? "bg-[#F7D774] text-[#4F442E]"
-                  : "bg-white border border-[#E8D89A]"
-              }`}
-            >
-              Gênero
-            </button>
-
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {(livros.length === 0) ? exibirLivros(livrosRecentes) : exibirLivros(livros)}
+          <button
+            onClick={() => setFiltro("genero")}
+            className={`px-4 py-2 rounded-xl transition ${
+              filtro === "genero"
+                ? "bg-[#F7D774] text-[#4F442E]"
+                : "bg-white border border-[#E8D89A]"
+            }`}
+          >
+            Gênero
+          </button>
         </div>
       </div>
-    </main>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        {(livros.length === 0) ? exibirLivros(livrosRecentes) : exibirLivros(livros)}
+      </div>
+    </div>
   );
 }
 
