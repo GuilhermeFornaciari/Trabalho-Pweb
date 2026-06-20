@@ -8,7 +8,7 @@ export default function PaginasLayout({
   return (
     <div className="min-h-screen bg-olive-50 min-h-screen flex flex-col">
       <Header></Header>
-      <div className="flex flex-col flex-1 items-center justify-center h-full p-10">
+      <div className="flex flex-col flex-1 items-center justify-center h-full pt-20">
         {children}
       </div>
     </div>

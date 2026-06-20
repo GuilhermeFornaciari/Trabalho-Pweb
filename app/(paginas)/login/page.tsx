@@ -1,9 +1,18 @@
 'use client'
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { User } from "@/lib/prisma/generated/client";
+
+type usuarioTipo = {
+        nome: String,
+        email: String,
+        senha: String,
+        foto: String
+};
+
 
 export default function LoginPage() {
   const backgroundImage = "/images/registro-bg.jpg";
@@ -25,11 +34,19 @@ export default function LoginPage() {
       }),
     });
 
+    const data: usuarioTipo = await response.json();
+
+    console.log(data)
+
     return {
       ok: response.ok,
-      data: response.json(),
+      data,
     }
   }
+
+    const salvarDados = (user: User) => {
+      localStorage.setItem("usuario", JSON.stringify(user));
+    };
 
   const handleSubmit = async () => {
     if(email === "" || senha === ""){
@@ -39,6 +56,7 @@ export default function LoginPage() {
     const resultado = await findUser();
 
     if (resultado.ok) {
+    salvarDados(resultado.data as User);
       router.push("/catalogo");
     } else {
         alert("Usuário não encontrado")
