@@ -72,7 +72,7 @@ export default function LoginPage() {
 
           <div className="relative w-32 h-32 mx-auto">
             <Image
-              src={usuario?.foto || "/default-user.png"}
+              src={usuario?.foto || "/temp/caju.jpeg"}
               alt="Foto do usuário"
               fill
               className="rounded-full object-cover border-4 border-[#F7D774]"
