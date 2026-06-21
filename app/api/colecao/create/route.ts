@@ -1,33 +1,39 @@
-import Livro from "@/(entidades)/livro";
 import { colecao } from "@/lib/service/colecao/ColecaoService";
+import { z } from "zod";
+
+const createSchema = z.object({
+  nome: z.string().min(1),
+  livros: z.array(
+    z.object({
+      id: z.coerce.number().int().positive(),
+      posicao: z.coerce.number().int().min(0),
+    })
+  ).default([]),
+});
 
 export async function POST(request: Request) {
-
-  console.log("\n\n chgeou na rtota")
   try {
     const body = await request.json();
 
-    const { nome, livros } = body;
+    const resultado = createSchema.safeParse(body);
 
-    const usuario = await colecao( nome, livros );
-
-    if (!usuario) {
+    if (!resultado.success) {
       return Response.json(
-        { erro: "Não foi possível criar a coleção" },
-        { status: 401 }
+        { erros: resultado.error.issues },
+        { status: 400 }
       );
     }
 
-    return Response.json(
-      usuario,
-      { status: 201 }
-    );
+    const { nome, livros } = resultado.data;
+
+    const novaColecao = await colecao(nome, livros);
+
+    return Response.json(novaColecao, { status: 201 });
 
   } catch (error) {
-
     return Response.json(
-      {erro: "Erro ao criar usuário"},
-      {status: 500}
+      { erro: "Erro ao criar coleção" },
+      { status: 500 }
     );
   }
 }

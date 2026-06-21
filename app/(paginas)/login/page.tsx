@@ -23,26 +23,26 @@ export default function LoginPage() {
   const [senha, setSenha] = useState("");
 
   async function findUser() {
-    const response = await fetch("../api/usuario/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        senha,
-      }),
-    });
+  const response = await fetch("/api/usuario/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      senha,
+    }),
+  });
 
-    const data: usuarioTipo = await response.json();
+  
 
-    console.log(data)
+  const data = await response.json();
 
-    return {
-      ok: response.ok,
-      data,
-    }
-  }
+  return {
+    ok: response.ok,
+    data,
+  };
+}
 
     const salvarDados = (user: User) => {
       localStorage.setItem("usuario", JSON.stringify(user));

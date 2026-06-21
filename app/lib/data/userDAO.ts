@@ -38,6 +38,9 @@ export async function updateUser(user: User) {
         foto: user.foto,
       },
     });
-
+    
     console.log(JSON.stringify(opa));
+
+    return opa;
+
 }

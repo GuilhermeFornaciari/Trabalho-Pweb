@@ -1,22 +1,40 @@
-import { getById } from "@/lib/service/livro/LivroService";
+import { getLivroById } from "@/lib/data/livroDAO";
+import { z } from "zod";
 
-export async function GET(
-  request: Request,
-  { params } : {params: Promise<{id: string}>}
-) {
-  const {id} = await params;
-  if(isNaN(Number(id))) {
-    return Response.json({message: 'Parâmetro inválido.'});
-  }
-  const search = await getById(Number(id));
-  if("message" in search) {
-    return Response.json({
-      message: search.message
-    },
-    {
-      status: search.status
+const idSchema = z.object({
+  id: z.coerce.number().int().positive(),
+});
+
+export async function GET( request: Request, { params }: { params: { id: string } }) {
+  try {
+    const resultado = idSchema.safeParse({
+      id: params.id,
+    });
+
+    if (!resultado.success) {
+      return Response.json(
+        { erros: resultado.error.issues },
+        { status: 400 }
+      );
     }
-  )
+
+    const { id } = resultado.data;
+
+    const search = await getLivroById(id);
+
+    if (!search) {
+      return Response.json(
+        { message: "Livro não encontrado." },
+        { status: 404 }
+      );
+    }
+
+    return Response.json(search);
+
+  } catch (e) {
+    return Response.json(
+      { message: "Erro ao buscar livro pelo id." },
+      { status: 500 }
+    );
   }
-  return Response.json(await getById(Number(id)));
 }

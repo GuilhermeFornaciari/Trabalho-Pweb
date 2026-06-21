@@ -1,12 +1,37 @@
 import Autor from "@/(entidades)/autor";
 import { deleteAutor } from "@/lib/data/autorDAO";
+import z from "zod";
+
+const deleteSchema = z.coerce.number().int().positive();
 
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
 
-  const id = Number(searchParams.get("id"));
+  try{
 
-  await deleteAutor({ id } as Autor);
+    const { searchParams } = new URL(request.url);
+    
+    const resultado = deleteSchema.safeParse(searchParams.get("id"));
 
-  return Response.json({ success: true });
+    if (!resultado.success) {
+      return Response.json(
+        { erros: resultado.error.issues },
+        { status: 400 }
+      );
+    }
+    
+    
+    const id = resultado.data;    
+    
+    await deleteAutor({ id } as Autor);
+    
+    return Response.json(
+      { success: true },
+      { status: 200 }
+    );
+  }catch (e){
+    return Response.json(
+      { message: "Erro ao excluir livro." },
+      { status: 500 }
+    );
+  }
 }
