@@ -1,18 +1,35 @@
 import { createAutor } from "@/lib/data/autorDAO";
-import Autor from "@/(entidades)/autor";
+import { z } from "zod";
+
+const createSchema = z.object({
+  nome: z.string().min(1),
+});
 
 export async function POST(request: Request) {
-  const req = await request.json();
-  if(req.nome) {
-    const autor = new Autor(req.nome);
-    try {
-      const res = await createAutor(autor);
-      return Response.json(res);
-    } catch(e) {
-      console.log(e);
-      return Response.json({message: "Não foi possível registrar o autor."});
+  try {
+    const req = await request.json();
+
+    const resultado = createSchema.safeParse(req);
+
+    if (!resultado.success) {
+      return Response.json(
+        { erros: resultado.error.issues },
+        { status: 400 }
+      );
     }
-  } else {
-    return Response.json({message: "Dados incompletos."})
+
+    const { nome } = resultado.data;
+
+    const res = await createAutor({ nome });
+
+    return Response.json(res, { status: 201 });
+
+  } catch (e) {
+    console.log(e);
+
+    return Response.json(
+      { message: "Não foi possível registrar o autor." },
+      { status: 500 }
+    );
   }
 }

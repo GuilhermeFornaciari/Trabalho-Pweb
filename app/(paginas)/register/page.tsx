@@ -38,14 +38,22 @@ export default function LoginPage() {
       return;
     }
 
-    if(email == "" || senha =="" || nome ==""){
-      alert("Preencha todos os campos!")
-    } else {
-      const newUser = await createUser();
-      if(newUser !== null){
-        router.push("/login");
-      }
+    if (email === "" || senha === "" || nome === "") {
+      alert("Preencha todos os campos!");
+      return;
     }
+
+    const result = await createUser();
+
+    if (!result.ok) {
+      console.log("ERRO ZOD:", result.data);
+
+      alert("Erro ao criar usuário");
+
+      return;
+    }
+
+    router.push("/login");
   };
 
   return (

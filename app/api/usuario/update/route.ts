@@ -1,29 +1,44 @@
 import { updateUser } from "@/lib/data/userDAO";
-import { User } from "@/lib/prisma/generated/client";
+import { z } from "zod";
 
+const updateSchema = z.object({
+  id: z.number(),
+  nome: z.string().min(1),
+  email: z.email(),
+  senha: z.string().min(1),
+  foto: z.string(),
+});
 
 export async function PUT(request: Request) {
   try {
-    const body : User = await request.json();
+    const body = await request.json();
 
-    const usuario = await updateUser(body);
+    const usuario = updateSchema.safeParse(body);
 
-    if (!usuario) {
+    if (!usuario.success) {
       return Response.json(
-        { erro: "Credenciais inválidas" },
-        { status: 401 }
+        { erro: z.treeifyError(usuario.error) },
+        { status: 400 }
       );
     }
-    return Response.json(
-      usuario,
-      { status: 201 }
-    );
+
+    const resultado = await updateUser(usuario.data);
+
+    if (!resultado) {
+      return Response.json(
+        { erro: "Usuário não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    return Response.json(resultado, {
+      status: 200,
+    });
 
   } catch (error) {
-    
     return Response.json(
-      {erro: "Erro ao Buscar usuário"},
-      {status: 500}
+      { erro: "Erro ao atualizar usuário" },
+      { status: 500 }
     );
   }
 }

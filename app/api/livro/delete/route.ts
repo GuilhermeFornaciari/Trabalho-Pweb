@@ -1,14 +1,40 @@
-import Livro from "@/(entidades)/livro";
+import { z } from "zod";
 import { deleteLivro } from "@/lib/data/livroDAO";
 
+const deleteSchema = z.object({
+  id: z.coerce.number().int().positive(),
+  colecaoId: z.coerce.number().int().positive().nullable().optional(),
+});
 
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
+  try {
+    const { searchParams } = new URL(request.url);
 
-  const id = Number(searchParams.get("id"));
-  const colecaoId = searchParams.get("colecaoId");
+    const resultado = deleteSchema.safeParse({
+      id: searchParams.get("id"),
+      colecaoId: searchParams.get("colecaoId"),
+    });
 
-      await deleteLivro( id, colecaoId ? Number(colecaoId) : null );
+    if (!resultado.success) {
+      return Response.json(
+        { erros: resultado.error.issues },
+        { status: 400 }
+      );
+    }
 
-  return Response.json({ success: true });
+    const { id, colecaoId } = resultado.data;
+
+    await deleteLivro(id, colecaoId ?? null);
+
+    return Response.json(
+      { success: true },
+      { status: 200 }
+    );
+
+  } catch (error) {
+    return Response.json(
+      { message: "Erro ao excluir livro." },
+      { status: 500 }
+    );
+  }
 }

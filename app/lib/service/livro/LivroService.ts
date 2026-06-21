@@ -9,6 +9,7 @@ export async function livrosRecentes(quantidade: number) {
   }
 }
 
+// cortei esse benny
 export async function getById(id: number) {
   try {
     const res = await getLivroById(id);

@@ -1,10 +1,27 @@
 import { createUser } from "@/lib/service/register/RegisterService";
+import { z } from "zod";
+
+const createSchema = z.object({
+  nome: z.string().min(1),
+  email: z.email(),
+  senha: z.string().min(1),
+})
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { email, senha, nome } = body;
+    
+    const resultado = createSchema.safeParse(body);
+    
+    if (!resultado.success) {
+      return Response.json(
+        { erro: z.treeifyError(resultado.error) },
+        { status: 400 }
+      );
+    }
+    
+    const { email, senha, nome } = resultado.data;
 
     const usuario = await createUser( email, senha, nome );
 

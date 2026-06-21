@@ -1,21 +1,31 @@
 import { getAutorId } from "@/lib/service/autor/AutorService";
+import { z } from "zod";
 
-export async function GET( request: Request, { params } : {params: Promise<{id: string}>}) {
+const idSchema = z.coerce.number().int().positive();
 
-  const {id} = await params;
-  if(isNaN(Number(id))) {
-    return Response.json({message: 'Parâmetro inválido.'});
+export async function GET( request: Request, { params }: { params: { id: string } }) {
+  const resultado = idSchema.safeParse(params.id);
+
+  if (!resultado.success) {
+    return Response.json(
+      {
+        message: "Parâmetro inválido.",
+        erros: resultado.error.issues,
+      },
+      { status: 400 }
+    );
   }
 
-  const search = await getAutorId(Number(id));
-  if("message" in search ) {
-    return Response.json({
-      message: search.message
-    },
-    {
-      status: search.status 
-    }
-  )
+  const id = resultado.data;
+
+  const search = await getAutorId(id);
+
+  if ("message" in search) {
+    return Response.json(
+      { message: search.message },
+      { status: search.status }
+    );
   }
+
   return Response.json(search);
 }
