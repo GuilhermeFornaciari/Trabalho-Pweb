@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { User } from "@/lib/prisma/generated/client";
+import { signIn } from "next-auth/react";
 
 type usuarioTipo = {
         nome: String,
@@ -49,19 +50,24 @@ export default function LoginPage() {
     };
 
   const handleSubmit = async () => {
-    if(email === "" || senha === ""){
-      alert("Preencha os campos")
-      return
+    if (email === "" || senha === "") {
+      alert("Preencha os campos");
+      return;
     }
-    const resultado = await findUser();
 
-    if (resultado.ok) {
-    salvarDados(resultado.data as User);
-      router.push("/catalogo");
-    } else {
-        alert("Usuário não encontrado")
+    const result = await signIn("credentials", {
+      login: email,
+      password: senha,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      alert("Usuário ou senha inválidos");
+      return;
     }
-  }
+
+    router.push("/catalogo");
+  };
 
 const registerUser = async () => {
       router.push("/register");

@@ -5,13 +5,12 @@ const createSchema = z.object({
   nome: z.string().min(1),
   email: z.email(),
   senha: z.string().min(1),
+  username: z.string(),
 })
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
-    
     const resultado = createSchema.safeParse(body);
     
     if (!resultado.success) {
@@ -20,10 +19,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    
-    const { email, senha, nome } = resultado.data;
 
-    const usuario = await createUser( email, senha, nome );
+    const usuario = await createUser(resultado.data);
 
     if (!usuario) {
       return Response.json(
@@ -38,7 +35,7 @@ export async function POST(request: Request) {
     );
 
   } catch (error) {
-
+    console.log(error)
     return Response.json(
       {erro: "Erro ao criar usuário"},
       {status: 500}

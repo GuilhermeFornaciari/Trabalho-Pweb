@@ -5,11 +5,11 @@ import { User } from "../prisma/generated/client";
 import PrismaSingleton from "../prisma/PrismaSingleton";
 import { stringify } from "querystring";
 
-export async function create(email: string, senha: string, nome: string, foto:string){
+export async function create(email: string, senha: string, nome: string, foto:string, username: string){
 
     const prisma = PrismaSingleton.getInstance().prismaClient.user;
     
-    const data = ({ email, senha,  nome,foto })
+    const data = ({ email, senha,  nome, foto, username })
  
     return prisma.create({ data });
 }

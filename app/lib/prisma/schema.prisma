@@ -37,13 +37,14 @@ model Session {
 
 model User { 
   id            String    @id @default(cuid()) 
-  name          String
+  nome          String   
   email         String   @unique
   emailVerified DateTime? @map("email_verified") 
   foto          String
-  role          String
+  role          String   @default("user")
+  senha         String
   username      String   @unique
-  dataNascimento DateTime
+  dataNascimento DateTime?
   accounts      Account[]
   sessions      Session[]
 

@@ -11,6 +11,7 @@ export default function LoginPage() {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -24,6 +25,7 @@ export default function LoginPage() {
       },
       body: JSON.stringify({
         nome,
+        username,
         email,
         senha,
       }),
@@ -38,7 +40,7 @@ export default function LoginPage() {
       return;
     }
 
-    if (email === "" || senha === "" || nome === "") {
+    if (email === "" || senha === "" || nome === "" || username === "") {
       alert("Preencha todos os campos!");
       return;
     }
@@ -84,6 +86,20 @@ export default function LoginPage() {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               placeholder="Seu nome"
+              className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-2 text-sm text-[#6B5B3E]">
+              Username
+            </label>
+
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Seu username"
               className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
             />
           </div>
