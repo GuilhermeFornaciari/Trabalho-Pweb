@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { signOut } from "next-auth/react";
 
 export default function Header() {
   const pathName = usePathname();
@@ -29,12 +30,6 @@ export default function Header() {
 
   const router = useRouter();
 
-  const logout = () => {
-    setPerfilOpc(!perfilOpc)
-    localStorage.removeItem("usuario");
-    router.push("/login");
-  };
-
   return (
     <header className="fixed top-0 left-0 w-full h-24 z-50 bg-yellow-300 border-b-3 border-slate-950 flex items-center">
       <div className="w-7xl m-auto flex items-center justify-between">
@@ -57,10 +52,15 @@ export default function Header() {
                 </Link>
 
                 <button
-                  onClick={logout}
+                  onClick={async () => {
+                    await signOut({
+                      redirect: true,
+                      callbackUrl: "/",
+                    });
+                  }}
                   className="w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 >
-                  Logout
+                  Sair
                 </button>
               </div>
             )}

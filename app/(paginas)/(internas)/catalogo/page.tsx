@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Livro } from "@/lib/prisma/generated/client";
+import { useSession } from "next-auth/react";
 
 type LivroCatalogo = Livro & {
   autores: Array<{id: number, nome: string}> 
@@ -13,6 +14,10 @@ export default function CatalogoPage() {
   const [filtro, setFiltro] = useState("ano");
   const [livros, setLivros] = useState<LivroCatalogo[]>([]);
   const [livrosRecentes, setLivrosRecentes] = useState<LivroCatalogo[]>([]);
+
+  const { data: session, status } = useSession();
+  console.log("\n\n\n" + session + "\n\n\n");
+
 
   useEffect(() => {
     const carregarLivrosRecentes = async () => {

@@ -20,43 +20,17 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
 
-  async function findUser() {
-  const response = await fetch("/api/usuario/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email,
-      senha,
-    }),
-  });
-
-  
-
-  const data = await response.json();
-
-  return {
-    ok: response.ok,
-    data,
-  };
-}
-
-    const salvarDados = (user: User) => {
-      localStorage.setItem("usuario", JSON.stringify(user));
-    };
-
   const handleSubmit = async () => {
-    if (email === "" || senha === "") {
+    if (login === "" || senha === "") {
       alert("Preencha os campos");
       return;
     }
 
     const result = await signIn("credentials", {
-      login: email,
+      login: login,
       password: senha,
       redirect: false,
     });
@@ -69,8 +43,8 @@ export default function LoginPage() {
     router.push("/catalogo");
   };
 
-const registerUser = async () => {
-      router.push("/register");
+  const registerUser = async () => {
+    router.push("/register");
   }
 
 
@@ -94,14 +68,14 @@ const registerUser = async () => {
           <form className="space-y-4">
             <div>
               <label className="block mb-2 text-sm text-[#6B5B3E]">
-                E-mail
+                E-mail ou username
               </label>
 
               <input
-                type="email"
-                value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                placeholder="email@email.com"
+                type="text"
+                value={login}
+                  onChange={(e) => setLogin(e.target.value)}
+                placeholder="user@email.com ou username"
                 className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
               />
             </div>
@@ -117,7 +91,7 @@ const registerUser = async () => {
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
         
-                  placeholder="senha123"
+                  placeholder="*********"
                   className="w-full px-4 py-3 pr-20 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
                 />
 
