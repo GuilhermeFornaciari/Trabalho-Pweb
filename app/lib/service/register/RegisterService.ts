@@ -10,7 +10,7 @@ export async function createUser(data: {
   const hashedPassword = await bcrypt.hash(data.senha, 10);
 
   try {
-    return await dataDAO.create( data.email, hashedPassword, data.nome, "", data.username);
+    return await dataDAO.create( data.email, hashedPassword, data.nome, "", data.username, "");
   } catch (error) {
     throw error;
   }

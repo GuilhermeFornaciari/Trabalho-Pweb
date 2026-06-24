@@ -31,7 +31,12 @@ export default function LoginPage() {
       }),
     });
   
-    return response.json();
+    const data = await response.json();
+
+    return {
+      ok: response.ok, 
+      data,
+    };
   }
 
   const handleSubmit = async () => {
@@ -50,7 +55,7 @@ export default function LoginPage() {
     if (!result.ok) {
       console.log("ERRO ZOD:", result.data);
 
-      alert("Erro ao criar usuário");
+      alert("Erro ao criar usuário(ZOD)");
 
       return;
     }
