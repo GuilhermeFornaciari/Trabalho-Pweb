@@ -4,17 +4,39 @@ import { NextResponse } from "next/server";
 export default auth((req) => {
   const isLogged = !!req.auth;
   const role = req.auth?.user?.role;
+  const pathname = req.nextUrl.pathname;
 
-  const isAdminRoute = req.nextUrl.pathname.startsWith("/adm");
-  console.log(isAdminRoute + " " + isLogged + " " + role);
+  const isPublic =
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/register";
 
-  if(isAdminRoute && (!isLogged || role !== "admin")) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (isPublic && isLogged) {
+    return NextResponse.redirect(new URL("/catalogo", req.url));
+  }
+
+  if (pathname.startsWith("/adm")) {
+    if (!isLogged) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    if (role !== "admin") {
+      return NextResponse.redirect(new URL("/catalogo", req.url));
+    }
+
+    return NextResponse.next();
+  }
+
+
+  if (!isPublic && !isLogged) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/adm/:path*"],
-}
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|images).*)",
+  ],
+};

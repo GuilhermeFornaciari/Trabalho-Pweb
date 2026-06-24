@@ -5,9 +5,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Header() {
+  const {data: session} = useSession();
   const pathName = usePathname();
   const navItemsStyle = "mx-2 p-2 font-semibold hover:bg-black hover:text-olive-50 transition ease-linear duration-300 rounded-sm";
   const navItemDestacadoStyle = " text-olive-50 bg-black";
@@ -35,7 +36,9 @@ export default function Header() {
       <div className="w-7xl m-auto flex items-center justify-between">
         <Link href="/catalogo"><Image loading="eager" src="/libris.png" width={70} height={70} alt="Libris logo"/></Link>
         <div>
-          <Link href="/adm" className={navItemsStyle + (pathName.match("/adm") ? navItemDestacadoStyle : "")}>Gerenciamento</Link>
+          {session?.user?.role === "admin" &&
+            (<Link href="/adm" className={navItemsStyle + (pathName.match("/adm") ? navItemDestacadoStyle : "")}>Gerenciamento</Link>)
+          }
           <Link href="/catalogo" className={navItemsStyle + (pathName.match("/catalogo") ? navItemDestacadoStyle : "")}>Catalogo</Link>
         </div>
 
