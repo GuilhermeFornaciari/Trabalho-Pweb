@@ -41,12 +41,16 @@ model User {
   email         String   @unique
   emailVerified DateTime? @map("email_verified") 
   foto          String
+  bio           String
   role          String   @default("user")
   senha         String
   username      String   @unique
   dataNascimento DateTime?
   accounts      Account[]
   sessions      Session[]
+
+  amizadesIniciadas Amigos[] @relation("Amigo1")
+  amizadesRecebidas Amigos[] @relation("Amigo2")
 
   @@map("usuarios") 
 } 
@@ -101,4 +105,81 @@ model Escrito_por {
 
   @@id([livroId, autorId])
   @@map("escrito_por")
+}
+
+
+model Postagem {
+  id           Int      @id @default(autoincrement())
+  paginaAtual  Int
+  paginasLidas Int
+  nota         Int
+  data         DateTime
+  texto        String
+  temSpoiler   Boolean  
+
+  usuarioId String   @map("usuario_id")  // faltava a FK explícita
+  livroId   Int      @map("livro_id")    // faltava a FK explícita
+
+  usuario    User     @relation(fields: [usuarioId], references: [id])
+  livro      Livro    @relation(fields: [livroId],   references: [id])
+  comentarios Comentario[]
+
+  @@map("postagens")
+}
+
+model Comentario {
+  id         Int      @id @default(autoincrement())
+  data       DateTime
+  texto      String
+
+  usuarioId  String   @map("usuario_id")
+  postagemId Int      @map("postagem_id")
+  parentId   Int?     @map("parent_id")   // auto-referência opcional
+
+  usuario    User       @relation(fields: [usuarioId],  references: [id])
+  postagem   Postagem   @relation(fields: [postagemId], references: [id])
+  parent     Comentario?  @relation("RespostasComent", fields: [parentId], references: [id])
+  respostas  Comentario[] @relation("RespostasComent")  // lado inverso obrigatório
+
+  @@map("comentarios")
+}
+
+model Biblioteca {
+  usuarioId String   @map("usuario_id")  
+  livroId   Int      @map("livro_id")
+
+  status         Boolean
+  dataInicio     DateTime  @map("data_inicio")
+  dataConclusao  DateTime? @map("data_conclusao")  
+
+  usuario User  @relation(fields: [usuarioId], references: [id])
+  livro   Livro @relation(fields: [livroId],   references: [id])
+
+  @@id([usuarioId, livroId])
+  @@map("biblioteca")
+}
+
+model Curtida {
+  id           Int  @id @default(autoincrement())
+
+  usuarioId    String  @map("usuario_id")
+  postagemId   Int?    @map("postagem_id")    
+  comentarioId Int?    @map("comentario_id")  
+
+  usuario    User        @relation(fields: [usuarioId],    references: [id])
+  postagem   Postagem?   @relation(fields: [postagemId],   references: [id])
+  comentario Comentario? @relation(fields: [comentarioId], references: [id])
+
+  @@map("curtidas")
+}
+
+model Amigos {
+  amigo1Id String @map("amigo1_id")  
+  amigo2Id String @map("amigo2_id")
+
+  amigo1 User @relation("Amigo1", fields: [amigo1Id], references: [id])
+  amigo2 User @relation("Amigo2", fields: [amigo2Id], references: [id])
+
+  @@id([amigo1Id, amigo2Id])
+  @@map("amigos")
 }
