@@ -11,13 +11,11 @@ type LivroCatalogo = Livro & {
 
 export default function CatalogoPage() {
   const [busca, setBusca] = useState("");
-  const [filtro, setFiltro] = useState("ano");
+  const [filtro, setFiltro] = useState("titulo");
   const [livros, setLivros] = useState<LivroCatalogo[]>([]);
   const [livrosRecentes, setLivrosRecentes] = useState<LivroCatalogo[]>([]);
 
   const { data: session, status } = useSession();
-  console.log("\n\n\n" + session + "\n\n\n");
-
 
   useEffect(() => {
     const carregarLivrosRecentes = async () => {
@@ -60,16 +58,6 @@ export default function CatalogoPage() {
           className="w-full px-4 py-3 rounded-xl border border-[#E8D89A] bg-white outline-none focus:ring-2 focus:ring-[#F6D86B]"
         />
         <div className="flex flex-wrap gap-3 mt-4">
-          <button
-            onClick={() => setFiltro("ano")}
-            className={`px-4 py-2 rounded-xl transition ${
-              filtro === "ano"
-                ? "bg-[#F7D774] text-[#4F442E]"
-                : "bg-white border border-[#E8D89A]"
-            }`}
-          >
-            Ano
-          </button>
 
           <button
             onClick={() => setFiltro("titulo")}
@@ -91,6 +79,17 @@ export default function CatalogoPage() {
             }`}
           >
             Autor
+          </button>
+
+          <button
+            onClick={() => setFiltro("ano")}
+            className={`px-4 py-2 rounded-xl transition ${
+              filtro === "ano"
+                ? "bg-[#F7D774] text-[#4F442E]"
+                : "bg-white border border-[#E8D89A]"
+            }`}
+          >
+            Ano
           </button>
 
           <button

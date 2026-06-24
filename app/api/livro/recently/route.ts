@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
 
     const resultado = recentlySchema.safeParse({
-      quantidade: searchParams.get("quantidade"),
+      quantidade: searchParams.get("quantidade") ?? undefined,
     });
 
     if (!resultado.success) {
