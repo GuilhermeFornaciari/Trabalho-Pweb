@@ -58,7 +58,12 @@ export const ModelName = {
   Livro: 'Livro',
   Colecao: 'Colecao',
   Autor: 'Autor',
-  Escrito_por: 'Escrito_por'
+  Escrito_por: 'Escrito_por',
+  Postagem: 'Postagem',
+  Comentario: 'Comentario',
+  Biblioteca: 'Biblioteca',
+  Curtida: 'Curtida',
+  Amigos: 'Amigos'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -111,6 +116,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   foto: 'foto',
+  bio: 'bio',
   role: 'role',
   senha: 'senha',
   username: 'username',
@@ -167,6 +173,62 @@ export const Escrito_porScalarFieldEnum = {
 } as const
 
 export type Escrito_porScalarFieldEnum = (typeof Escrito_porScalarFieldEnum)[keyof typeof Escrito_porScalarFieldEnum]
+
+
+export const PostagemScalarFieldEnum = {
+  id: 'id',
+  paginaAtual: 'paginaAtual',
+  paginasLidas: 'paginasLidas',
+  nota: 'nota',
+  data: 'data',
+  texto: 'texto',
+  temSpoiler: 'temSpoiler',
+  usuarioId: 'usuarioId',
+  livroId: 'livroId'
+} as const
+
+export type PostagemScalarFieldEnum = (typeof PostagemScalarFieldEnum)[keyof typeof PostagemScalarFieldEnum]
+
+
+export const ComentarioScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  texto: 'texto',
+  usuarioId: 'usuarioId',
+  postagemId: 'postagemId',
+  parentId: 'parentId'
+} as const
+
+export type ComentarioScalarFieldEnum = (typeof ComentarioScalarFieldEnum)[keyof typeof ComentarioScalarFieldEnum]
+
+
+export const BibliotecaScalarFieldEnum = {
+  usuarioId: 'usuarioId',
+  livroId: 'livroId',
+  status: 'status',
+  dataInicio: 'dataInicio',
+  dataConclusao: 'dataConclusao'
+} as const
+
+export type BibliotecaScalarFieldEnum = (typeof BibliotecaScalarFieldEnum)[keyof typeof BibliotecaScalarFieldEnum]
+
+
+export const CurtidaScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  postagemId: 'postagemId',
+  comentarioId: 'comentarioId'
+} as const
+
+export type CurtidaScalarFieldEnum = (typeof CurtidaScalarFieldEnum)[keyof typeof CurtidaScalarFieldEnum]
+
+
+export const AmigosScalarFieldEnum = {
+  amigo1Id: 'amigo1Id',
+  amigo2Id: 'amigo2Id'
+} as const
+
+export type AmigosScalarFieldEnum = (typeof AmigosScalarFieldEnum)[keyof typeof AmigosScalarFieldEnum]
 
 
 export const SortOrder = {

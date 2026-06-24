@@ -7,8 +7,10 @@ const idSchema = z.object({
 
 export async function GET( request: Request, { params }: { params: { id: string } }) {
   try {
+    const {id} = await params
+
     const resultado = idSchema.safeParse({
-      id: params.id,
+      id: id,
     });
 
     if (!resultado.success) {
@@ -18,9 +20,9 @@ export async function GET( request: Request, { params }: { params: { id: string 
       );
     }
 
-    const { id } = resultado.data;
+    const livroId = resultado.data.id;
 
-    const search = await getLivroById(id);
+    const search = await getLivroById(livroId);
 
     if (!search) {
       return Response.json(

@@ -57,3 +57,28 @@ export type Autor = Prisma.AutorModel
  * 
  */
 export type Escrito_por = Prisma.Escrito_porModel
+/**
+ * Model Postagem
+ * 
+ */
+export type Postagem = Prisma.PostagemModel
+/**
+ * Model Comentario
+ * 
+ */
+export type Comentario = Prisma.ComentarioModel
+/**
+ * Model Biblioteca
+ * 
+ */
+export type Biblioteca = Prisma.BibliotecaModel
+/**
+ * Model Curtida
+ * 
+ */
+export type Curtida = Prisma.CurtidaModel
+/**
+ * Model Amigos
+ * 
+ */
+export type Amigos = Prisma.AmigosModel

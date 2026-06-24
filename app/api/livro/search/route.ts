@@ -3,7 +3,7 @@ import { getLivros } from "@/lib/data/livroDAO";
 
 const querySchema = z.object({
   valor: z.string().default(""),
-  filtro: z.enum(["titulo", "autor", "genero"]),
+  filtro: z.enum(["titulo", "autor", "genero", "ano"]),
 });
 
 export async function GET(request: Request) {
