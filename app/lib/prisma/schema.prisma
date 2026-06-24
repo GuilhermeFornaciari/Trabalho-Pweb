@@ -83,8 +83,8 @@ model Livro {
   colecaoId       Int?
   posicao_colecao Float?
 
-  autores     Escrito_por[]
   colecao     Colecao?      @relation(fields: [colecaoId], references: [id])
+  autores     Escrito_por[]
   postagens   Postagem[]
   bibliotecas Biblioteca[]
 
@@ -132,6 +132,7 @@ model Postagem {
 
   usuario     User         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   livro       Livro        @relation(fields: [livroId],   references: [id], onDelete: Cascade)
+
   comentarios Comentario[]
   curtidas    Curtida[]
 
@@ -149,6 +150,7 @@ model Comentario {
 
   usuario   User         @relation(fields: [usuarioId],  references: [id], onDelete: Cascade)
   postagem  Postagem     @relation(fields: [postagemId], references: [id], onDelete: Cascade)
+
   parent    Comentario?  @relation("RespostasComent", fields: [parentId], references: [id], onDelete: SetNull)
   respostas Comentario[] @relation("RespostasComent")
   curtidas  Curtida[]
