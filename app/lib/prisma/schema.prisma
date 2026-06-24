@@ -8,12 +8,12 @@ datasource db {
   provider = "postgresql"
 }
 
-model Account { 
-  id                String  @id @default(cuid()) 
-  userId            String  @map("user_id") 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
   type              String
   provider          String
-  providerAccountId String  @map("provider_account_id") 
+  providerAccountId String  @map("provider_account_id")
   refresh_token     String? @db.Text
   access_token      String? @db.Text
   expires_at        Int?
@@ -21,47 +21,55 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
-  @@unique([provider, providerAccountId]) 
-  @@map("accounts") 
-} 
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Session { 
-  id           String   @id @default(cuid()) 
-  sessionToken String   @unique @map("session_token") 
-  userId       String   @map("user_id") 
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade) 
-  @@map("sessions") 
-} 
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model User { 
-  id            String    @id @default(cuid()) 
-  nome          String   
-  email         String   @unique
-  emailVerified DateTime? @map("email_verified") 
-  foto          String
-  bio           String
-  role          String   @default("user")
-  senha         String
-  username      String   @unique
+  @@map("sessions")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  nome           String
+  email          String    @unique
+  emailVerified  DateTime? @map("email_verified")
+  foto           String
+  bio            String
+  role           String    @default("user")
+  senha          String
+  username       String    @unique
   dataNascimento DateTime?
+
   accounts      Account[]
   sessions      Session[]
 
-  amizadesIniciadas Amigos[] @relation("Amigo1")
-  amizadesRecebidas Amigos[] @relation("Amigo2")
+  amizadesIniciadas Amigos[]     @relation("Amigo1")
+  amizadesRecebidas Amigos[]     @relation("Amigo2")
+  postagens         Postagem[]   
+  comentarios       Comentario[]
+  bibliotecas       Biblioteca[]
+  curtidas          Curtida[]
 
-  @@map("usuarios") 
-} 
+  @@map("usuarios")
+}
 
-model VerificationToken { 
+model VerificationToken {
   identifier String
   token      String
   expires    DateTime
-  @@unique([identifier, token]) 
-  @@map("verification_tokens") 
-} 
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
 
 model Livro {
   id              Int           @id @default(autoincrement())
@@ -74,8 +82,11 @@ model Livro {
   sinopse         String
   colecaoId       Int?
   posicao_colecao Float?
-  autores         Escrito_por[]
-  colecao         Colecao?      @relation(fields: [colecaoId], references: [id])
+
+  autores     Escrito_por[]
+  colecao     Colecao?      @relation(fields: [colecaoId], references: [id])
+  postagens   Postagem[]
+  bibliotecas Biblioteca[]
 
   @@unique([colecaoId, posicao_colecao])
   @@map("livros")
@@ -107,7 +118,6 @@ model Escrito_por {
   @@map("escrito_por")
 }
 
-
 model Postagem {
   id           Int      @id @default(autoincrement())
   paginaAtual  Int
@@ -115,14 +125,15 @@ model Postagem {
   nota         Int
   data         DateTime
   texto        String
-  temSpoiler   Boolean  
+  temSpoiler   Boolean
 
-  usuarioId String   @map("usuario_id")  // faltava a FK explícita
-  livroId   Int      @map("livro_id")    // faltava a FK explícita
+  usuarioId String @map("usuario_id")
+  livroId   Int    @map("livro_id")
 
-  usuario    User     @relation(fields: [usuarioId], references: [id])
-  livro      Livro    @relation(fields: [livroId],   references: [id])
+  usuario     User         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  livro       Livro        @relation(fields: [livroId],   references: [id], onDelete: Cascade)
   comentarios Comentario[]
+  curtidas    Curtida[]
 
   @@map("postagens")
 }
@@ -132,53 +143,54 @@ model Comentario {
   data       DateTime
   texto      String
 
-  usuarioId  String   @map("usuario_id")
-  postagemId Int      @map("postagem_id")
-  parentId   Int?     @map("parent_id")   // auto-referência opcional
+  usuarioId  String @map("usuario_id")
+  postagemId Int    @map("postagem_id")
+  parentId   Int?   @map("parent_id")
 
-  usuario    User       @relation(fields: [usuarioId],  references: [id])
-  postagem   Postagem   @relation(fields: [postagemId], references: [id])
-  parent     Comentario?  @relation("RespostasComent", fields: [parentId], references: [id])
-  respostas  Comentario[] @relation("RespostasComent")  // lado inverso obrigatório
+  usuario   User         @relation(fields: [usuarioId],  references: [id], onDelete: Cascade)
+  postagem  Postagem     @relation(fields: [postagemId], references: [id], onDelete: Cascade)
+  parent    Comentario?  @relation("RespostasComent", fields: [parentId], references: [id], onDelete: SetNull)
+  respostas Comentario[] @relation("RespostasComent")
+  curtidas  Curtida[]
 
   @@map("comentarios")
 }
 
 model Biblioteca {
-  usuarioId String   @map("usuario_id")  
-  livroId   Int      @map("livro_id")
+  usuarioId String @map("usuario_id")
+  livroId   Int    @map("livro_id")
 
-  status         Boolean
-  dataInicio     DateTime  @map("data_inicio")
-  dataConclusao  DateTime? @map("data_conclusao")  
+  status        Boolean
+  dataInicio    DateTime  @map("data_inicio")
+  dataConclusao DateTime? @map("data_conclusao")
 
-  usuario User  @relation(fields: [usuarioId], references: [id])
-  livro   Livro @relation(fields: [livroId],   references: [id])
+  usuario User  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  livro   Livro @relation(fields: [livroId],   references: [id], onDelete: Cascade)
 
   @@id([usuarioId, livroId])
   @@map("biblioteca")
 }
 
 model Curtida {
-  id           Int  @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  usuarioId    String  @map("usuario_id")
-  postagemId   Int?    @map("postagem_id")    
-  comentarioId Int?    @map("comentario_id")  
+  usuarioId    String @map("usuario_id")
+  postagemId   Int?   @map("postagem_id")
+  comentarioId Int?   @map("comentario_id")
 
-  usuario    User        @relation(fields: [usuarioId],    references: [id])
-  postagem   Postagem?   @relation(fields: [postagemId],   references: [id])
-  comentario Comentario? @relation(fields: [comentarioId], references: [id])
+  usuario    User        @relation(fields: [usuarioId],    references: [id], onDelete: Cascade)
+  postagem   Postagem?   @relation(fields: [postagemId],   references: [id], onDelete: Cascade)
+  comentario Comentario? @relation(fields: [comentarioId], references: [id], onDelete: Cascade)
 
   @@map("curtidas")
 }
 
 model Amigos {
-  amigo1Id String @map("amigo1_id")  
+  amigo1Id String @map("amigo1_id")
   amigo2Id String @map("amigo2_id")
 
-  amigo1 User @relation("Amigo1", fields: [amigo1Id], references: [id])
-  amigo2 User @relation("Amigo2", fields: [amigo2Id], references: [id])
+  amigo1 User @relation("Amigo1", fields: [amigo1Id], references: [id], onDelete: Cascade)
+  amigo2 User @relation("Amigo2", fields: [amigo2Id], references: [id], onDelete: Cascade)
 
   @@id([amigo1Id, amigo2Id])
   @@map("amigos")
