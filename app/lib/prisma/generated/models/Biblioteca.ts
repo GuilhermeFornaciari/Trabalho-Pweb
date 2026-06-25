@@ -453,6 +453,10 @@ export type BibliotecaUncheckedUpdateManyWithoutLivroNestedInput = {
   deleteMany?: Prisma.BibliotecaScalarWhereInput | Prisma.BibliotecaScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type BibliotecaCreateWithoutUsuarioInput = {
   status: boolean
   dataInicio: Date | string

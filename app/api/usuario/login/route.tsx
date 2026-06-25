@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     
     if (!resultado.success) {
       return Response.json(
-        { erro: z.treeifyError(resultado.error) },
+        { erro: resultado.error.issues },
         { status: 400 }
       );
     }
