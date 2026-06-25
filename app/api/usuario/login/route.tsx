@@ -6,7 +6,7 @@ const loginSchema = z.object({
   senha: z.string().min(1),
 });
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
     const body = await request.json();
 

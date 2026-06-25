@@ -15,7 +15,7 @@ export async function GET( request: Request, { params }: { params: { id: string 
 
     if (!resultado.success) {
       return Response.json(
-        { erros: resultado.error.issues },
+        { erro: resultado.error.flatten().fieldErrors },
         { status: 400 }
       );
     }

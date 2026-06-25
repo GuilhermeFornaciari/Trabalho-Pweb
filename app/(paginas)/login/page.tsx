@@ -4,16 +4,7 @@ import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { User } from "@/lib/prisma/generated/client";
 import { signIn } from "next-auth/react";
-
-type usuarioTipo = {
-        nome: String,
-        email: String,
-        senha: String,
-        foto: String
-};
-
 
 export default function LoginPage() {
   const backgroundImage = "/images/registro-bg.jpg";

@@ -1,34 +1,62 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { User } from "@/lib/prisma/generated/client";
+import { useSession } from "next-auth/react";
 
 
-export default function LoginPage() {
-  const backgroundImage = "/images/fundo-perfil.jpg";
+export default function PerfilPage({params,}: {params: Promise<{ id: string }>}) {
+    const {id} = use(params);
+    const { data: session, status } = useSession();
 
-    // const [mostrarSenha, setMostrarSenha] = useState(false);
+    const backgroundImage = "/images/fundo-perfil.jpg";
+
     const [modalAberto, setModalAberto] = useState(false);
 
     const [mostrarSenha, setMostrarSenha] = useState(false);
     
     const [usuario, setUsuario] = useState<User>();
 
+  //   const mockUser: User = {
+  //   id: "1",
+  //   nome: "Hugo Souza",
+  //   email: "hugo.souza@email.com",
+  //   emailVerified: new Date("2026-01-15"),
+  //   foto: "/temp/caju.jpeg",
+  //   bio: "Leitor ávido | Explorando um livro por semana | procuro romance",
+  //   role: "USER",
+  //   senha: "$2a$10$abcdefghijklmnopqrstuv",
+  //   username: "hugosouza",
+  //   dataNascimento: new Date("2003-08-20"),
+  // };
+
     useEffect(() => {
       const carregarUsuario = async () => {
 
-        setUsuario({id: 0 , nome: "bino", email: "binoDelicia@hotmail.com", senha: "123321", foto: "/temp/caju.jpeg"})
-        
-        // const dados = localStorage.getItem("usuario");
-        // if (dados) {
-          // setUsuario(JSON.parse(dados));
-        // }
+        const response = await fetch(`../api/usuario/${id}`);
+
+        if(response.ok){
+          const data = await response.json();
+          setUsuario(data);
+        }
+
       };
 
       carregarUsuario();
     }, []);
+
+    useEffect(() => {
+      if (modalAberto) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+
+      return () => {
+        document.body.style.overflow = ""; 
+      };
+    }, [modalAberto]);
 
 
   async function updateUser() {
@@ -60,17 +88,18 @@ export default function LoginPage() {
 
 
   return (
-    <main
-      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-fixed px-140"
-      style={{
-        backgroundImage: `linear-gradient(rgba(255,248,235,0.10), rgba(255,248,235,0.10)), url(${backgroundImage})`,
-      }} >
+    <main className="relative min-h-screen">
+      <div className="fixed inset-0 -z-10 bg-cover bg-center" style={{ backgroundImage }}/>
 
-            
-      <div className="w-full max-w-md mx-auto">
-        <div className="bg-[#FFFDF8] rounded-3xl shadow-xl p-8 text-center">
+        <div className="fixed inset-0 -z-10 bg-[#FFF8EB]/80" />
 
-          <div className="relative w-32 h-32 mx-auto">
+      <div className="max-w-3xl mx-auto px-4 py-10">
+
+        {/* Cabeçalho do perfil */}
+        <div className="flex items-center gap-10 pb-8 border-b border-[#E8D89A]">
+
+          {/* Foto */}
+          <div className="relative w-32 h-32 flex-shrink-0">
             <Image
               src={usuario?.foto || "/temp/caju.jpeg"}
               alt="Foto do usuário"
@@ -79,33 +108,53 @@ export default function LoginPage() {
             />
           </div>
 
-          <h1 className="mt-6 text-2xl font-bold text-[#4F442E]">
-            {usuario?.nome}
-          </h1>
+          {/* Infos */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-semibold text-[#4F442E]">
+                {usuario?.username}
+              </h1>
+              <button
+                onClick={() => setModalAberto(true)}
+                className="px-4 py-1.5 rounded-lg bg-[#F7D774] hover:bg-[#F2CF5A] transition text-sm font-semibold text-[#4F442E]"
+              >
+                Editar perfil
+              </button>
+            </div>
 
-          <p className="mt-2 text-[#8A7A5B]">
-            {usuario?.email}
-          </p>
+           <div className="flex items-center gap-3">
+              <p className="text-[#4F442E] font-medium">{usuario?.nome}</p>
+              {usuario?.dataNascimento && (
+                <span className="text-[#8A7A5B] text-sm">
+                  {new Date().getFullYear() - new Date(usuario.dataNascimento).getFullYear()} anos
+                </span>
+              )}
+            </div>
 
-          <button
-            onClick={() => setModalAberto(true)}
-            className="mt-8 px-6 py-3 rounded-xl bg-[#F7D774] hover:bg-[#F2CF5A] transition font-semibold"
-          >
-            Editar Perfil
-          </button>
+            <p className="text-[#8A7A5B] text-sm max-w-xs"> {usuario?.bio} </p>
 
+
+          </div>
         </div>
+
+        {/* Área futura — postagens, biblioteca, etc. */}
+        <div className="mt-10 text-center text-[#8A7A5B] text-sm">
+          {/* conteúdo futuro aqui */}
+        </div>
+
       </div>
 
 
       {modalAberto && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+       <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSubmit();
+              setModalAberto(false);
             }}
-            className="bg-white rounded-3xl p-8 w-full max-w-md"
+            className="p-8"
           >
             <h2 className="text-xl font-bold mb-6">
               Editar Perfil
@@ -137,6 +186,36 @@ export default function LoginPage() {
               onChange={(e) =>
                 setUsuario(prev =>
                   prev ? { ...prev, nome: e.target.value } : undefined
+                )
+              }
+              className="w-full mb-4 px-4 py-3 rounded-xl border"
+            />
+
+            {/* User-name */}
+            <label className="block text-sm font-medium mb-1">
+              Username
+            </label>
+            <input
+              type="text"
+              value={usuario?.username ?? ""}
+              onChange={(e) =>
+                setUsuario(prev =>
+                  prev ? { ...prev, username: e.target.value } : undefined
+                )
+              }
+              className="w-full mb-4 px-4 py-3 rounded-xl border"
+            />
+
+            {/* bio */}
+            <label className="block text-sm font-medium mb-1">
+              Bio
+            </label>
+            <input
+              type="text"
+              value={usuario?.bio ?? ""}
+              onChange={(e) =>
+                setUsuario(prev =>
+                  prev ? { ...prev, bio: e.target.value } : undefined
                 )
               }
               className="w-full mb-4 px-4 py-3 rounded-xl border"
@@ -200,6 +279,7 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
+        </div>
         </div>
       )}
 

@@ -1,11 +1,7 @@
 import Header from "@/components/header";
 import Providers from "./providers";
 
-export default function PaginasLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PaginasLayout({children,}: {children: React.ReactNode;}) {
   return (
     <Providers>
       <div className="min-h-screen bg-olive-50 min-h-screen flex flex-col">

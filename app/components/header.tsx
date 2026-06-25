@@ -6,6 +6,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { setEngine } from "crypto";
 
 export default function Header() {
   const {data: session} = useSession();
@@ -13,23 +14,10 @@ export default function Header() {
   const navItemsStyle = "mx-2 p-2 font-semibold hover:bg-black hover:text-olive-50 transition ease-linear duration-300 rounded-sm";
   const navItemDestacadoStyle = " text-olive-50 bg-black";
   
-  const [foto, setFoto] = useState("/temp/calca.jpeg");
-
   const [perfilOpc, setPerfilOpc] = useState(false);
 
-  useEffect(() => {
-    const usuario = localStorage.getItem("usuario");
-
-    if (usuario) {
-      const dados = JSON.parse(usuario);
-
-      if (dados.foto) {
-        setFoto(dados.foto);
-      }
-    }
-  }, []);
-
-  const router = useRouter();
+  const foto = (session?.user as User)?.foto || "/temp/calca.jpeg";
+  const rotaPerfil = session?.user ? `/perfil/${session.user.id}` : "/login";
 
   return (
     <header className="fixed top-0 left-0 w-full h-24 z-50 bg-yellow-300 border-b-3 border-slate-950 flex items-center">
@@ -50,7 +38,7 @@ export default function Header() {
 
             {perfilOpc && (
               <div className="absolute right-0 top-16 bg-white border border-gray-300 rounded-md shadow-lg min-w-[180px] overflow-hidden">
-                <Link href="/perfil" onClick={() => setPerfilOpc(!perfilOpc)} className="block px-4 py-2 hover:bg-gray-100">
+                <Link href={rotaPerfil} onClick={() => setPerfilOpc(!perfilOpc)} className="block px-4 py-2 hover:bg-gray-100">
                   Acessar Perfil
                 </Link>
 

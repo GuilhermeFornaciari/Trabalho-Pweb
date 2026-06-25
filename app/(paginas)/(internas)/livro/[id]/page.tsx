@@ -105,9 +105,7 @@ function informacoesDoLivro(livro: LivroDetalhes) {
         <div>
           <h1 className="font-bold text-xl">{livro.titulo}</h1>
           <p>
-            {livro.autores.map(a => a.nome)
-                        .join(",")
-                      }
+            {livro.autores.map(a => a.nome).join(",")}
           </p>
           {livro.colecao ? 
             <Link href={`/colecao/${livro.colecao.id}`}>{livro.colecao.nome} #{livro.posicao_colecao}</Link>
@@ -121,6 +119,9 @@ function informacoesDoLivro(livro: LivroDetalhes) {
           <p><span className={spanStyle}>Gênero:</span> {livro.genero}</p>
           <p><span className={spanStyle}>Páginas:</span> {livro.paginas}</p>
           <p><span className={spanStyle}>Ano de lançamento da edição:</span> {livro.ano}</p>
+          
+
+
         </div>
       </div>
     </div>
