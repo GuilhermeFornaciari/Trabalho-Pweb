@@ -48,6 +48,7 @@ export type PostagemMinAggregateOutputType = {
   paginasLidas: number | null
   nota: number | null
   data: Date | null
+  titulo: string | null
   texto: string | null
   temSpoiler: boolean | null
   usuarioId: string | null
@@ -60,6 +61,7 @@ export type PostagemMaxAggregateOutputType = {
   paginasLidas: number | null
   nota: number | null
   data: Date | null
+  titulo: string | null
   texto: string | null
   temSpoiler: boolean | null
   usuarioId: string | null
@@ -72,6 +74,7 @@ export type PostagemCountAggregateOutputType = {
   paginasLidas: number
   nota: number
   data: number
+  titulo: number
   texto: number
   temSpoiler: number
   usuarioId: number
@@ -102,6 +105,7 @@ export type PostagemMinAggregateInputType = {
   paginasLidas?: true
   nota?: true
   data?: true
+  titulo?: true
   texto?: true
   temSpoiler?: true
   usuarioId?: true
@@ -114,6 +118,7 @@ export type PostagemMaxAggregateInputType = {
   paginasLidas?: true
   nota?: true
   data?: true
+  titulo?: true
   texto?: true
   temSpoiler?: true
   usuarioId?: true
@@ -126,6 +131,7 @@ export type PostagemCountAggregateInputType = {
   paginasLidas?: true
   nota?: true
   data?: true
+  titulo?: true
   texto?: true
   temSpoiler?: true
   usuarioId?: true
@@ -225,8 +231,9 @@ export type PostagemGroupByOutputType = {
   paginasLidas: number | null
   nota: number | null
   data: Date
+  titulo: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler: boolean | null
   usuarioId: string
   livroId: number
   _count: PostagemCountAggregateOutputType | null
@@ -260,8 +267,9 @@ export type PostagemWhereInput = {
   paginasLidas?: Prisma.IntNullableFilter<"Postagem"> | number | null
   nota?: Prisma.IntNullableFilter<"Postagem"> | number | null
   data?: Prisma.DateTimeFilter<"Postagem"> | Date | string
+  titulo?: Prisma.StringNullableFilter<"Postagem"> | string | null
   texto?: Prisma.StringFilter<"Postagem"> | string
-  temSpoiler?: Prisma.BoolFilter<"Postagem"> | boolean
+  temSpoiler?: Prisma.BoolNullableFilter<"Postagem"> | boolean | null
   usuarioId?: Prisma.StringFilter<"Postagem"> | string
   livroId?: Prisma.IntFilter<"Postagem"> | number
   usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -276,8 +284,9 @@ export type PostagemOrderByWithRelationInput = {
   paginasLidas?: Prisma.SortOrderInput | Prisma.SortOrder
   nota?: Prisma.SortOrderInput | Prisma.SortOrder
   data?: Prisma.SortOrder
+  titulo?: Prisma.SortOrderInput | Prisma.SortOrder
   texto?: Prisma.SortOrder
-  temSpoiler?: Prisma.SortOrder
+  temSpoiler?: Prisma.SortOrderInput | Prisma.SortOrder
   usuarioId?: Prisma.SortOrder
   livroId?: Prisma.SortOrder
   usuario?: Prisma.UserOrderByWithRelationInput
@@ -295,8 +304,9 @@ export type PostagemWhereUniqueInput = Prisma.AtLeast<{
   paginasLidas?: Prisma.IntNullableFilter<"Postagem"> | number | null
   nota?: Prisma.IntNullableFilter<"Postagem"> | number | null
   data?: Prisma.DateTimeFilter<"Postagem"> | Date | string
+  titulo?: Prisma.StringNullableFilter<"Postagem"> | string | null
   texto?: Prisma.StringFilter<"Postagem"> | string
-  temSpoiler?: Prisma.BoolFilter<"Postagem"> | boolean
+  temSpoiler?: Prisma.BoolNullableFilter<"Postagem"> | boolean | null
   usuarioId?: Prisma.StringFilter<"Postagem"> | string
   livroId?: Prisma.IntFilter<"Postagem"> | number
   usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -311,8 +321,9 @@ export type PostagemOrderByWithAggregationInput = {
   paginasLidas?: Prisma.SortOrderInput | Prisma.SortOrder
   nota?: Prisma.SortOrderInput | Prisma.SortOrder
   data?: Prisma.SortOrder
+  titulo?: Prisma.SortOrderInput | Prisma.SortOrder
   texto?: Prisma.SortOrder
-  temSpoiler?: Prisma.SortOrder
+  temSpoiler?: Prisma.SortOrderInput | Prisma.SortOrder
   usuarioId?: Prisma.SortOrder
   livroId?: Prisma.SortOrder
   _count?: Prisma.PostagemCountOrderByAggregateInput
@@ -331,8 +342,9 @@ export type PostagemScalarWhereWithAggregatesInput = {
   paginasLidas?: Prisma.IntNullableWithAggregatesFilter<"Postagem"> | number | null
   nota?: Prisma.IntNullableWithAggregatesFilter<"Postagem"> | number | null
   data?: Prisma.DateTimeWithAggregatesFilter<"Postagem"> | Date | string
+  titulo?: Prisma.StringNullableWithAggregatesFilter<"Postagem"> | string | null
   texto?: Prisma.StringWithAggregatesFilter<"Postagem"> | string
-  temSpoiler?: Prisma.BoolWithAggregatesFilter<"Postagem"> | boolean
+  temSpoiler?: Prisma.BoolNullableWithAggregatesFilter<"Postagem"> | boolean | null
   usuarioId?: Prisma.StringWithAggregatesFilter<"Postagem"> | string
   livroId?: Prisma.IntWithAggregatesFilter<"Postagem"> | number
 }
@@ -342,8 +354,9 @@ export type PostagemCreateInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuario: Prisma.UserCreateNestedOneWithoutPostagensInput
   livro: Prisma.LivroCreateNestedOneWithoutPostagensInput
   comentarios?: Prisma.ComentarioCreateNestedManyWithoutPostagemInput
@@ -356,8 +369,9 @@ export type PostagemUncheckedCreateInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuarioId: string
   livroId: number
   comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutPostagemInput
@@ -369,8 +383,9 @@ export type PostagemUpdateInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuario?: Prisma.UserUpdateOneRequiredWithoutPostagensNestedInput
   livro?: Prisma.LivroUpdateOneRequiredWithoutPostagensNestedInput
   comentarios?: Prisma.ComentarioUpdateManyWithoutPostagemNestedInput
@@ -383,8 +398,9 @@ export type PostagemUncheckedUpdateInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
   comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutPostagemNestedInput
@@ -397,8 +413,9 @@ export type PostagemCreateManyInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuarioId: string
   livroId: number
 }
@@ -408,8 +425,9 @@ export type PostagemUpdateManyMutationInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type PostagemUncheckedUpdateManyInput = {
@@ -418,8 +436,9 @@ export type PostagemUncheckedUpdateManyInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -440,6 +459,7 @@ export type PostagemCountOrderByAggregateInput = {
   paginasLidas?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   data?: Prisma.SortOrder
+  titulo?: Prisma.SortOrder
   texto?: Prisma.SortOrder
   temSpoiler?: Prisma.SortOrder
   usuarioId?: Prisma.SortOrder
@@ -460,6 +480,7 @@ export type PostagemMaxOrderByAggregateInput = {
   paginasLidas?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   data?: Prisma.SortOrder
+  titulo?: Prisma.SortOrder
   texto?: Prisma.SortOrder
   temSpoiler?: Prisma.SortOrder
   usuarioId?: Prisma.SortOrder
@@ -472,6 +493,7 @@ export type PostagemMinOrderByAggregateInput = {
   paginasLidas?: Prisma.SortOrder
   nota?: Prisma.SortOrder
   data?: Prisma.SortOrder
+  titulo?: Prisma.SortOrder
   texto?: Prisma.SortOrder
   temSpoiler?: Prisma.SortOrder
   usuarioId?: Prisma.SortOrder
@@ -580,8 +602,8 @@ export type PostagemUncheckedUpdateManyWithoutLivroNestedInput = {
   deleteMany?: Prisma.PostagemScalarWhereInput | Prisma.PostagemScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
 }
 
 export type PostagemCreateNestedOneWithoutComentariosInput = {
@@ -619,8 +641,9 @@ export type PostagemCreateWithoutUsuarioInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   livro: Prisma.LivroCreateNestedOneWithoutPostagensInput
   comentarios?: Prisma.ComentarioCreateNestedManyWithoutPostagemInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutPostagemInput
@@ -632,8 +655,9 @@ export type PostagemUncheckedCreateWithoutUsuarioInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   livroId: number
   comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutPostagemInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutPostagemInput
@@ -674,8 +698,9 @@ export type PostagemScalarWhereInput = {
   paginasLidas?: Prisma.IntNullableFilter<"Postagem"> | number | null
   nota?: Prisma.IntNullableFilter<"Postagem"> | number | null
   data?: Prisma.DateTimeFilter<"Postagem"> | Date | string
+  titulo?: Prisma.StringNullableFilter<"Postagem"> | string | null
   texto?: Prisma.StringFilter<"Postagem"> | string
-  temSpoiler?: Prisma.BoolFilter<"Postagem"> | boolean
+  temSpoiler?: Prisma.BoolNullableFilter<"Postagem"> | boolean | null
   usuarioId?: Prisma.StringFilter<"Postagem"> | string
   livroId?: Prisma.IntFilter<"Postagem"> | number
 }
@@ -685,8 +710,9 @@ export type PostagemCreateWithoutLivroInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuario: Prisma.UserCreateNestedOneWithoutPostagensInput
   comentarios?: Prisma.ComentarioCreateNestedManyWithoutPostagemInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutPostagemInput
@@ -698,8 +724,9 @@ export type PostagemUncheckedCreateWithoutLivroInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuarioId: string
   comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutPostagemInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutPostagemInput
@@ -736,8 +763,9 @@ export type PostagemCreateWithoutComentariosInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuario: Prisma.UserCreateNestedOneWithoutPostagensInput
   livro: Prisma.LivroCreateNestedOneWithoutPostagensInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutPostagemInput
@@ -749,8 +777,9 @@ export type PostagemUncheckedCreateWithoutComentariosInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuarioId: string
   livroId: number
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutPostagemInput
@@ -777,8 +806,9 @@ export type PostagemUpdateWithoutComentariosInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuario?: Prisma.UserUpdateOneRequiredWithoutPostagensNestedInput
   livro?: Prisma.LivroUpdateOneRequiredWithoutPostagensNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutPostagemNestedInput
@@ -790,8 +820,9 @@ export type PostagemUncheckedUpdateWithoutComentariosInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutPostagemNestedInput
@@ -802,8 +833,9 @@ export type PostagemCreateWithoutCurtidasInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuario: Prisma.UserCreateNestedOneWithoutPostagensInput
   livro: Prisma.LivroCreateNestedOneWithoutPostagensInput
   comentarios?: Prisma.ComentarioCreateNestedManyWithoutPostagemInput
@@ -815,8 +847,9 @@ export type PostagemUncheckedCreateWithoutCurtidasInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuarioId: string
   livroId: number
   comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutPostagemInput
@@ -843,8 +876,9 @@ export type PostagemUpdateWithoutCurtidasInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuario?: Prisma.UserUpdateOneRequiredWithoutPostagensNestedInput
   livro?: Prisma.LivroUpdateOneRequiredWithoutPostagensNestedInput
   comentarios?: Prisma.ComentarioUpdateManyWithoutPostagemNestedInput
@@ -856,8 +890,9 @@ export type PostagemUncheckedUpdateWithoutCurtidasInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
   comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutPostagemNestedInput
@@ -869,8 +904,9 @@ export type PostagemCreateManyUsuarioInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   livroId: number
 }
 
@@ -879,8 +915,9 @@ export type PostagemUpdateWithoutUsuarioInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   livro?: Prisma.LivroUpdateOneRequiredWithoutPostagensNestedInput
   comentarios?: Prisma.ComentarioUpdateManyWithoutPostagemNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutPostagemNestedInput
@@ -892,8 +929,9 @@ export type PostagemUncheckedUpdateWithoutUsuarioInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
   comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutPostagemNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutPostagemNestedInput
@@ -905,8 +943,9 @@ export type PostagemUncheckedUpdateManyWithoutUsuarioInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -916,8 +955,9 @@ export type PostagemCreateManyLivroInput = {
   paginasLidas?: number | null
   nota?: number | null
   data: Date | string
+  titulo?: string | null
   texto: string
-  temSpoiler: boolean
+  temSpoiler?: boolean | null
   usuarioId: string
 }
 
@@ -926,8 +966,9 @@ export type PostagemUpdateWithoutLivroInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuario?: Prisma.UserUpdateOneRequiredWithoutPostagensNestedInput
   comentarios?: Prisma.ComentarioUpdateManyWithoutPostagemNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutPostagemNestedInput
@@ -939,8 +980,9 @@ export type PostagemUncheckedUpdateWithoutLivroInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutPostagemNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutPostagemNestedInput
@@ -952,8 +994,9 @@ export type PostagemUncheckedUpdateManyWithoutLivroInput = {
   paginasLidas?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   nota?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  titulo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  temSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  temSpoiler?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -1003,6 +1046,7 @@ export type PostagemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   paginasLidas?: boolean
   nota?: boolean
   data?: boolean
+  titulo?: boolean
   texto?: boolean
   temSpoiler?: boolean
   usuarioId?: boolean
@@ -1020,6 +1064,7 @@ export type PostagemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   paginasLidas?: boolean
   nota?: boolean
   data?: boolean
+  titulo?: boolean
   texto?: boolean
   temSpoiler?: boolean
   usuarioId?: boolean
@@ -1034,6 +1079,7 @@ export type PostagemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   paginasLidas?: boolean
   nota?: boolean
   data?: boolean
+  titulo?: boolean
   texto?: boolean
   temSpoiler?: boolean
   usuarioId?: boolean
@@ -1048,13 +1094,14 @@ export type PostagemSelectScalar = {
   paginasLidas?: boolean
   nota?: boolean
   data?: boolean
+  titulo?: boolean
   texto?: boolean
   temSpoiler?: boolean
   usuarioId?: boolean
   livroId?: boolean
 }
 
-export type PostagemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "paginaAtual" | "paginasLidas" | "nota" | "data" | "texto" | "temSpoiler" | "usuarioId" | "livroId", ExtArgs["result"]["postagem"]>
+export type PostagemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "paginaAtual" | "paginasLidas" | "nota" | "data" | "titulo" | "texto" | "temSpoiler" | "usuarioId" | "livroId", ExtArgs["result"]["postagem"]>
 export type PostagemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   livro?: boolean | Prisma.LivroDefaultArgs<ExtArgs>
@@ -1085,8 +1132,9 @@ export type $PostagemPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     paginasLidas: number | null
     nota: number | null
     data: Date
+    titulo: string | null
     texto: string
-    temSpoiler: boolean
+    temSpoiler: boolean | null
     usuarioId: string
     livroId: number
   }, ExtArgs["result"]["postagem"]>
@@ -1521,6 +1569,7 @@ export interface PostagemFieldRefs {
   readonly paginasLidas: Prisma.FieldRef<"Postagem", 'Int'>
   readonly nota: Prisma.FieldRef<"Postagem", 'Int'>
   readonly data: Prisma.FieldRef<"Postagem", 'DateTime'>
+  readonly titulo: Prisma.FieldRef<"Postagem", 'String'>
   readonly texto: Prisma.FieldRef<"Postagem", 'String'>
   readonly temSpoiler: Prisma.FieldRef<"Postagem", 'Boolean'>
   readonly usuarioId: Prisma.FieldRef<"Postagem", 'String'>

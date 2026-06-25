@@ -23,7 +23,7 @@ export async function PUT(request: Request) {
 
     if (!usuario.success) {
       return Response.json(
-        { erro: z.treeifyError(usuario.error) },
+        { erro: usuario.error.issues },
         { status: 400 }
       );
     }

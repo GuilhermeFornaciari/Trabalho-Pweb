@@ -1516,6 +1516,7 @@ export const PostagemScalarFieldEnum = {
   paginasLidas: 'paginasLidas',
   nota: 'nota',
   data: 'data',
+  titulo: 'titulo',
   texto: 'texto',
   temSpoiler: 'temSpoiler',
   usuarioId: 'usuarioId',

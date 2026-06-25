@@ -39,6 +39,11 @@ export default function PerfilPage({params,}: {params: Promise<{ id: string }>})
         if(response.ok){
           const data = await response.json();
           setUsuario(data);
+        } else {
+          const erro = await response.json();
+          console.log(erro);
+          alert(JSON.stringify(erro, null, 2));
+          return;
         }
 
       };

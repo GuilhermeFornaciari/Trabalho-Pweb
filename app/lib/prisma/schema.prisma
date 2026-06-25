@@ -124,8 +124,9 @@ model Postagem {
   paginasLidas Int?
   nota         Int?
   data         DateTime
+  titulo       String?
   texto        String
-  temSpoiler   Boolean
+  temSpoiler   Boolean?
 
   usuarioId String @map("usuario_id")
   livroId   Int    @map("livro_id")
@@ -137,6 +138,7 @@ model Postagem {
   curtidas    Curtida[]
 
   @@map("postagens")
+  @@unique([usuarioId, livroId])
 }
 
 model Comentario {

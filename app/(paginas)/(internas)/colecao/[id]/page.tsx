@@ -39,7 +39,9 @@ export default function DetalhesColecao({
     });
 
     if (!res.ok) {
-      alert("Erro ao apagar colecao");
+      const erro = await res.json();
+      console.log(erro);
+      alert(JSON.stringify(erro, null, 2));
       return;
     }
     
