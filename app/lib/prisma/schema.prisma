@@ -120,9 +120,9 @@ model Escrito_por {
 
 model Postagem {
   id           Int      @id @default(autoincrement())
-  paginaAtual  Int
-  paginasLidas Int
-  nota         Int
+  paginaAtual  Int?
+  paginasLidas Int?
+  nota         Int?
   data         DateTime
   texto        String
   temSpoiler   Boolean
