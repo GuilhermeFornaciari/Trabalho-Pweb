@@ -185,6 +185,9 @@ model Curtida {
   postagem   Postagem?   @relation(fields: [postagemId],   references: [id], onDelete: Cascade)
   comentario Comentario? @relation(fields: [comentarioId], references: [id], onDelete: Cascade)
 
+  @@unique([id, comentarioId])
+  @@unique([id, postagemId])
+
   @@map("curtidas")
 }
 
