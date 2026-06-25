@@ -138,7 +138,6 @@ model Postagem {
   curtidas    Curtida[]
 
   @@map("postagens")
-  @@unique([usuarioId, livroId])
 }
 
 model Comentario {
