@@ -27,9 +27,6 @@ export async function PUT(request: Request) {
         { status: 400 }
       );
     }
-
-    
-    
     
     const resultado = await updateUser(usuario.data);
     
