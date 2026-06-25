@@ -32,7 +32,7 @@ export default function DetalhesLivro({
 
   const [mostrarModal, setMostrarModal] = useState(false);  
   const { data: session } = useSession();
-  const adm = session?.user?.role === "ADM";
+  const adm = session?.user?.role === "admin";
   
   const [mostrarModalResenha, setMostrarModalResenha] = useState<ResenhaDetalhes | null>(null);
   const [comentario, setComentario] = useState("");
