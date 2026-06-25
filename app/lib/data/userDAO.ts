@@ -1,33 +1,51 @@
-"use server";
-
-import { json } from "stream/consumers";
 import { User } from "../prisma/generated/client";
 import PrismaSingleton from "../prisma/PrismaSingleton";
-import { stringify } from "querystring";
+
+const prisma = PrismaSingleton.getInstance().prismaClient;
 
 export async function create(email: string, senha: string, nome: string, foto:string, username: string, bio: string){
-
     const prisma = PrismaSingleton.getInstance().prismaClient.user;
-    
     const data = ({ email, senha,  nome, foto, username, bio })
- 
     return prisma.create({ data });
 }
 
 export async function find(id: string){
-  // console.log("chegou");
-  const opa = await  PrismaSingleton.getInstance().prismaClient.user.findUnique({
+  const user = await prisma.user.findUnique({
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      foto: true,
+      bio: true,
+      role: true,
+      username: true
+    },
     where: { id },
   });
   
-  console.log(JSON.stringify(opa));
-  console.log("chagou e passou");
-  return opa;
+  return user;
 }
 
+export async function findByUsername(username: string){
+  console.log("username recebido:", username);
+  const user = await prisma.user.findUnique({
+    select: {
+      id: true,
+      nome: true,
+      email: true,
+      foto: true,
+      bio: true,
+      role: true,
+      username: true
+    },
+    where: { username: username },
+  });
+  
+  return user;
+}
 
 export async function updateUser(user: User) {
-    const opa  = await  PrismaSingleton.getInstance().prismaClient.user.update({
+    const opa  = await prisma.user.update({
       where: {
         id: user.id,
       },

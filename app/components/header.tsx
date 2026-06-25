@@ -17,7 +17,7 @@ export default function Header() {
   const [perfilOpc, setPerfilOpc] = useState(false);
 
   const foto = (session?.user as User)?.foto || "/temp/calca.jpeg";
-  const rotaPerfil = session?.user ? `/perfil/${session.user.id}` : "/login";
+  const rotaPerfil = session?.user ? `/perfil/${session.user.username}` : "/login";
 
   return (
     <header className="fixed top-0 left-0 w-full h-24 z-50 bg-yellow-300 border-b-3 border-slate-950 flex items-center">
