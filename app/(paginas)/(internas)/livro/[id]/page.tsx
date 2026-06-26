@@ -1,16 +1,17 @@
 'use client'
 
 import { use, useEffect, useState } from "react";
-import { Biblioteca, Colecao, Livro, Postagem } from "@/lib/prisma/generated/client";
+import { Colecao, Livro, Postagem } from "@/lib/prisma/generated/client";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
-import { SessionProvider, useSession } from "next-auth/react";
-import { Star, UserSquare } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { Star } from "lucide-react";
+import ResenhaCard from "@/components/resenha/resenhaCard";
+import ResenhaModal from "@/components/resenha/resenhaModal";
 
 type LivroDetalhes = Livro & {
   autores: Array<{id: number, nome: string}> ;
   colecao: Colecao;
-  biblioteca: Biblioteca | null;
 }
 
 type ResenhaDetalhes = Postagem & {
@@ -20,7 +21,7 @@ type ResenhaDetalhes = Postagem & {
     username: string;
     foto: string | null;
   };
-  curtidas: any[]; // ou o tipo correto
+  curtidas: any[];
 };
 
 export default function DetalhesLivro({
@@ -33,7 +34,7 @@ export default function DetalhesLivro({
 
   const [mostrarModal, setMostrarModal] = useState(false);  
   const { data: session } = useSession();
-  const adm = session?.user?.role === "admin";
+  const adm = session?.user?.role === "ADM";
   
   const [mostrarModalResenha, setMostrarModalResenha] = useState<ResenhaDetalhes | null>(null);
   const [comentario, setComentario] = useState("");
@@ -196,42 +197,12 @@ export default function DetalhesLivro({
           </div>
           
           {/* listagem de resenhas */}
-          {resenhas.map((resenha) => (
-            <div
-              onClick={() => setMostrarModalResenha(resenha)}
+         {resenhas.map((resenha) => (
+            <ResenhaCard
               key={resenha.id}
-              className="w-4xl my-5 p-5 m-auto border border-amber-300 rounded-md"
-            >
-              <p className="text-sm text-gray-500 mb-2">
-                {resenha.usuario.nome}
-              </p>
-
-              <h2 className="text-xl font-bold mb-2">
-                {resenha.titulo}
-              </h2>
-
-              <div className="flex mb-3">
-                {[1, 2, 3, 4, 5].map((valor) => (
-                  <Star
-                    key={valor}
-                    size={18}
-                    className={
-                      valor <= (resenha.nota ?? 0)
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-gray-300"
-                    }
-                  />
-                ))}
-              </div>
-
-              <p className="mb-4 whitespace-pre-wrap">
-                {resenha.texto}
-              </p>
-
-              <div className="flex gap-4 text-sm text-gray-500">
-                <span>👍 0</span>
-                </div>
-            </div>
+              resenha={resenha}
+              onClick={setMostrarModalResenha}
+            />
           ))}
 
 
@@ -360,78 +331,24 @@ export default function DetalhesLivro({
           )}
 
           {/* modal de ver a resenha pronta pra poder comentar e curitr */}
-          {mostrarModalResenha && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-2xl">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">
-                      {mostrarModalResenha.usuario.nome}
-                    </p>
-                    <h2 className="text-xl font-bold">
-                      {mostrarModalResenha.titulo}
-                    </h2>
-                  </div>
-                  <button
-                    className="text-gray-400 hover:text-gray-600 text-xl"
-                    onClick={() => setMostrarModalResenha(null)}
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <div className="flex mb-3">
-                  {[1, 2, 3, 4, 5].map((valor) => (
-                    <Star
-                      key={valor}
-                      size={18}
-                      className={
-                        valor <= (mostrarModalResenha.nota ?? 0)
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      }
-                    />
-                  ))}
-                </div>
-
-                <p className="whitespace-pre-wrap mb-6">
-                  {mostrarModalResenha.texto}
-                </p>
-
-                <div className="flex flex-col pt-4 gap-4">
-                {/* Curtir */}
-                <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-yellow-500 w-fit">
-                  👍 Curtir
-                </button>
-                  <hr />
-
-                 <div className="flex flex-col gap-2">
-                  <label className="font-medium text-sm">Comentário</label>
-                  <textarea
-                    value={comentario}
-                    onChange={(e) => setComentario(e.target.value)}
-                    placeholder="Escreva um comentário..."
-                    rows={2}
-                    className="w-full border rounded-md p-2 text-sm"
-                  />
-                  <div className="flex justify-end">
-                    <button
-                      onClick={() => submitComentario(mostrarModalResenha.id)}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm"
-                    >
-                      Comentar
-                    </button>
-                  </div>
-                </div>
-              </div>
-              </div>
-            </div>
-          )}
+           {mostrarModalResenha && (
+            <ResenhaModal
+              resenha={mostrarModalResenha}
+              comentario={comentario}
+              onChangeComentario={setComentario}
+              onSubmitComentario={submitComentario}
+              onClose={() => setMostrarModalResenha(null)}
+            />
+)}
 
         </>       
       : ''
   );
 }
+
+
+
+
 
 function informacoesDoLivro(
   livro: LivroDetalhes,
@@ -444,14 +361,8 @@ function informacoesDoLivro(
   
   return (
     <div className="w-4xl my-5 p-5 m-auto flex border border-amber-300 rounded-md">
-      <div className="me-5 flex flex-col">
+      <div className="me-5">
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
-        {!adm && (
-          <div className="py-3 flex flex-col justify-center items-center">
-            {bibliotecaButton(livro, buttonStyle)}
-
-          </div>
-        )}
       </div>
 
       <div className="flex flex-col flex-1 justify-between">
@@ -496,17 +407,9 @@ function informacoesDoLivro(
               </button>
             </>
           )}
+
         </div>
       </div>
     </div>
   );
-}
-
-function bibliotecaButton(livro: LivroDetalhes, buttonStyle: string) {
-  if(livro.biblioteca === null) {
-    return (
-      <button className={buttonStyle + " " + "bg-lime-400"}>Adicionar à biblioteca</button>
-    );
-  }
-
 }
