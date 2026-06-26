@@ -52,10 +52,10 @@ export async function updateUser(user: User) {
       data: {
         nome: user.nome,
         email: user.email,
-        senha: user.senha,
         foto: user.foto,
         bio: user.bio,
         username: user.username,
+        dataNascimento: user.dataNascimento
       },
     });
     

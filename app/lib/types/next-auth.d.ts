@@ -8,6 +8,8 @@ declare module "next-auth" {
       username: string;
       foto: string;
       dataNascimento: Date | null;
+      nome: string;
+      bio: string;
     } & DefaultSession["user"];
   }
 
@@ -18,6 +20,7 @@ declare module "next-auth" {
     role: string;
     username: string;
     foto: string;
+    bio: string;
     dataNascimento: Date | null;
   }
 }
@@ -28,5 +31,7 @@ declare module "@auth/core/jwt" {
     username: string;
     foto: string;
     dataNascimento: string;
+    bio: string;
+    nome;
   }
 }

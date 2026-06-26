@@ -46,6 +46,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: usuario.email,
           foto: usuario.foto,
           role: usuario.role,
+          bio: usuario.bio,
           username: usuario.username,
           dataNascimento: usuario.dataNascimento
         }
@@ -58,7 +59,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.role = user.role;
         token.username = user.username;
         token.foto = user.foto;
+        token.nome = user.nome;
         token.dataNascimento = (user.dataNascimento) ? user.dataNascimento.toISOString() : '';
+        token.bio = user.bio;
       }
       return token;
     },
@@ -68,7 +71,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.role = token.role;
       session.user.username = token.username;
       session.user.foto = token.foto;
+      session.user.nome = token.nome;
       session.user.dataNascimento = (token.dataNascimento.length > 0) ? new Date(token.dataNascimento) : null;
+      session.user.bio = token.bio;
 
       return session;
     }

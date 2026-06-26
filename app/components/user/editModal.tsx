@@ -1,43 +1,60 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { User } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 type EditModalProps = {
   open: boolean;
-  usuario: User | undefined;
-
   onClose: () => void;
-  onSave: () => Promise<void>;
-
-  onChange: (
-    usuario: User | undefined
-  ) => void;
+  onRefresh: () => void;
 };
 
 export default function EditModal({
   open,
-  usuario,
   onClose,
-  onSave,
-  onChange,
+  onRefresh
 }: EditModalProps) {
-  const [mostrarSenha, setMostrarSenha] = useState(false);
+  //const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  const { data: session, status, update } = useSession();
+  const [usuario, setUsuario] = useState(session?.user);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      setUsuario(session.user);
+    }
+  }, [session, status]);
+
+  async function updateUser() {
+    const response = await fetch("../api/usuario/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(usuario),
+    });
+
+    if (!response.ok) {
+        alert("falha em update user");
+    }
+  }
 
   const handleSubmit = async () => {
     if (
       !usuario ||
       usuario.nome === "" ||
       usuario.email === "" ||
-      usuario.senha === ""
+      usuario.username === ""
     ) {
       alert("Preencha os campos");
       return;
     }
 
-    await onSave();
+    await updateUser();
+    await update();
     onClose();
+    onRefresh();
   };
 
   if (!open) return null;
@@ -81,12 +98,9 @@ export default function EditModal({
             type="text"
             value={usuario?.nome ?? ""}
             onChange={(e) =>
-              onChange(
-                usuario
-                  ? { ...usuario, nome: e.target.value }
-                  : undefined
-              )
-            }
+              setUsuario((prev) =>
+                prev ? { ...prev, nome: e.target.value } : prev
+            )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
           />
 
@@ -97,12 +111,9 @@ export default function EditModal({
             type="text"
             value={usuario?.username ?? ""}
             onChange={(e) =>
-              onChange(
-                usuario
-                  ? { ...usuario, username: e.target.value }
-                  : undefined
-              )
-            }
+              setUsuario((prev) => 
+                prev ? { ...prev, username: e.target.value } : prev
+            )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
           />
 
@@ -113,12 +124,9 @@ export default function EditModal({
             type="text"
             value={usuario?.bio ?? ""}
             onChange={(e) =>
-              onChange(
-                usuario
-                  ? { ...usuario, bio: e.target.value }
-                  : undefined
-              )
-            }
+              setUsuario((prev) =>
+                prev ? { ...prev, bio: e.target.value } : prev    
+            )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
           />
 
@@ -128,17 +136,14 @@ export default function EditModal({
           <input
             type="email"
             value={usuario?.email ?? ""}
-            onChange={(e) =>
-              onChange(
-                usuario
-                  ? { ...usuario, email: e.target.value }
-                  : undefined
-              )
-            }
+            onChange={(e) => 
+              setUsuario((prev) =>
+                prev ? { ...prev, email: e.target.value } : prev
+            )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
           />
 
-          <label className="block text-sm font-medium mb-1">
+          {/* <label className="block text-sm font-medium mb-1">
             Senha
           </label>
 
@@ -165,7 +170,7 @@ export default function EditModal({
             >
               {mostrarSenha ? "Ocultar" : "Mostrar"}
             </button>
-          </div>
+          </div> */}
 
           <div className="flex gap-3">
             <button

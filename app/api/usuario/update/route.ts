@@ -6,9 +6,7 @@ const updateSchema = z.object({
   id:             z.string(),
   nome:           z.string().min(1),
   email:          z.string().email(),
-  senha:          z.string().min(1),
   foto:           z.string(),
-  emailVerified:  z.string().nullable().transform(v => v ? new Date(v) : null),
   bio:            z.string(),
   role:           z.string(),
   username:       z.string(),
@@ -28,7 +26,19 @@ export async function PUT(request: Request) {
       );
     }
     
-    const resultado = await updateUser(usuario.data);
+    const user: User = {
+      id: usuario.data.id,
+      nome: usuario.data.nome,
+      email: usuario.data.email,
+      foto: usuario.data.foto,
+      bio: usuario.data.bio,
+      role: usuario.data.role,
+      username: usuario.data.username,
+      dataNascimento: usuario.data.dataNascimento,
+      emailVerified: null,
+      senha: ''
+    }
+    const resultado = await updateUser(user);
     
     if (!resultado) {
       return Response.json(
@@ -37,7 +47,6 @@ export async function PUT(request: Request) {
       );
     }
     
-    console.log("abracadabra");
     return Response.json(resultado, {
       status: 200,
     });
