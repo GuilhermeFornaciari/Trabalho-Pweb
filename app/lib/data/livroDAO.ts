@@ -1,5 +1,6 @@
 import Livro from "@/(entidades)/livro";
 import PrismaSingleton from "@/lib/prisma/PrismaSingleton";
+import { Session } from "next-auth";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
@@ -85,8 +86,8 @@ export async function deleteLivro(id: number, colecaoId: number | null){
   }
 }
 
-export async function getLivroById(id: number) {
-  const livro = await prisma.livro.findUnique({
+export async function getLivroById(id: number, user: Session["user"]) {
+  const livroPromise = prisma.livro.findUnique({
     where: { id },
     include: {
       colecao: true,
@@ -98,11 +99,26 @@ export async function getLivroById(id: number) {
     },
   });
 
-  if(!livro) return null;
+  const bibliotecaPromise = prisma.biblioteca.findUnique({
+    where: {
+      usuarioId_livroId: {
+        usuarioId: user.id,
+        livroId: id,
+      },
+    },
+  });
 
+  const [livro, biblioteca] = await Promise.all([
+    livroPromise,
+    bibliotecaPromise,
+  ]);
+
+  if (!livro) return null;
+  
   return {
     ...livro,
-    autores: livro?.autores.map((a) => a.autor) ?? [],
+    autores: livro.autores.map((a) => a.autor),
+    biblioteca,
   };
 }
 

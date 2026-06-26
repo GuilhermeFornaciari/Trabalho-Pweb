@@ -89,12 +89,16 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
 
             <p className="text-[#8A7A5B] text-sm max-w-xs"> {usuario?.bio} </p>
 
-          
-          <EditModal
-            open={modalAberto}
-            onClose={() => setModalAberto(false)}
-            onRefresh={() => setRefreshKey((prev) => prev + 1)}
-          />
+          {
+            session?.user.id === usuario?.id && 
+            (
+              <EditModal
+              open={modalAberto}
+              onClose={() => setModalAberto(false)}
+              onRefresh={() => setRefreshKey((prev) => prev + 1)}
+            />
+            )
+          }
           </div>
         </div>
 

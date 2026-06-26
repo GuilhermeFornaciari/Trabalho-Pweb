@@ -1,4 +1,5 @@
 import { getLivroById } from "@/lib/data/livroDAO";
+import { auth } from "@/lib/auth";
 import { z } from "zod";
 
 const idSchema = z.object({
@@ -6,8 +7,16 @@ const idSchema = z.object({
 });
 
 export async function GET( request: Request, { params }: { params: { id: string } }) {
+  const session = await auth();
+  if(!session) {
+    return Response.json(
+      { message: "Usuário não logado."},
+      { status: 401 }
+    )
+  }
+
   try {
-    const {id} = await params
+    const {id} = await params;
 
     const resultado = idSchema.safeParse({
       id: id,
@@ -22,7 +31,7 @@ export async function GET( request: Request, { params }: { params: { id: string 
 
     const livroId = resultado.data.id;
 
-    const search = await getLivroById(livroId);
+    const search = await getLivroById(livroId, session.user);
 
     if (!search) {
       return Response.json(
@@ -31,6 +40,7 @@ export async function GET( request: Request, { params }: { params: { id: string 
       );
     }
 
+    console.log(search);
     return Response.json(search);
 
   } catch (e) {
