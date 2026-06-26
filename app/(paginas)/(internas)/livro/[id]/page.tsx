@@ -1,7 +1,7 @@
 'use client'
 
 import { use, useEffect, useState } from "react";
-import { Colecao, Livro, Postagem } from "@/lib/prisma/generated/client";
+import { Biblioteca, Colecao, Livro, Postagem } from "@/lib/prisma/generated/client";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -10,6 +10,7 @@ import { Star, UserSquare } from "lucide-react";
 type LivroDetalhes = Livro & {
   autores: Array<{id: number, nome: string}> ;
   colecao: Colecao;
+  biblioteca: Biblioteca | null;
 }
 
 type ResenhaDetalhes = Postagem & {
@@ -432,10 +433,6 @@ export default function DetalhesLivro({
   );
 }
 
-
-
-
-
 function informacoesDoLivro(
   livro: LivroDetalhes,
   id: string,
@@ -447,8 +444,14 @@ function informacoesDoLivro(
   
   return (
     <div className="w-4xl my-5 p-5 m-auto flex border border-amber-300 rounded-md">
-      <div className="me-5">
+      <div className="me-5 flex flex-col">
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
+        {!adm && (
+          <div className="py-3 flex flex-col justify-center items-center">
+            {bibliotecaButton(livro, buttonStyle)}
+
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col flex-1 justify-between">
@@ -493,9 +496,17 @@ function informacoesDoLivro(
               </button>
             </>
           )}
-
         </div>
       </div>
     </div>
   );
+}
+
+function bibliotecaButton(livro: LivroDetalhes, buttonStyle: string) {
+  if(livro.biblioteca === null) {
+    return (
+      <button className={buttonStyle + " " + "bg-lime-400"}>Adicionar à biblioteca</button>
+    );
+  }
+
 }
