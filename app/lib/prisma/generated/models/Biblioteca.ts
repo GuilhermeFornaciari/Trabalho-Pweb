@@ -37,7 +37,7 @@ export type BibliotecaSumAggregateOutputType = {
 export type BibliotecaMinAggregateOutputType = {
   usuarioId: string | null
   livroId: number | null
-  status: boolean | null
+  status: $Enums.StatusLeitura | null
   dataInicio: Date | null
   dataConclusao: Date | null
 }
@@ -45,7 +45,7 @@ export type BibliotecaMinAggregateOutputType = {
 export type BibliotecaMaxAggregateOutputType = {
   usuarioId: string | null
   livroId: number | null
-  status: boolean | null
+  status: $Enums.StatusLeitura | null
   dataInicio: Date | null
   dataConclusao: Date | null
 }
@@ -182,7 +182,7 @@ export type BibliotecaGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type BibliotecaGroupByOutputType = {
   usuarioId: string
   livroId: number
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date
   dataConclusao: Date | null
   _count: BibliotecaCountAggregateOutputType | null
@@ -213,7 +213,7 @@ export type BibliotecaWhereInput = {
   NOT?: Prisma.BibliotecaWhereInput | Prisma.BibliotecaWhereInput[]
   usuarioId?: Prisma.StringFilter<"Biblioteca"> | string
   livroId?: Prisma.IntFilter<"Biblioteca"> | number
-  status?: Prisma.BoolFilter<"Biblioteca"> | boolean
+  status?: Prisma.EnumStatusLeituraFilter<"Biblioteca"> | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFilter<"Biblioteca"> | Date | string
   dataConclusao?: Prisma.DateTimeNullableFilter<"Biblioteca"> | Date | string | null
   usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -237,7 +237,7 @@ export type BibliotecaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.BibliotecaWhereInput | Prisma.BibliotecaWhereInput[]
   usuarioId?: Prisma.StringFilter<"Biblioteca"> | string
   livroId?: Prisma.IntFilter<"Biblioteca"> | number
-  status?: Prisma.BoolFilter<"Biblioteca"> | boolean
+  status?: Prisma.EnumStatusLeituraFilter<"Biblioteca"> | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFilter<"Biblioteca"> | Date | string
   dataConclusao?: Prisma.DateTimeNullableFilter<"Biblioteca"> | Date | string | null
   usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -263,13 +263,13 @@ export type BibliotecaScalarWhereWithAggregatesInput = {
   NOT?: Prisma.BibliotecaScalarWhereWithAggregatesInput | Prisma.BibliotecaScalarWhereWithAggregatesInput[]
   usuarioId?: Prisma.StringWithAggregatesFilter<"Biblioteca"> | string
   livroId?: Prisma.IntWithAggregatesFilter<"Biblioteca"> | number
-  status?: Prisma.BoolWithAggregatesFilter<"Biblioteca"> | boolean
+  status?: Prisma.EnumStatusLeituraWithAggregatesFilter<"Biblioteca"> | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeWithAggregatesFilter<"Biblioteca"> | Date | string
   dataConclusao?: Prisma.DateTimeNullableWithAggregatesFilter<"Biblioteca"> | Date | string | null
 }
 
 export type BibliotecaCreateInput = {
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
   usuario: Prisma.UserCreateNestedOneWithoutBibliotecasInput
@@ -279,13 +279,13 @@ export type BibliotecaCreateInput = {
 export type BibliotecaUncheckedCreateInput = {
   usuarioId: string
   livroId: number
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
 }
 
 export type BibliotecaUpdateInput = {
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   usuario?: Prisma.UserUpdateOneRequiredWithoutBibliotecasNestedInput
@@ -295,7 +295,7 @@ export type BibliotecaUpdateInput = {
 export type BibliotecaUncheckedUpdateInput = {
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -303,13 +303,13 @@ export type BibliotecaUncheckedUpdateInput = {
 export type BibliotecaCreateManyInput = {
   usuarioId: string
   livroId: number
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
 }
 
 export type BibliotecaUpdateManyMutationInput = {
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -317,7 +317,7 @@ export type BibliotecaUpdateManyMutationInput = {
 export type BibliotecaUncheckedUpdateManyInput = {
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -453,12 +453,12 @@ export type BibliotecaUncheckedUpdateManyWithoutLivroNestedInput = {
   deleteMany?: Prisma.BibliotecaScalarWhereInput | Prisma.BibliotecaScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type EnumStatusLeituraFieldUpdateOperationsInput = {
+  set?: $Enums.StatusLeitura
 }
 
 export type BibliotecaCreateWithoutUsuarioInput = {
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
   livro: Prisma.LivroCreateNestedOneWithoutBibliotecasInput
@@ -466,7 +466,7 @@ export type BibliotecaCreateWithoutUsuarioInput = {
 
 export type BibliotecaUncheckedCreateWithoutUsuarioInput = {
   livroId: number
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
 }
@@ -503,13 +503,13 @@ export type BibliotecaScalarWhereInput = {
   NOT?: Prisma.BibliotecaScalarWhereInput | Prisma.BibliotecaScalarWhereInput[]
   usuarioId?: Prisma.StringFilter<"Biblioteca"> | string
   livroId?: Prisma.IntFilter<"Biblioteca"> | number
-  status?: Prisma.BoolFilter<"Biblioteca"> | boolean
+  status?: Prisma.EnumStatusLeituraFilter<"Biblioteca"> | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFilter<"Biblioteca"> | Date | string
   dataConclusao?: Prisma.DateTimeNullableFilter<"Biblioteca"> | Date | string | null
 }
 
 export type BibliotecaCreateWithoutLivroInput = {
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
   usuario: Prisma.UserCreateNestedOneWithoutBibliotecasInput
@@ -517,7 +517,7 @@ export type BibliotecaCreateWithoutLivroInput = {
 
 export type BibliotecaUncheckedCreateWithoutLivroInput = {
   usuarioId: string
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
 }
@@ -550,13 +550,13 @@ export type BibliotecaUpdateManyWithWhereWithoutLivroInput = {
 
 export type BibliotecaCreateManyUsuarioInput = {
   livroId: number
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
 }
 
 export type BibliotecaUpdateWithoutUsuarioInput = {
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   livro?: Prisma.LivroUpdateOneRequiredWithoutBibliotecasNestedInput
@@ -564,27 +564,27 @@ export type BibliotecaUpdateWithoutUsuarioInput = {
 
 export type BibliotecaUncheckedUpdateWithoutUsuarioInput = {
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type BibliotecaUncheckedUpdateManyWithoutUsuarioInput = {
   livroId?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type BibliotecaCreateManyLivroInput = {
   usuarioId: string
-  status: boolean
+  status: $Enums.StatusLeitura
   dataInicio: Date | string
   dataConclusao?: Date | string | null
 }
 
 export type BibliotecaUpdateWithoutLivroInput = {
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   usuario?: Prisma.UserUpdateOneRequiredWithoutBibliotecasNestedInput
@@ -592,14 +592,14 @@ export type BibliotecaUpdateWithoutLivroInput = {
 
 export type BibliotecaUncheckedUpdateWithoutLivroInput = {
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type BibliotecaUncheckedUpdateManyWithoutLivroInput = {
   usuarioId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -667,7 +667,7 @@ export type $BibliotecaPayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     usuarioId: string
     livroId: number
-    status: boolean
+    status: $Enums.StatusLeitura
     dataInicio: Date
     dataConclusao: Date | null
   }, ExtArgs["result"]["biblioteca"]>
@@ -1097,7 +1097,7 @@ export interface Prisma__BibliotecaClient<T, Null = never, ExtArgs extends runti
 export interface BibliotecaFieldRefs {
   readonly usuarioId: Prisma.FieldRef<"Biblioteca", 'String'>
   readonly livroId: Prisma.FieldRef<"Biblioteca", 'Int'>
-  readonly status: Prisma.FieldRef<"Biblioteca", 'Boolean'>
+  readonly status: Prisma.FieldRef<"Biblioteca", 'StatusLeitura'>
   readonly dataInicio: Prisma.FieldRef<"Biblioteca", 'DateTime'>
   readonly dataConclusao: Prisma.FieldRef<"Biblioteca", 'DateTime'>
 }

@@ -1659,6 +1659,20 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
+
+/**
+ * Reference to a field of type 'StatusLeitura'
+ */
+export type EnumStatusLeituraFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusLeitura'>
+    
+
+
+/**
+ * Reference to a field of type 'StatusLeitura[]'
+ */
+export type ListEnumStatusLeituraFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StatusLeitura[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 import BibliotecaModal from "./bibliotecaModal";
+import { StatusLeitura } from "@/lib/prisma/generated/enums";
 
 export default function BibliotecaButton({
   livro,
@@ -10,15 +11,17 @@ export default function BibliotecaButton({
   buttonStyle: string
 }) {
   const [modal, setModal] = useState(false);
-  const status = ["Lido", "Lendo", "Quero ler", "Abandonei"];
+  const status = Object.values(StatusLeitura);
+  const [statusSelecionado, setStatusSelecionado] = useState<StatusLeitura | null>(livro.biblioteca?.status ?? null);
+
 
   if(livro.biblioteca === null) {
     return (
       <>
         <button className={buttonStyle + " " + "bg-lime-400"} onClick={() => setModal(true)}>Adicione à biblioteca</button>
         <BibliotecaModal open={modal}>
-          <div className="bg-white p-4 rounded-md">
-            <h1 className="text-center mb-5 text-lg font-semibold">Adicione <span className="font-bold">{livro.titulo}</span> à sua coleção</h1>
+          <div className="bg-white p-6 rounded-md">
+            <h1 className="text-center mb-5 text-lg font-semibold">Adicione <span className="font-bold text-amber-500">{livro.titulo}</span> na sua biblioteca</h1>
             <p>Selecione o status da sua leitura:</p>
             <div className="p-3 my-3 border border-amber-400 rounded-md">
               {status.map((item, index) => (
@@ -27,10 +30,12 @@ export default function BibliotecaButton({
                     type="radio"
                     id={`status-${index}`}
                     name="status"
+                    checked={statusSelecionado === item}
+                    onChange={() => setStatusSelecionado(item)}
                     value={item}
                   />
                   <label htmlFor={`status-${index}`} className="ml-2">
-                    {item}
+                    {formatarInputRadioText(item)}
                   </label>
                 </div>
               ))}
@@ -41,5 +46,9 @@ export default function BibliotecaButton({
       </>
     );
   }
+}
 
+function formatarInputRadioText(texto: string) {
+  if(!texto) return '';
+  return (texto.charAt(0) + texto.slice(1).toLowerCase()).replace("_", " ");
 }
