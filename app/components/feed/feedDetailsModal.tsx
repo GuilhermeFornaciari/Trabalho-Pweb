@@ -28,6 +28,8 @@ export default function FeedDetailsModal({
 
   const { data: session } = useSession();
 
+  console.log("curtidas", post.curtidas);
+
   // Curtidas do Post Principal
   const [curtido, setCurtido] = useState(false);
   const [curtidaId, setCurtidaId] = useState(-1);
@@ -49,8 +51,10 @@ export default function FeedDetailsModal({
     }
   }, [session, post]);
 
+
   // Separa os comentários principais (parentId === null) das respostas
   const comentariosPrincipais = post.comentarios?.filter((c: any) => c.parentId === null) || [];
+  // console.log(comentariosPrincipais);
   const respostas = post.comentarios?.filter((c: any) => c.parentId !== null) || [];
 
   return (
@@ -122,89 +126,93 @@ export default function FeedDetailsModal({
             </h4>
             
             <div className="space-y-4 mb-6">
-              {comentariosPrincipais.length > 0 ? (
-                comentariosPrincipais.map((com: any) => {
-                  
-                  // 1. Filtra estritamente as curtidas correspondentes a este comentário específico
-                  const curtidasDesteComentario = post.curtidas?.filter(
-                    (c: any) => c.comentarioId === com.id
-                  ) || [];
-                  const qtdCurtidasComent = curtidasDesteComentario.length;
+              {/* FILTRO CRUCIAL: Só entram aqui comentários que NÃO possuem um pai (parentId nulo/undefined) */}
+              {post.comentarios && post.comentarios.filter((c: any) => !c.parentId).length > 0 ? (
+                post.comentarios
+                  .filter((c: any) => !c.parentId) // Garante que posts filhos não virem posts principais
+                  .map((com: any) => {
+                    
+                    // 1. Puxa as curtidas internas trazidas pelo Prisma para este comentário específico
+                    const curtidasDesteComentario = com.curtidas || [];
+                    const qtdCurtidasComent = curtidasDesteComentario.length;
 
-                  // 2. Localiza a linha exata da curtida criada pelo usuário atual
-                  const curtidaDoUsuario = curtidasDesteComentario.find(
-                    (c: any) => c.usuarioId === session?.user.id,
-                  );
-                  
-                  // Força booleanos reais e impede atribuição falha de ID primário
-                  const jaCurtido = !!curtidaDoUsuario;
-                  const idDaCurtida = curtidaDoUsuario ? curtidaDoUsuario.id : -1;
+                    // 2. Localiza se o usuário atual curtiu
+                    const curtidaDoUsuario = curtidasDesteComentario.find(
+                      (c: any) => c.usuarioId === session?.user?.id
+                    );
+                    
+                    const jaCurtido = !!curtidaDoUsuario;
+                    const idDaCurtida = curtidaDoUsuario ? curtidaDoUsuario.id : -1;
 
-                  // 3. Respostas vinculadas
-                  const respostasDesteComentario = respostas.filter((r: any) => r.parentId === com.id);
+                    // 3. Busca as respostas associadas a ESTE comentário específico na lista geral do post
+                    const respostasDesteComentario = post.comentarios?.filter(
+                      (r: any) => r.parentId === com.id
+                    ) || [];
 
-                  return (
-                    <div key={com.id} className="bg-slate-50/60 p-3 rounded-lg border border-slate-100 space-y-2">
-                      <div className="flex gap-3 items-start">
-                        <img 
-                          src={com.usuario?.foto || "https://via.placeholder.com/150"} 
-                          alt="" 
-                          className="w-7 h-7 rounded-full object-cover mt-0.5"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <span className="text-xs font-bold text-slate-800">{com.usuario?.nome}</span>
-                            <span className="text-[10px] text-slate-400">@{com.usuario?.username}</span>
-                          </div>
-                          <p className="text-slate-600 text-xs leading-normal">{com.texto}</p>
-                        </div>
-                      </div>
-
-                      {/* Ações do Comentário */}
-                      <div className="flex items-center gap-4 pl-10 text-[11px] font-semibold text-slate-500">
-                        <button 
-                          type="button"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            onCurtirComentario(com.id, jaCurtido, idDaCurtida);
-                          }}
-                          className={`flex items-center gap-1 hover:text-red-500 transition-colors ${jaCurtido ? "text-red-500 font-bold" : ""}`}
-                        >
-                          <Heart size={12} className={jaCurtido ? "fill-red-500 text-red-500" : "text-slate-400"} />
-                          <span>{qtdCurtidasComent}</span>
-                        </button>
-                        
-                        <button 
-                          type="button"
-                          onClick={() => setReplyTo({ id: com.id, username: com.usuario?.username || "" })}
-                          className="flex items-center gap-1 hover:text-blue-600 transition-colors"
-                        >
-                          <MessageSquare size={12} />
-                          <span>Responder</span>
-                        </button>
-                      </div>
-
-                      {/* Renderiza as Respostas Vinculadas */}
-                      {respostasDesteComentario.length > 0 && (
-                        <div className="pl-6 pt-2 space-y-2 border-l-2 border-slate-200 ml-3">
-                          {respostasDesteComentario.map((resp: any) => (
-                            <div key={resp.id} className="flex gap-2 items-start bg-white p-2 rounded border border-slate-100">
-                              <img src={resp.usuario?.foto || "https://via.placeholder.com/150"} className="w-5 h-5 rounded-full object-cover" alt="" />
-                              <div>
-                                <div className="flex items-center gap-1.5">
-                                  <span className="text-[11px] font-bold text-slate-800">{resp.usuario?.nome}</span>
-                                  <span className="text-[9px] text-slate-400">@{resp.usuario?.username}</span>
-                                </div>
-                                <p className="text-slate-600 text-xs">{resp.texto}</p>
-                              </div>
+                    return (
+                      <div key={com.id} className="bg-slate-50/60 p-3 rounded-lg border border-slate-100 space-y-2">
+                        <div className="flex gap-3 items-start">
+                          <img 
+                            src={com.usuario?.foto || "https://via.placeholder.com/150"} 
+                            alt="" 
+                            className="w-7 h-7 rounded-full object-cover mt-0.5"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="text-xs font-bold text-slate-800">{com.usuario?.nome}</span>
+                              <span className="text-[10px] text-slate-400">@{com.usuario?.username}</span>
                             </div>
-                          ))}
+                            <p className="text-slate-600 text-xs leading-normal">{com.texto}</p>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  );
-                })
+
+                        {/* Ações do Comentário (Curtir e Responder) */}
+                        <div className="flex items-center gap-4 pl-10 text-[11px] font-semibold text-slate-500">
+                          <button 
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onCurtirComentario(com.id, jaCurtido, idDaCurtida);
+                            }}
+                            className={`flex items-center gap-1 hover:text-red-500 transition-colors ${jaCurtido ? "text-red-500 font-bold" : ""}`}
+                          >
+                            <Heart size={12} className={jaCurtido ? "fill-red-500 text-red-500" : ""} />
+                            <span>{qtdCurtidasComent}</span>
+                          </button>
+                          
+                          <button 
+                            type="button"
+                            onClick={() => setReplyTo({ id: com.id, username: com.usuario?.username || "" })}
+                            className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                          >
+                            <MessageSquare size={12} />
+                            <span>Responder</span>
+                          </button>
+                        </div>
+
+                        {/* Renderiza as Respostas Vinculadas de forma aninhada */}
+                        {respostasDesteComentario.length > 0 && (
+                          <div className="pl-6 pt-2 space-y-2 border-l-2 border-slate-200 ml-3">
+                            {respostasDesteComentario.map((resp: any) => {
+                              // Se você quiser tratar curtidas nas respostas futuramente, a estrutura já está pronta aqui
+                              return (
+                                <div key={resp.id} className="flex gap-2 items-start bg-white p-2 rounded border border-slate-100">
+                                  <img src={resp.usuario?.foto || "https://via.placeholder.com/150"} className="w-5 h-5 rounded-full object-cover" alt="" />
+                                  <div>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="text-[11px] font-bold text-slate-800">{resp.usuario?.nome}</span>
+                                      <span className="text-[9px] text-slate-400">@{resp.usuario?.username}</span>
+                                    </div>
+                                    <p className="text-slate-600 text-xs">{resp.texto}</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
               ) : (
                 <p className="text-xs text-slate-400 italic text-center py-4">Nenhum comentário ainda. Seja o primeiro!</p>
               )}

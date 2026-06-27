@@ -6,6 +6,7 @@ export async function GET(request: Request) {
     const postagens = await buscarPostagensFeed();
 
     return Response.json(postagens);
+
   } catch (e) {
     console.error("Erro ao buscar feed:", e);
     return Response.json(
