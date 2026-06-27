@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Heart, MessageSquare, Send } from "lucide-react";
+import { X, Heart, MessageSquare, Send, CornerDownRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -8,8 +8,10 @@ type Props = {
   post: any;
   comentarioTexto: string;
   onChangeComentario: (text: string) => void;
-  onSubmitComentario: (postId: number) => void;
+  onSubmitComentario: (postId: number, comentarioId?: number | null) => void;
   onClose: () => void;
+  onCurtir: (postagemId: number, curtido: boolean, curtidaId: number) => void;
+  onCurtirComentario: (comentarioId: number, curtido: boolean, curtidaId: number) => void;
 };
 
 export default function FeedDetailsModal({
@@ -17,74 +19,42 @@ export default function FeedDetailsModal({
   comentarioTexto,
   onChangeComentario,
   onSubmitComentario,
-  onClose
+  onClose,
+  onCurtir,
+  onCurtirComentario
 }: Props) {
   if (!post) return null;
   const isProgresso = post.paginaAtual !== null;
 
-   const { data: session } = useSession();
-  
-      const [curtido, setCurtido] = useState(false);
-      const [curtidaId, setCurtidaId] = useState(-1);
-      const [qtdCurtidas, setQtdCurtidas] = useState(post.curtidas.length);
-  
-      useEffect(() => {
-        if (!session?.user?.id) return;
-  
-        const curtidaDoUsuario = post.curtidas.find(
-          (curtida: { usuarioId: string; id: number }) =>
-            curtida.usuarioId === session.user.id
-        );
-  
-        setCurtido(!!curtidaDoUsuario);
-        setCurtidaId(curtidaDoUsuario?.id ?? -1);
-        setQtdCurtidas(post.curtidas.length);
-      }, [session, post]);
-  
-      async function curtir(postagemId: number) {
-        if (!session?.user.id) return;
-  
-        if (curtido) {
-          const response = await fetch("../api/curtida/delete", {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              curtidaId,
-            }),
-          });
-  
-          if (!response.ok) return;
-  
-          setCurtido(false);
-          setQtdCurtidas((q:number) => q - 1);
-  
-        } else {
-          const response = await fetch("../api/curtida/create", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              usuarioId: session.user.id,
-              postagemId,
-              comentarioId: undefined,
-            }),
-          });
-  
-          if (!response.ok) return;
-  
-          const data = await response.json();
-  
-          setCurtido(true);
-          setCurtidaId(data.id); // <- assumindo que curtirPostComent retorna a curtida criada
-          setQtdCurtidas((q: number) => q + 1);
-        }
-      }
+  const { data: session } = useSession();
+
+  // Curtidas do Post Principal
+  const [curtido, setCurtido] = useState(false);
+  const [curtidaId, setCurtidaId] = useState(-1);
+  const [qtdCurtidas, setQtdCurtidas] = useState(0);
+
+  const [replyTo, setReplyTo] = useState<{ id: number; username: string } | null>(null);
+
+  useEffect(() => {
+    if (!post.curtidas) return;
+
+    // Filtra apenas as curtidas que pertencem ao Post (onde comentarioId é null)
+    const curtidasDoPost = post.curtidas.filter((c: any) => c.comentarioId === null || c.comentarioId === undefined);
+    setQtdCurtidas(curtidasDoPost.length);
+
+    if (session?.user?.id) {
+      const curtidaDoUsuario = curtidasDoPost.find((c: any) => c.usuarioId === session.user.id);
+      setCurtido(!!curtidaDoUsuario);
+      setCurtidaId(curtidaDoUsuario?.id ?? -1);
+    }
+  }, [session, post]);
+
+  // Separa os comentários principais (parentId === null) das respostas
+  const comentariosPrincipais = post.comentarios?.filter((c: any) => c.parentId === null) || [];
+  const respostas = post.comentarios?.filter((c: any) => c.parentId !== null) || [];
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
         
         {/* Header do Modal */}
@@ -129,11 +99,16 @@ export default function FeedDetailsModal({
             </p>
           </div>
 
-          {/* Botão Curtir Placeholder */}
+          {/* Botão Curtir Post */}
           <div className="pt-2 flex items-center gap-4">
-
-            <button onClick={(e) => {e.stopPropagation(); curtir(post.id);}} className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-red-500 transition-colors bg-slate-100 px-4 py-2 rounded-full">
-              <Heart size={16}  className={curtido ? "fill-red-500 text-red-500" : "text-slate-500"}/>
+            <button onClick={(e) => { 
+              e.stopPropagation();
+              setCurtido(c => !c);                          
+              setQtdCurtidas((q) => curtido ? q - 1 : q + 1); 
+              onCurtir(post.id, curtido, curtidaId);
+            }}
+              className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-red-500 transition-colors bg-slate-100 px-4 py-2 rounded-full">
+              <Heart size={16} className={curtido ? "fill-red-500 text-red-500" : "text-slate-500"}/>
               <span>{qtdCurtidas} Curtidas</span>
             </button>
           </div>
@@ -146,25 +121,90 @@ export default function FeedDetailsModal({
               <MessageSquare size={16} /> Comentários ({post.comentarios?.length || 0})
             </h4>
             
-            {/* Lista de Comentários salvos vindo do Include */}
             <div className="space-y-4 mb-6">
-              {post.comentarios && post.comentarios.length > 0 ? (
-                post.comentarios.map((com: any) => (
-                  <div key={com.id} className="flex gap-3 items-start bg-slate-50/60 p-3 rounded-lg border border-slate-100">
-                    <img 
-                      src={com.usuario?.foto || "https://via.placeholder.com/150"} 
-                      alt="" 
-                      className="w-7 h-7 rounded-full object-cover mt-0.5"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-xs font-bold text-slate-800">{com.usuario?.nome}</span>
-                        <span className="text-[10px] text-slate-400">@{com.usuario?.username}</span>
+              {comentariosPrincipais.length > 0 ? (
+                comentariosPrincipais.map((com: any) => {
+                  
+                  // 1. Filtra estritamente as curtidas correspondentes a este comentário específico
+                  const curtidasDesteComentario = post.curtidas?.filter(
+                    (c: any) => c.comentarioId === com.id
+                  ) || [];
+                  const qtdCurtidasComent = curtidasDesteComentario.length;
+
+                  // 2. Localiza a linha exata da curtida criada pelo usuário atual
+                  const curtidaDoUsuario = curtidasDesteComentario.find(
+                    (c: any) => c.usuarioId === session?.user.id,
+                  );
+                  
+                  // Força booleanos reais e impede atribuição falha de ID primário
+                  const jaCurtido = !!curtidaDoUsuario;
+                  const idDaCurtida = curtidaDoUsuario ? curtidaDoUsuario.id : -1;
+
+                  // 3. Respostas vinculadas
+                  const respostasDesteComentario = respostas.filter((r: any) => r.parentId === com.id);
+
+                  return (
+                    <div key={com.id} className="bg-slate-50/60 p-3 rounded-lg border border-slate-100 space-y-2">
+                      <div className="flex gap-3 items-start">
+                        <img 
+                          src={com.usuario?.foto || "https://via.placeholder.com/150"} 
+                          alt="" 
+                          className="w-7 h-7 rounded-full object-cover mt-0.5"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <span className="text-xs font-bold text-slate-800">{com.usuario?.nome}</span>
+                            <span className="text-[10px] text-slate-400">@{com.usuario?.username}</span>
+                          </div>
+                          <p className="text-slate-600 text-xs leading-normal">{com.texto}</p>
+                        </div>
                       </div>
-                      <p className="text-slate-600 text-xs leading-normal">{com.texto}</p>
+
+                      {/* Ações do Comentário */}
+                      <div className="flex items-center gap-4 pl-10 text-[11px] font-semibold text-slate-500">
+                        <button 
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onCurtirComentario(com.id, jaCurtido, idDaCurtida);
+                          }}
+                          className={`flex items-center gap-1 hover:text-red-500 transition-colors ${jaCurtido ? "text-red-500 font-bold" : ""}`}
+                        >
+                          <Heart size={12} className={jaCurtido ? "fill-red-500 text-red-500" : "text-slate-400"} />
+                          <span>{qtdCurtidasComent}</span>
+                        </button>
+                        
+                        <button 
+                          type="button"
+                          onClick={() => setReplyTo({ id: com.id, username: com.usuario?.username || "" })}
+                          className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                        >
+                          <MessageSquare size={12} />
+                          <span>Responder</span>
+                        </button>
+                      </div>
+
+                      {/* Renderiza as Respostas Vinculadas */}
+                      {respostasDesteComentario.length > 0 && (
+                        <div className="pl-6 pt-2 space-y-2 border-l-2 border-slate-200 ml-3">
+                          {respostasDesteComentario.map((resp: any) => (
+                            <div key={resp.id} className="flex gap-2 items-start bg-white p-2 rounded border border-slate-100">
+                              <img src={resp.usuario?.foto || "https://via.placeholder.com/150"} className="w-5 h-5 rounded-full object-cover" alt="" />
+                              <div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[11px] font-bold text-slate-800">{resp.usuario?.nome}</span>
+                                  <span className="text-[9px] text-slate-400">@{resp.usuario?.username}</span>
+                                </div>
+                                <p className="text-slate-600 text-xs">{resp.texto}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-xs text-slate-400 italic text-center py-4">Nenhum comentário ainda. Seja o primeiro!</p>
               )}
@@ -172,12 +212,24 @@ export default function FeedDetailsModal({
           </div>
         </div>
 
-        {/* Input Fixo de Criar Comentário */}
-        <div className="p-4 border-t border-slate-100 bg-white">
+        {/* Input Fixo de Criar Comentário / Resposta */}
+        <div className="p-4 border-t border-slate-100 bg-white space-y-2">
+          {replyTo && (
+            <div className="flex justify-between items-center bg-blue-50 text-blue-700 text-xs px-3 py-1.5 rounded-md font-medium">
+              <span className="flex items-center gap-1">
+                <CornerDownRight size={14} /> Respondendo a @{replyTo.username}
+              </span>
+              <button onClick={() => setReplyTo(null)} className="text-blue-500 hover:text-blue-700">
+                <X size={14} />
+              </button>
+            </div>
+          )}
+
           <form 
             onSubmit={(e) => {
               e.preventDefault();
-              onSubmitComentario(post.id);
+              onSubmitComentario(post.id, replyTo?.id || null);
+              setReplyTo(null);
             }}
             className="flex gap-2 items-center"
           >
@@ -185,14 +237,11 @@ export default function FeedDetailsModal({
               type="text"
               value={comentarioTexto}
               onChange={(e) => onChangeComentario(e.target.value)}
-              placeholder="Escreva sua resposta..."
+              placeholder={replyTo ? `Sua resposta para @${replyTo.username}...` : "Escreva seu comentário..."}
               className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition-colors"
               required
             />
-            <button 
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors flex-shrink-0"
-            >
+            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors flex-shrink-0">
               <Send size={16} />
             </button>
           </form>

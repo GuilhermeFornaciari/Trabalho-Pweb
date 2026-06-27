@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Star, Heart, X } from "lucide-react";
 import { Postagem } from "@/lib/prisma/generated/client";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 type ResenhaDetalhes = Postagem & {
   usuario: { id: number; nome: string; username: string; foto: string | null };
@@ -23,6 +25,69 @@ export default function ResenhaModal({
   onSubmitComentario,
   onClose,
 }: Props) {
+
+   const { data: session } = useSession();
+    
+        const [curtido, setCurtido] = useState(false);
+        const [curtidaId, setCurtidaId] = useState(-1);
+        const [qtdCurtidas, setQtdCurtidas] = useState(resenha.curtidas.length);
+    
+        useEffect(() => {
+          if (!session?.user?.id) return;
+    
+          const curtidaDoUsuario = resenha.curtidas.find(
+            (curtida: { usuarioId: string; id: number }) =>
+              curtida.usuarioId === session.user.id
+          );
+    
+          setCurtido(!!curtidaDoUsuario);
+          setCurtidaId(curtidaDoUsuario?.id ?? -1);
+          setQtdCurtidas(resenha.curtidas.length);
+        }, [session, resenha]);
+    
+        async function curtir(postagemId: number) {
+          if (!session?.user.id) return;
+    
+          if (curtido) {
+            const response = await fetch("../api/curtida/delete", {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                curtidaId,
+              }),
+            });
+    
+            if (!response.ok) return;
+    
+            setCurtido(false);
+            setQtdCurtidas((q:number) => q - 1);
+    
+          } else {
+            const response = await fetch("../api/curtida/create", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                usuarioId: session.user.id,
+                postagemId,
+                comentarioId: undefined,
+              }),
+            });
+    
+            if (!response.ok) return;
+    
+            const data = await response.json();
+    
+            setCurtido(true);
+            setCurtidaId(data.id); // <- assumindo que curtirPostComent retorna a curtida criada
+            setQtdCurtidas((q: number) => q + 1);
+          }
+        }
+  
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden animate-fadeIn">
@@ -67,8 +132,9 @@ export default function ResenhaModal({
           </p>
 
           <div className="pt-2">
-            <button className="flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-red-500 transition-colors bg-slate-100 px-3 py-1.5 rounded-full">
-              <Heart size={14} /> Curtir ({resenha.curtidas?.length || 0})
+            <button onClick={(e) => {e.stopPropagation(); curtir(resenha.id);}} className="flex items-center gap-1.5 hover:text-red-500 transition-colors">
+              <Heart size={15} className={curtido ? "fill-red-500 text-red-500" : "text-slate-500"}/>
+              <span>{qtdCurtidas}</span>
             </button>
           </div>
 
