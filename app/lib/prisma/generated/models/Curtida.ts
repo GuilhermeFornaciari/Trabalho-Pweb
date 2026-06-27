@@ -233,8 +233,8 @@ export type CurtidaOrderByWithRelationInput = {
 
 export type CurtidaWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  id_comentarioId?: Prisma.CurtidaIdComentarioIdCompoundUniqueInput
-  id_postagemId?: Prisma.CurtidaIdPostagemIdCompoundUniqueInput
+  usuarioId_comentarioId?: Prisma.CurtidaUsuarioIdComentarioIdCompoundUniqueInput
+  usuarioId_postagemId?: Prisma.CurtidaUsuarioIdPostagemIdCompoundUniqueInput
   AND?: Prisma.CurtidaWhereInput | Prisma.CurtidaWhereInput[]
   OR?: Prisma.CurtidaWhereInput[]
   NOT?: Prisma.CurtidaWhereInput | Prisma.CurtidaWhereInput[]
@@ -244,7 +244,7 @@ export type CurtidaWhereUniqueInput = Prisma.AtLeast<{
   usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   postagem?: Prisma.XOR<Prisma.PostagemNullableScalarRelationFilter, Prisma.PostagemWhereInput> | null
   comentario?: Prisma.XOR<Prisma.ComentarioNullableScalarRelationFilter, Prisma.ComentarioWhereInput> | null
-}, "id" | "id_comentarioId" | "id_postagemId">
+}, "id" | "usuarioId_comentarioId" | "usuarioId_postagemId">
 
 export type CurtidaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -322,13 +322,13 @@ export type CurtidaOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type CurtidaIdComentarioIdCompoundUniqueInput = {
-  id: number
+export type CurtidaUsuarioIdComentarioIdCompoundUniqueInput = {
+  usuarioId: string
   comentarioId: number
 }
 
-export type CurtidaIdPostagemIdCompoundUniqueInput = {
-  id: number
+export type CurtidaUsuarioIdPostagemIdCompoundUniqueInput = {
+  usuarioId: string
   postagemId: number
 }
 
