@@ -1,12 +1,12 @@
 import Biblioteca from "@/(entidades)/biblioteca";
-import { adicionarLivro } from "@/lib/data/bibliotecaDAO";
+import { salvarLivro } from "@/lib/data/bibliotecaDAO";
 
-export async function add(biblioteca: Biblioteca) {
+export async function save(biblioteca: Biblioteca) {
   try {
-    const resultado = await adicionarLivro(biblioteca);
+    const resultado = await salvarLivro(biblioteca);
     return {resultado, status: 200};
   } catch(e) {
     console.error(e);
-    return {message: "Não foi possível adicionar o livro na biblioteca.", status: 500}
+    return {message: "Não foi possível salvar o status do livro na biblioteca.", status: 500}
   }
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 import Modal from "@/components/modal";
 import { StatusLeitura } from "@/lib/prisma/generated/enums";
+import { useSession } from "next-auth/react";
 
 export default function BibliotecaButton({
   livro,
@@ -13,16 +14,50 @@ export default function BibliotecaButton({
   const [modal, setModal] = useState(false);
   const status = Object.values(StatusLeitura);
   const [statusSelecionado, setStatusSelecionado] = useState<StatusLeitura | null>(livro.biblioteca?.status ?? null);
+  const {data: session} = useSession();
 
-  async function adicionar() {
-    
+  async function salvarStatus() {
+    const response = await fetch(`/api/biblioteca/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        livroId: livro.id,
+        status: statusSelecionado
+      })
+    })
+
+    if(!response.ok) {
+      const erro = await response.json();
+      alert("ERRO: " + erro.message);
+    }
+  }
+
+  async function handleSubmit() {
+    if(!session?.user.id) {
+      alert("Você precisa estar logado!");
+      return;
+    }
+
+    if(statusSelecionado === null) {
+      alert("Selecione uma opção");
+      return;
+    }
+
+    salvarStatus();
+    setModal(false);
   }
 
   if(livro.biblioteca === null) {
     return (
       <>
         <button className={buttonStyle + " " + "bg-lime-400"} onClick={() => setModal(true)}>Adicione à biblioteca</button>
-        <Modal open={modal} onClose={() => setModal(false)}>
+        <Modal open={modal} 
+          onClose={() => {
+            setStatusSelecionado(livro.biblioteca?.status ?? null);
+            setModal(false)
+          }}>
           <div className="bg-white p-6 rounded-md">
             <h1 className="text-center mb-5 text-lg font-semibold">Adicione <span className="font-bold text-amber-500">{livro.titulo}</span> na sua biblioteca</h1>
             <p>Selecione o status da sua leitura:</p>
@@ -43,7 +78,13 @@ export default function BibliotecaButton({
                 </div>
               ))}
             </div>
-            <button className={"bg-lime-400 rounded-md w-full py-1"} onClick={() => setModal(false)}>Salvar</button>
+            <button 
+              className={"bg-lime-400 rounded-md w-full py-1 transition duration-300 disabled:bg-gray-300 disabled:text-gray-500"} 
+              onClick={() => handleSubmit()} 
+              disabled={statusSelecionado === null}
+            >
+              Salvar
+            </button>
           </div>
         </Modal>
       </>
