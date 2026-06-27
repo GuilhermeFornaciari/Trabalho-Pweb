@@ -102,8 +102,11 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
           }
 
         {/* Área futura — postagens, biblioteca, etc. */}
-        <div className="mt-10 text-center text-[#8A7A5B] text-sm">
-          <BibliotecaContainer livros={usuario?.biblioteca}/>
+        <div className="mt-3 text-center text-[#8A7A5B] text-sm">
+          <h1 className="text-slate-950 text-2xl font-semibold">Biblioteca</h1>
+          <div className="flex flex-wrap">
+            <BibliotecaContainer livros={usuario?.biblioteca}/>
+          </div>
         </div>
 
       </div>
