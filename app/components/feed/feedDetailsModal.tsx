@@ -28,7 +28,7 @@ export default function FeedDetailsModal({
 
   const { data: session } = useSession();
 
-  console.log("curtidas", post.curtidas);
+  // console.log("curtidas", post.curtidas);
 
   // Curtidas do Post Principal
   const [curtido, setCurtido] = useState(false);

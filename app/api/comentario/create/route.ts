@@ -6,6 +6,7 @@ const createSchema = z.object({
   postagemId: z.coerce.number().int().positive(),
   usuarioId: z.string(),
   texto: z.string().min(1),
+  comentarioId: z.coerce.number().int().positive().optional(),
 });
 
 export async function POST(request: Request) {
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
       usuarioId: dados.usuarioId,
       texto: dados.texto,
       data: new Date(),
-      parentId: null,
+      parentId: dados.comentarioId ?? null,
     };
 
     const res = await createComentario(comentario);

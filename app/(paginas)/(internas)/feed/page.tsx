@@ -38,6 +38,8 @@ export default function FeedPage() {
       return;
     }
 
+    console.log("Comentario id:", comentId);
+
     try {
       const response = await fetch("/api/comentario/create", {
         method: "POST",
