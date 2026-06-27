@@ -1,5 +1,5 @@
-import { boolean, z } from "zod";
-import { Comentario, Postagem } from "@/lib/prisma/generated/client";
+import { z } from "zod";
+import { Comentario } from "@/lib/prisma/generated/client";
 import { createComentario } from "@/lib/data/comentarioDAO";
 
 const createSchema = z.object({

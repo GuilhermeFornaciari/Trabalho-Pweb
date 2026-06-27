@@ -12,7 +12,7 @@ export async function createResenha(resenha: Omit<Postagem, "id">) {
 }
 
 export async function livrosResenhasRecentes(livroId: number){
-  return prisma.postagem.findMany({
+  const dados = await prisma.postagem.findMany({
     where: {
       livroId,
       nota: {
@@ -34,4 +34,8 @@ export async function livrosResenhasRecentes(livroId: number){
       data: "desc",
     },
   });
+
+  console.dir(dados[0].curtidas, { depth: null });
+
+  return dados;
 }

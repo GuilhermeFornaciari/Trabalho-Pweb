@@ -15,13 +15,14 @@ export default function FeedPage() {
   // Carrega todas as postagens globais do feed
   async function carregarFeed() {
     try {
-      const response = await fetch("/api/feed/get"); 
-      if (response.ok) {
-        const data = await response.json();
-        setPosts(data);
-      }
-    } catch (error) {
-      console.error("Erro ao carregar feed:", error);
+      const response = await fetch("/api/feed/get");
+
+      if (!response.ok) return [];
+
+      const data = await response.json();
+      setPosts(data);
+
+      return data;
     } finally {
       setLoading(false);
     }
@@ -31,8 +32,7 @@ export default function FeedPage() {
     carregarFeed();
   }, []);
 
-  // Handler para submeter novos comentários
-  async function handleComentarioSubmit(postId: number) {
+  async function handleComentarioSubmit(postId: number, comentId?: number | null) {
     if (!session?.user?.id) {
       alert("Você precisa estar logado para comentar.");
       return;
@@ -44,20 +44,22 @@ export default function FeedPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           postagemId: postId,
+          comentarioId: comentId || null, // Se vier preenchido, vira uma resposta. Se não, comentário raiz do post.
           usuarioId: session.user.id,
-          texto: comentario,
+          texto: comentario, // Certifique-se de que o nome dessa variável de estado bate com o seu useState
         }),
       });
 
       if (response.ok) {
-        setComentario("");
-
+        setComentario(""); // Limpa o input
         await carregarFeed();
-        
-        // Atualiza o modal ativo com os novos dados do post atualizado
-        const postAtualizado = posts.find((p) => p.id === postId);
-        if (postAtualizado) {
-          setPostSelecionado(null);
+
+        // Atualiza o modal aberto com os novos dados se necessário
+        if (postSelecionado) {
+          const postAtualizado = posts.find((p) => p.id === postId);
+          if (postAtualizado) {
+            setPostSelecionado(postAtualizado);
+          }
         }
         alert("Comentário adicionado!");
       } else {
@@ -67,6 +69,77 @@ export default function FeedPage() {
       console.error(error);
     }
   }
+
+  async function curtir(postagemId: number, curtido: boolean, curtidaId: number) {
+    if (!session?.user?.id) return;
+
+    if (curtido) {
+      const response = await fetch("/api/curtida/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ curtidaId }),
+      });
+      if (!response.ok) return;
+    } else {
+      const response = await fetch("/api/curtida/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usuarioId: session.user.id,
+          postagemId,
+        }),
+      });
+      if (!response.ok) return;
+    }
+
+    await carregarFeed();
+  }
+
+  async function curtirComentario(comentarioId: number, curtido: boolean, curtidaId: number) {
+    if (!session?.user?.id) return;
+
+    try {
+      if (curtido) {
+        // Deleta a curtida usando o ID dela
+        const response = await fetch("/api/curtida/delete", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ curtidaId }),
+        });
+        if (!response.ok) return;
+      } else {
+        // Cria a curtida omitindo postagemId para o Zod validar como comentário
+        const response = await fetch("/api/curtida/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            usuarioId: session.user.id,
+            comentarioId,
+          }),
+        });
+        if (!response.ok) return;
+      }
+
+      // Recarrega os dados globais
+      const novosPosts = await carregarFeed();
+
+      if (postSelecionado) {
+        const atualizado = novosPosts.find(
+          (p: any) => p.id === postSelecionado.id
+        );
+
+        if (atualizado) {
+          setPostSelecionado(atualizado);
+        }
+        console.log(atualizado?.curtidas);
+      }
+
+      
+    } catch (error) {
+      console.error("Erro ao processar curtida do comentário:", error);
+    }
+  }
+
 
 
   return (
@@ -84,7 +157,8 @@ export default function FeedPage() {
             <FeedCard 
               key={post.id} 
               post={post} 
-              onClick={(p) => setPostSelecionado(p)} 
+             onClick={(p) => setPostSelecionado(p)} 
+             onCurtir={curtir} 
             />
           ))}
 
@@ -96,14 +170,16 @@ export default function FeedPage() {
 
       {/* Modal de Detalhes Expandidos */}
       {postSelecionado && (
-        <FeedDetailsModal
-          post={postSelecionado}
-          comentarioTexto={comentario}
-          onChangeComentario={setComentario}
-          onSubmitComentario={handleComentarioSubmit}
-          onClose={() => {setPostSelecionado(null); carregarFeed();}}
-        />
-      )}
+      <FeedDetailsModal
+        post={postSelecionado}
+        comentarioTexto={comentario}
+        onChangeComentario={setComentario}
+        onSubmitComentario={handleComentarioSubmit}
+        onClose={() => { setPostSelecionado(null) }}
+        onCurtir={curtir}
+        onCurtirComentario={curtirComentario}
+      />
+    )}
     </div>
   );
 }
