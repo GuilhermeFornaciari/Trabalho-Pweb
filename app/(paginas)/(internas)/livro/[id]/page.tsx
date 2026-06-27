@@ -190,15 +190,29 @@ export default function DetalhesLivro({
             )
           }
           
-          {/* botão de escreever resenha */}
-          <div className="w-4xl m-auto flex justify-end mb-4">
-            <button
-              className="px-5 py-3 rounded-md bg-blue-600 text-white"
-              onClick={() => setMostrarModalResenhaCreate(true)}
-            >
-              Escrever Resenha
-            </button>
-          </div>
+          {(livro?.biblioteca?.status === "LIDO" || livro?.biblioteca?.status === "LENDO")  && (
+              <div className="w-4xl m-auto flex justify-end mb-4">
+                {livro?.biblioteca?.status === "LIDO" && (
+                  <button
+                  className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                  onClick={() => setMostrarModalResenhaCreate(true)}
+                  >
+                    Escrever Resenha
+                  </button>
+                  )
+                }
+                {livro?.biblioteca?.status === "LENDO" && (
+                  <button
+                  className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                  >
+                    Adicionar progresso
+                  </button>
+                  )
+                }
+
+              </div>
+            )
+          }
           
           {/* listagem de resenhas */}
          {resenhas.map((resenha) => (
