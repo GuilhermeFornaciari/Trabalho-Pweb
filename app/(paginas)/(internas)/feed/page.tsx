@@ -68,6 +68,7 @@ export default function FeedPage() {
     }
   }
 
+
   return (
     <div className="min-h-screen bg-slate-50/60 py-8 px-4">
       <div className="max-w-2xl mx-auto mb-6">
@@ -100,7 +101,7 @@ export default function FeedPage() {
           comentarioTexto={comentario}
           onChangeComentario={setComentario}
           onSubmitComentario={handleComentarioSubmit}
-          onClose={() => setPostSelecionado(null)}
+          onClose={() => {setPostSelecionado(null); carregarFeed();}}
         />
       )}
     </div>
