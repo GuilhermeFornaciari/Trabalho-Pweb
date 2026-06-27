@@ -1,6 +1,7 @@
 import PrismaSingleton from "../prisma/PrismaSingleton";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
+
 export async function buscarPostagensFeed() {
   return await prisma.postagem.findMany({
     orderBy: {
@@ -25,11 +26,14 @@ export async function buscarPostagensFeed() {
           paginas: true,
         },
       },
-      // Contabiliza ou traz as curtidas
+      // Traz APENAS as curtidas do Post Principal
       curtidas: true,
-      // Traw os comentários já com os dados de quem comentou
+      
+      // Traz os comentários já com os dados de quem comentou E as curtidas de cada um
       comentarios: {
         include: {
+          // CRUCIAL: Traz as curtidas específicas deste comentário
+          curtidas: true, 
           usuario: {
             select: {
               id: true,
@@ -40,7 +44,7 @@ export async function buscarPostagensFeed() {
           },
         },
         orderBy: {
-          data: "asc", // Comentários antigos primeiro (ordem cronológica de conversa)
+          data: "asc", // Comentários antigos primeiro (ordem cronológica)
         },
       },
     },
