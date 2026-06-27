@@ -14,12 +14,11 @@ export default function BibliotecaButton({
   const status = Object.values(StatusLeitura);
   const [statusSelecionado, setStatusSelecionado] = useState<StatusLeitura | null>(livro.biblioteca?.status ?? null);
 
-
   if(livro.biblioteca === null) {
     return (
       <>
         <button className={buttonStyle + " " + "bg-lime-400"} onClick={() => setModal(true)}>Adicione à biblioteca</button>
-        <BibliotecaModal open={modal}>
+        <BibliotecaModal open={modal} onClose={() => setModal(false)}>
           <div className="bg-white p-6 rounded-md">
             <h1 className="text-center mb-5 text-lg font-semibold">Adicione <span className="font-bold text-amber-500">{livro.titulo}</span> na sua biblioteca</h1>
             <p>Selecione o status da sua leitura:</p>

@@ -10,7 +10,7 @@ export async function GET( request: Request, { params }: { params: { id: string 
   const session = await auth();
   if(!session) {
     return Response.json(
-      { message: "Usuário não logado."},
+      { message: "Não autorizado: usuário não logado."},
       { status: 401 }
     )
   }

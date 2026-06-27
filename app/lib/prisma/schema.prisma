@@ -171,7 +171,7 @@ model Biblioteca {
   livroId   Int    @map("livro_id")
 
   status        StatusLeitura
-  dataInicio    DateTime  @map("data_inicio")
+  dataInicio    DateTime?  @map("data_inicio")
   dataConclusao DateTime? @map("data_conclusao")
 
   usuario User  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
