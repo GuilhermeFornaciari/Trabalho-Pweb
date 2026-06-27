@@ -130,9 +130,9 @@ model Postagem {
   paginaAtual  Int?
   paginasLidas Int?
   nota         Int?
-  data         DateTime
+  data         DateTime @default(now())
   titulo       String?
-  texto        String
+  texto        String?
   temSpoiler   Boolean?
 
   usuarioId String @map("usuario_id")

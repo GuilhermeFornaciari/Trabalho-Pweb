@@ -8,8 +8,6 @@ const addSchema = z.object({
   status: z.enum(["LIDO", "LENDO", "QUERO_LER", "ABANDONEI"])
 })
 
-export type AddBibliotecaDTO = z.infer<typeof addSchema>;
-
 export async function POST(request: Request) {
   const session = await auth();
 

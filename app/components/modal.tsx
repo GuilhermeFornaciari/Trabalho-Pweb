@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function BibliotecaModal({
+export default function Modal({
   open,
   children,
   onClose
