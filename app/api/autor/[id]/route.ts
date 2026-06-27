@@ -1,4 +1,4 @@
-import { getAutorId } from "@/lib/service/autor/AutorService";
+import { getAutorId } from "@/lib/service/AutorService";
 import { z } from "zod";
 
 const idSchema = z.coerce.number().int().positive();

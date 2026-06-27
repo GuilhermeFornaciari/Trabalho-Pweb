@@ -272,7 +272,7 @@ export type BibliotecaCreateInput = {
   status: $Enums.StatusLeitura
   dataInicio?: Date | string | null
   dataConclusao?: Date | string | null
-  usuario: Prisma.UserCreateNestedOneWithoutBibliotecasInput
+  usuario: Prisma.UserCreateNestedOneWithoutBibliotecaInput
   livro: Prisma.LivroCreateNestedOneWithoutBibliotecasInput
 }
 
@@ -288,7 +288,7 @@ export type BibliotecaUpdateInput = {
   status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  usuario?: Prisma.UserUpdateOneRequiredWithoutBibliotecasNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutBibliotecaNestedInput
   livro?: Prisma.LivroUpdateOneRequiredWithoutBibliotecasNestedInput
 }
 
@@ -512,7 +512,7 @@ export type BibliotecaCreateWithoutLivroInput = {
   status: $Enums.StatusLeitura
   dataInicio?: Date | string | null
   dataConclusao?: Date | string | null
-  usuario: Prisma.UserCreateNestedOneWithoutBibliotecasInput
+  usuario: Prisma.UserCreateNestedOneWithoutBibliotecaInput
 }
 
 export type BibliotecaUncheckedCreateWithoutLivroInput = {
@@ -587,7 +587,7 @@ export type BibliotecaUpdateWithoutLivroInput = {
   status?: Prisma.EnumStatusLeituraFieldUpdateOperationsInput | $Enums.StatusLeitura
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataConclusao?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  usuario?: Prisma.UserUpdateOneRequiredWithoutBibliotecasNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutBibliotecaNestedInput
 }
 
 export type BibliotecaUncheckedUpdateWithoutLivroInput = {

@@ -2,16 +2,24 @@
 
 import { use, useEffect, useState } from "react";
 import Image from "next/image";
-import { User } from "@/lib/prisma/generated/client";
+import { User, Biblioteca, Livro } from "@/lib/prisma/generated/client";
 import { useSession } from "next-auth/react";
-import EditModal from "@/components/user/editModal";
+import EditarUsuario from "@/components/usuario/editarForm";
+import Modal from "@/components/modal";
+import BibliotecaContainer from "@/components/biblioteca/bibliotecaContainer";
+
+export type UsuarioPerfil = User & {
+  biblioteca: (Biblioteca & {
+    livro: Livro;
+  })[];
+};
 
 export default function PerfilPage({params,}: {params: Promise<{ user: string }>}) {
     const {user} = use(params);
     const { data: session } = useSession();
     const backgroundImage = "/images/fundo-perfil.jpg";
     const [modalAberto, setModalAberto] = useState(false);
-    const [usuario, setUsuario] = useState<User>();
+    const [usuario, setUsuario] = useState<UsuarioPerfil>();
     const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
@@ -20,7 +28,8 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
 
         if(response.ok){
           const data = await response.json();
-          setUsuario(data);
+          console.log(data);
+          setUsuario(data.dados);
         }
       };
 
@@ -42,35 +51,25 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
   return (
     <main className="relative min-h-screen">
       <div className="fixed inset-0 -z-10 bg-cover bg-center" style={{ backgroundImage }}/>
-
-        <div className="fixed inset-0 -z-10 bg-[#FFF8EB]/80" />
-
-      <div className="max-w-3xl mx-auto px-4 py-10">
-
+        <div className="w-5xl mx-auto px-4 py-10">
         {/* Cabeçalho do perfil */}
-        <div className="flex items-center gap-10 pb-8 border-b border-[#E8D89A]">
+          <div className="flex items-start justify-around gap-13 pb-8 border-b border-[#E8D89A] w-full">
 
-          {/* Foto */}
-          <div className="relative w-32 h-32 flex-shrink-0">
-            <Image
-              src={usuario?.foto || "/temp/caju.jpeg"}
-              alt="Foto do usuário"
-              fill
-              className="rounded-full object-cover border-4 border-[#F7D774]"
-            />
-          </div>
-
-          {/* Infos */}
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-4">
-              <h1 className="text-xl font-semibold text-[#4F442E]">
-                {usuario?.username}
-              </h1>
+            {/* Foto */}
+            <div className="flex flex-col justify-center items-center gap-2">
+              <div className="relative w-50 h-50 flex-shrink-0">
+                <Image
+                  src={usuario?.foto || "/temp/caju.jpeg"}
+                  alt="Foto do usuário"
+                  fill
+                  className="rounded-full object-cover border-4 border-[#F7D774]"
+                />
+              </div>
               { session?.user.id === usuario?.id && 
                 (
                   <button
-                    onClick={() => setModalAberto(true)}
-                    className="px-4 py-1.5 rounded-lg bg-[#F7D774] hover:bg-[#F2CF5A] transition text-sm font-semibold text-[#4F442E]"
+                  onClick={() => setModalAberto(true)}
+                  className="px-4 py-1.5 rounded-lg bg-[#F7D774] hover:bg-[#F2CF5A] transition text-sm font-semibold text-[#4F442E]"
                   >
                     Editar perfil
                   </button>
@@ -78,33 +77,33 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
               }
             </div>
 
-           <div className="flex items-center gap-3">
-              <p className="text-[#4F442E] font-medium">{usuario?.nome}</p>
-              {usuario?.dataNascimento && (
-                <span className="text-[#8A7A5B] text-sm">
-                  {new Date().getFullYear() - new Date(usuario.dataNascimento).getFullYear()} anos
-                </span>
-              )}
-            </div>
+            {/* Infos */}
+            <div className="flex flex-col flex-1 items-start gap-3 py-5">
+                <h1 className="text-3xl font-semibold text-[#4F442E]">{usuario?.nome} <span className="text-gray-400 font-light text-2xl">@{usuario?.username}</span></h1>
 
-            <p className="text-[#8A7A5B] text-sm max-w-xs"> {usuario?.bio} </p>
+                {usuario?.dataNascimento && (
+                  <span className="text-[#8A7A5B] text-sm">
+                    {new Date().getFullYear() - new Date(usuario.dataNascimento).getFullYear()} anos
+                  </span>
+                )}
 
-          {
-            session?.user.id === usuario?.id && 
+              <p className="text-[#8A7A5B] text-sm max-w-xs"> {usuario?.bio} </p>
+           </div>
+        </div>
+          {session?.user.id === usuario?.id && 
             (
-              <EditModal
-              open={modalAberto}
-              onClose={() => setModalAberto(false)}
-              onRefresh={() => setRefreshKey((prev) => prev + 1)}
-            />
+              <Modal open={modalAberto} onClose={() => setModalAberto(false)}>
+                <EditarUsuario
+                onClose={() => setModalAberto(false)}
+                onRefresh={() => setRefreshKey((prev) => prev + 1)}
+                />
+              </Modal>
             )
           }
-          </div>
-        </div>
 
         {/* Área futura — postagens, biblioteca, etc. */}
         <div className="mt-10 text-center text-[#8A7A5B] text-sm">
-          {/* conteúdo futuro aqui */}
+          <BibliotecaContainer livros={usuario?.biblioteca}/>
         </div>
 
       </div>

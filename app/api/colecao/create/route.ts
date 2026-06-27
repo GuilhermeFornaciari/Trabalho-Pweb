@@ -1,4 +1,4 @@
-import { colecao } from "@/lib/service/colecao/ColecaoService";
+import { colecao } from "@/lib/service/ColecaoService";
 import { z } from "zod";
 
 const createSchema = z.object({

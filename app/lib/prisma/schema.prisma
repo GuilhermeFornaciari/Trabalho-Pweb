@@ -63,7 +63,7 @@ model User {
   amizadesRecebidas Amigos[]     @relation("Amigo2")
   postagens         Postagem[]   
   comentarios       Comentario[]
-  bibliotecas       Biblioteca[]
+  biblioteca       Biblioteca[]
   curtidas          Curtida[]
 
   @@map("usuarios")

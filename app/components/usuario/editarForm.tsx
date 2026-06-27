@@ -4,17 +4,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 
-type EditModalProps = {
-  open: boolean;
-  onClose: () => void;
+export default function EditarUsuario({
+  onRefresh,
+  onClose
+}: {
   onRefresh: () => void;
-};
-
-export default function EditModal({
-  open,
-  onClose,
-  onRefresh
-}: EditModalProps) {
+  onClose: () => void;
+}) {
   //const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const { data: session, status, update } = useSession();
@@ -60,7 +56,6 @@ export default function EditModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <form
           onSubmit={(e) => {
@@ -190,6 +185,5 @@ export default function EditModal({
           </div>
         </form>
       </div>
-    </div>
   );
 }
