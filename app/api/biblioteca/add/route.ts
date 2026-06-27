@@ -39,5 +39,5 @@ export async function POST(request: Request) {
     (dados.status === "LENDO") ? new Date() : null,
     null 
   ) 
-  return Response.json(save(biblioteca));
+  return Response.json(await save(biblioteca));
 }

@@ -179,6 +179,13 @@ export default function DetalhesLivro({
               livro,
               id,
               setMostrarModal,
+              (dados) => setLivro((prev) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  biblioteca: dados,
+                };
+              }),
               adm
             )
           }
@@ -351,6 +358,7 @@ function informacoesDoLivro(
   livro: LivroDetalhes,
   id: string,
   setMostrarModal: (value: boolean) => void,
+  setBiblioteca: (value: Biblioteca) => void,
   adm: boolean
 ) {
   const spanStyle = "font-semibold";
@@ -362,7 +370,7 @@ function informacoesDoLivro(
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
-            <BibliotecaButton livro={livro} buttonStyle={buttonStyle}></BibliotecaButton>
+            <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}></BibliotecaButton>
 
           </div>
         )}
