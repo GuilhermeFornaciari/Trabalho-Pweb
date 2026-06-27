@@ -229,17 +229,21 @@ export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
-export type BoolFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+export type EnumStatusLeituraFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusLeitura | Prisma.EnumStatusLeituraFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusLeituraFilter<$PrismaModel> | $Enums.StatusLeitura
 }
 
-export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+export type EnumStatusLeituraWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusLeitura | Prisma.EnumStatusLeituraFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusLeituraWithAggregatesFilter<$PrismaModel> | $Enums.StatusLeitura
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedBoolFilter<$PrismaModel>
-  _max?: Prisma.NestedBoolFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStatusLeituraFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStatusLeituraFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -459,17 +463,21 @@ export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
-export type NestedBoolFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+export type NestedEnumStatusLeituraFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusLeitura | Prisma.EnumStatusLeituraFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusLeituraFilter<$PrismaModel> | $Enums.StatusLeitura
 }
 
-export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+export type NestedEnumStatusLeituraWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.StatusLeitura | Prisma.EnumStatusLeituraFieldRefInput<$PrismaModel>
+  in?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  notIn?: $Enums.StatusLeitura[] | Prisma.ListEnumStatusLeituraFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumStatusLeituraWithAggregatesFilter<$PrismaModel> | $Enums.StatusLeitura
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedBoolFilter<$PrismaModel>
-  _max?: Prisma.NestedBoolFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumStatusLeituraFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumStatusLeituraFilter<$PrismaModel>
 }
 
 

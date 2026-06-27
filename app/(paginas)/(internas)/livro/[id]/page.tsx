@@ -8,12 +8,8 @@ import { useSession } from "next-auth/react";
 import { Star } from "lucide-react";
 import ResenhaCard from "@/components/resenha/resenhaCard";
 import ResenhaModal from "@/components/resenha/resenhaModal";
-
-type LivroDetalhes = Livro & {
-  autores: Array<{id: number, nome: string}> ;
-  colecao: Colecao;
-  biblioteca: Biblioteca | null;
-}
+import BibliotecaButton from "@/components/biblioteca/bibliotecaButton";
+import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 
 type ResenhaDetalhes = Postagem & {
   usuario: {
@@ -366,7 +362,7 @@ function informacoesDoLivro(
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
-            {bibliotecaButton(livro, buttonStyle)}
+            <BibliotecaButton livro={livro} buttonStyle={buttonStyle}></BibliotecaButton>
 
           </div>
         )}
@@ -419,13 +415,4 @@ function informacoesDoLivro(
       </div>
     </div>
   );
-}
-
-function bibliotecaButton(livro: LivroDetalhes, buttonStyle: string) {
-  if(livro.biblioteca === null) {
-    return (
-      <button className={buttonStyle + " " + "bg-lime-400"}>Adicionar à biblioteca</button>
-    );
-  }
-
 }

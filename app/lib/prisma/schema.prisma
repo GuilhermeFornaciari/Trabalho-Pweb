@@ -8,6 +8,13 @@ datasource db {
   provider = "postgresql"
 }
 
+enum StatusLeitura {
+  LIDO
+  LENDO
+  QUERO_LER
+  ABANDONEI
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String  @map("user_id")
@@ -163,7 +170,7 @@ model Biblioteca {
   usuarioId String @map("usuario_id")
   livroId   Int    @map("livro_id")
 
-  status        Boolean
+  status        StatusLeitura
   dataInicio    DateTime  @map("data_inicio")
   dataConclusao DateTime? @map("data_conclusao")
 
