@@ -223,13 +223,13 @@ export type UserWhereInput = {
   username?: Prisma.StringFilter<"User"> | string
   dataNascimento?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   accounts?: Prisma.AccountListRelationFilter
-  sessions?: Prisma.SessionListRelationFilter
   amizadesIniciadas?: Prisma.AmigosListRelationFilter
   amizadesRecebidas?: Prisma.AmigosListRelationFilter
-  postagens?: Prisma.PostagemListRelationFilter
-  comentarios?: Prisma.ComentarioListRelationFilter
   biblioteca?: Prisma.BibliotecaListRelationFilter
+  comentarios?: Prisma.ComentarioListRelationFilter
   curtidas?: Prisma.CurtidaListRelationFilter
+  postagens?: Prisma.PostagemListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -244,13 +244,13 @@ export type UserOrderByWithRelationInput = {
   username?: Prisma.SortOrder
   dataNascimento?: Prisma.SortOrderInput | Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
-  sessions?: Prisma.SessionOrderByRelationAggregateInput
   amizadesIniciadas?: Prisma.AmigosOrderByRelationAggregateInput
   amizadesRecebidas?: Prisma.AmigosOrderByRelationAggregateInput
-  postagens?: Prisma.PostagemOrderByRelationAggregateInput
-  comentarios?: Prisma.ComentarioOrderByRelationAggregateInput
   biblioteca?: Prisma.BibliotecaOrderByRelationAggregateInput
+  comentarios?: Prisma.ComentarioOrderByRelationAggregateInput
   curtidas?: Prisma.CurtidaOrderByRelationAggregateInput
+  postagens?: Prisma.PostagemOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -268,13 +268,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   senha?: Prisma.StringFilter<"User"> | string
   dataNascimento?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   accounts?: Prisma.AccountListRelationFilter
-  sessions?: Prisma.SessionListRelationFilter
   amizadesIniciadas?: Prisma.AmigosListRelationFilter
   amizadesRecebidas?: Prisma.AmigosListRelationFilter
-  postagens?: Prisma.PostagemListRelationFilter
-  comentarios?: Prisma.ComentarioListRelationFilter
   biblioteca?: Prisma.BibliotecaListRelationFilter
+  comentarios?: Prisma.ComentarioListRelationFilter
   curtidas?: Prisma.CurtidaListRelationFilter
+  postagens?: Prisma.PostagemListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -321,13 +321,13 @@ export type UserCreateInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -342,13 +342,13 @@ export type UserUncheckedCreateInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -363,13 +363,13 @@ export type UserUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -384,13 +384,13 @@ export type UserUncheckedUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -603,13 +603,13 @@ export type UserCreateWithoutAccountsInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -623,13 +623,13 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -659,13 +659,13 @@ export type UserUpdateWithoutAccountsInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -679,13 +679,13 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -702,10 +702,10 @@ export type UserCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -722,10 +722,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -758,10 +758,10 @@ export type UserUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -778,10 +778,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UserCreateWithoutPostagensInput = {
@@ -796,12 +796,12 @@ export type UserCreateWithoutPostagensInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPostagensInput = {
@@ -816,12 +816,12 @@ export type UserUncheckedCreateWithoutPostagensInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPostagensInput = {
@@ -852,12 +852,12 @@ export type UserUpdateWithoutPostagensInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostagensInput = {
@@ -872,12 +872,12 @@ export type UserUncheckedUpdateWithoutPostagensInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutComentariosInput = {
@@ -892,12 +892,12 @@ export type UserCreateWithoutComentariosInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutComentariosInput = {
@@ -912,12 +912,12 @@ export type UserUncheckedCreateWithoutComentariosInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutComentariosInput = {
@@ -948,12 +948,12 @@ export type UserUpdateWithoutComentariosInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutComentariosInput = {
@@ -968,12 +968,12 @@ export type UserUncheckedUpdateWithoutComentariosInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBibliotecaInput = {
@@ -988,12 +988,12 @@ export type UserCreateWithoutBibliotecaInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
   comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBibliotecaInput = {
@@ -1008,12 +1008,12 @@ export type UserUncheckedCreateWithoutBibliotecaInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
   comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBibliotecaInput = {
@@ -1044,12 +1044,12 @@ export type UserUpdateWithoutBibliotecaInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
   comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBibliotecaInput = {
@@ -1064,12 +1064,12 @@ export type UserUncheckedUpdateWithoutBibliotecaInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
   comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCurtidasInput = {
@@ -1084,12 +1084,12 @@ export type UserCreateWithoutCurtidasInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCurtidasInput = {
@@ -1104,12 +1104,12 @@ export type UserUncheckedCreateWithoutCurtidasInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCurtidasInput = {
@@ -1140,12 +1140,12 @@ export type UserUpdateWithoutCurtidasInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCurtidasInput = {
@@ -1160,12 +1160,12 @@ export type UserUncheckedUpdateWithoutCurtidasInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAmizadesIniciadasInput = {
@@ -1180,12 +1180,12 @@ export type UserCreateWithoutAmizadesIniciadasInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAmizadesIniciadasInput = {
@@ -1200,12 +1200,12 @@ export type UserUncheckedCreateWithoutAmizadesIniciadasInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAmizadesIniciadasInput = {
@@ -1225,12 +1225,12 @@ export type UserCreateWithoutAmizadesRecebidasInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
-  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAmizadesRecebidasInput = {
@@ -1245,12 +1245,12 @@ export type UserUncheckedCreateWithoutAmizadesRecebidasInput = {
   username: string
   dataNascimento?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
-  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
-  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
+  comentarios?: Prisma.ComentarioUncheckedCreateNestedManyWithoutUsuarioInput
   curtidas?: Prisma.CurtidaUncheckedCreateNestedManyWithoutUsuarioInput
+  postagens?: Prisma.PostagemUncheckedCreateNestedManyWithoutUsuarioInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAmizadesRecebidasInput = {
@@ -1281,12 +1281,12 @@ export type UserUpdateWithoutAmizadesIniciadasInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAmizadesIniciadasInput = {
@@ -1301,12 +1301,12 @@ export type UserUncheckedUpdateWithoutAmizadesIniciadasInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAmizadesRecebidasInput = {
@@ -1332,12 +1332,12 @@ export type UserUpdateWithoutAmizadesRecebidasInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
-  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAmizadesRecebidasInput = {
@@ -1352,12 +1352,12 @@ export type UserUncheckedUpdateWithoutAmizadesRecebidasInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
-  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentarios?: Prisma.ComentarioUncheckedUpdateManyWithoutUsuarioNestedInput
   curtidas?: Prisma.CurtidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  postagens?: Prisma.PostagemUncheckedUpdateManyWithoutUsuarioNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1367,24 +1367,24 @@ export type UserUncheckedUpdateWithoutAmizadesRecebidasInput = {
 
 export type UserCountOutputType = {
   accounts: number
-  sessions: number
   amizadesIniciadas: number
   amizadesRecebidas: number
-  postagens: number
-  comentarios: number
   biblioteca: number
+  comentarios: number
   curtidas: number
+  postagens: number
+  sessions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   amizadesIniciadas?: boolean | UserCountOutputTypeCountAmizadesIniciadasArgs
   amizadesRecebidas?: boolean | UserCountOutputTypeCountAmizadesRecebidasArgs
-  postagens?: boolean | UserCountOutputTypeCountPostagensArgs
-  comentarios?: boolean | UserCountOutputTypeCountComentariosArgs
   biblioteca?: boolean | UserCountOutputTypeCountBibliotecaArgs
+  comentarios?: boolean | UserCountOutputTypeCountComentariosArgs
   curtidas?: boolean | UserCountOutputTypeCountCurtidasArgs
+  postagens?: boolean | UserCountOutputTypeCountPostagensArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
 }
 
 /**
@@ -1407,13 +1407,6 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SessionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountAmizadesIniciadasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AmigosWhereInput
 }
@@ -1428,8 +1421,8 @@ export type UserCountOutputTypeCountAmizadesRecebidasArgs<ExtArgs extends runtim
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPostagensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PostagemWhereInput
+export type UserCountOutputTypeCountBibliotecaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BibliotecaWhereInput
 }
 
 /**
@@ -1442,15 +1435,22 @@ export type UserCountOutputTypeCountComentariosArgs<ExtArgs extends runtime.Type
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountBibliotecaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BibliotecaWhereInput
+export type UserCountOutputTypeCountCurtidasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CurtidaWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountCurtidasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CurtidaWhereInput
+export type UserCountOutputTypeCountPostagensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PostagemWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
 }
 
 
@@ -1466,13 +1466,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   username?: boolean
   dataNascimento?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   amizadesIniciadas?: boolean | Prisma.User$amizadesIniciadasArgs<ExtArgs>
   amizadesRecebidas?: boolean | Prisma.User$amizadesRecebidasArgs<ExtArgs>
-  postagens?: boolean | Prisma.User$postagensArgs<ExtArgs>
-  comentarios?: boolean | Prisma.User$comentariosArgs<ExtArgs>
   biblioteca?: boolean | Prisma.User$bibliotecaArgs<ExtArgs>
+  comentarios?: boolean | Prisma.User$comentariosArgs<ExtArgs>
   curtidas?: boolean | Prisma.User$curtidasArgs<ExtArgs>
+  postagens?: boolean | Prisma.User$postagensArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1518,13 +1518,13 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "email" | "emailVerified" | "foto" | "bio" | "role" | "senha" | "username" | "dataNascimento", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
-  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   amizadesIniciadas?: boolean | Prisma.User$amizadesIniciadasArgs<ExtArgs>
   amizadesRecebidas?: boolean | Prisma.User$amizadesRecebidasArgs<ExtArgs>
-  postagens?: boolean | Prisma.User$postagensArgs<ExtArgs>
-  comentarios?: boolean | Prisma.User$comentariosArgs<ExtArgs>
   biblioteca?: boolean | Prisma.User$bibliotecaArgs<ExtArgs>
+  comentarios?: boolean | Prisma.User$comentariosArgs<ExtArgs>
   curtidas?: boolean | Prisma.User$curtidasArgs<ExtArgs>
+  postagens?: boolean | Prisma.User$postagensArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1534,13 +1534,13 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[]
-    sessions: Prisma.$SessionPayload<ExtArgs>[]
     amizadesIniciadas: Prisma.$AmigosPayload<ExtArgs>[]
     amizadesRecebidas: Prisma.$AmigosPayload<ExtArgs>[]
-    postagens: Prisma.$PostagemPayload<ExtArgs>[]
-    comentarios: Prisma.$ComentarioPayload<ExtArgs>[]
     biblioteca: Prisma.$BibliotecaPayload<ExtArgs>[]
+    comentarios: Prisma.$ComentarioPayload<ExtArgs>[]
     curtidas: Prisma.$CurtidaPayload<ExtArgs>[]
+    postagens: Prisma.$PostagemPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1948,13 +1948,13 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   amizadesIniciadas<T extends Prisma.User$amizadesIniciadasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$amizadesIniciadasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AmigosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   amizadesRecebidas<T extends Prisma.User$amizadesRecebidasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$amizadesRecebidasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AmigosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  postagens<T extends Prisma.User$postagensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postagensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostagemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  comentarios<T extends Prisma.User$comentariosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$comentariosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComentarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   biblioteca<T extends Prisma.User$bibliotecaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bibliotecaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BibliotecaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comentarios<T extends Prisma.User$comentariosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$comentariosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComentarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   curtidas<T extends Prisma.User$curtidasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$curtidasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CurtidaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postagens<T extends Prisma.User$postagensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postagensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostagemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2411,30 +2411,6 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
- * User.sessions
- */
-export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Session
-   */
-  select?: Prisma.SessionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Session
-   */
-  omit?: Prisma.SessionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SessionInclude<ExtArgs> | null
-  where?: Prisma.SessionWhereInput
-  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
-  cursor?: Prisma.SessionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
-}
-
-/**
  * User.amizadesIniciadas
  */
 export type User$amizadesIniciadasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2483,27 +2459,27 @@ export type User$amizadesRecebidasArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
- * User.postagens
+ * User.biblioteca
  */
-export type User$postagensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$bibliotecaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Postagem
+   * Select specific fields to fetch from the Biblioteca
    */
-  select?: Prisma.PostagemSelect<ExtArgs> | null
+  select?: Prisma.BibliotecaSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Postagem
+   * Omit specific fields from the Biblioteca
    */
-  omit?: Prisma.PostagemOmit<ExtArgs> | null
+  omit?: Prisma.BibliotecaOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PostagemInclude<ExtArgs> | null
-  where?: Prisma.PostagemWhereInput
-  orderBy?: Prisma.PostagemOrderByWithRelationInput | Prisma.PostagemOrderByWithRelationInput[]
-  cursor?: Prisma.PostagemWhereUniqueInput
+  include?: Prisma.BibliotecaInclude<ExtArgs> | null
+  where?: Prisma.BibliotecaWhereInput
+  orderBy?: Prisma.BibliotecaOrderByWithRelationInput | Prisma.BibliotecaOrderByWithRelationInput[]
+  cursor?: Prisma.BibliotecaWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PostagemScalarFieldEnum | Prisma.PostagemScalarFieldEnum[]
+  distinct?: Prisma.BibliotecaScalarFieldEnum | Prisma.BibliotecaScalarFieldEnum[]
 }
 
 /**
@@ -2531,30 +2507,6 @@ export type User$comentariosArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * User.biblioteca
- */
-export type User$bibliotecaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Biblioteca
-   */
-  select?: Prisma.BibliotecaSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Biblioteca
-   */
-  omit?: Prisma.BibliotecaOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BibliotecaInclude<ExtArgs> | null
-  where?: Prisma.BibliotecaWhereInput
-  orderBy?: Prisma.BibliotecaOrderByWithRelationInput | Prisma.BibliotecaOrderByWithRelationInput[]
-  cursor?: Prisma.BibliotecaWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BibliotecaScalarFieldEnum | Prisma.BibliotecaScalarFieldEnum[]
-}
-
-/**
  * User.curtidas
  */
 export type User$curtidasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2576,6 +2528,54 @@ export type User$curtidasArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.CurtidaScalarFieldEnum | Prisma.CurtidaScalarFieldEnum[]
+}
+
+/**
+ * User.postagens
+ */
+export type User$postagensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Postagem
+   */
+  select?: Prisma.PostagemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Postagem
+   */
+  omit?: Prisma.PostagemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostagemInclude<ExtArgs> | null
+  where?: Prisma.PostagemWhereInput
+  orderBy?: Prisma.PostagemOrderByWithRelationInput | Prisma.PostagemOrderByWithRelationInput[]
+  cursor?: Prisma.PostagemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PostagemScalarFieldEnum | Prisma.PostagemScalarFieldEnum[]
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**

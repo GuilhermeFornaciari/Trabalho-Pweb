@@ -216,9 +216,9 @@ export type CurtidaWhereInput = {
   usuarioId?: Prisma.StringFilter<"Curtida"> | string
   postagemId?: Prisma.IntNullableFilter<"Curtida"> | number | null
   comentarioId?: Prisma.IntNullableFilter<"Curtida"> | number | null
-  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  postagem?: Prisma.XOR<Prisma.PostagemNullableScalarRelationFilter, Prisma.PostagemWhereInput> | null
   comentario?: Prisma.XOR<Prisma.ComentarioNullableScalarRelationFilter, Prisma.ComentarioWhereInput> | null
+  postagem?: Prisma.XOR<Prisma.PostagemNullableScalarRelationFilter, Prisma.PostagemWhereInput> | null
+  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type CurtidaOrderByWithRelationInput = {
@@ -226,9 +226,9 @@ export type CurtidaOrderByWithRelationInput = {
   usuarioId?: Prisma.SortOrder
   postagemId?: Prisma.SortOrderInput | Prisma.SortOrder
   comentarioId?: Prisma.SortOrderInput | Prisma.SortOrder
-  usuario?: Prisma.UserOrderByWithRelationInput
-  postagem?: Prisma.PostagemOrderByWithRelationInput
   comentario?: Prisma.ComentarioOrderByWithRelationInput
+  postagem?: Prisma.PostagemOrderByWithRelationInput
+  usuario?: Prisma.UserOrderByWithRelationInput
 }
 
 export type CurtidaWhereUniqueInput = Prisma.AtLeast<{
@@ -241,9 +241,9 @@ export type CurtidaWhereUniqueInput = Prisma.AtLeast<{
   usuarioId?: Prisma.StringFilter<"Curtida"> | string
   postagemId?: Prisma.IntNullableFilter<"Curtida"> | number | null
   comentarioId?: Prisma.IntNullableFilter<"Curtida"> | number | null
-  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  postagem?: Prisma.XOR<Prisma.PostagemNullableScalarRelationFilter, Prisma.PostagemWhereInput> | null
   comentario?: Prisma.XOR<Prisma.ComentarioNullableScalarRelationFilter, Prisma.ComentarioWhereInput> | null
+  postagem?: Prisma.XOR<Prisma.PostagemNullableScalarRelationFilter, Prisma.PostagemWhereInput> | null
+  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "usuarioId_comentarioId" | "usuarioId_postagemId">
 
 export type CurtidaOrderByWithAggregationInput = {
@@ -269,9 +269,9 @@ export type CurtidaScalarWhereWithAggregatesInput = {
 }
 
 export type CurtidaCreateInput = {
-  usuario: Prisma.UserCreateNestedOneWithoutCurtidasInput
-  postagem?: Prisma.PostagemCreateNestedOneWithoutCurtidasInput
   comentario?: Prisma.ComentarioCreateNestedOneWithoutCurtidasInput
+  postagem?: Prisma.PostagemCreateNestedOneWithoutCurtidasInput
+  usuario: Prisma.UserCreateNestedOneWithoutCurtidasInput
 }
 
 export type CurtidaUncheckedCreateInput = {
@@ -282,9 +282,9 @@ export type CurtidaUncheckedCreateInput = {
 }
 
 export type CurtidaUpdateInput = {
-  usuario?: Prisma.UserUpdateOneRequiredWithoutCurtidasNestedInput
-  postagem?: Prisma.PostagemUpdateOneWithoutCurtidasNestedInput
   comentario?: Prisma.ComentarioUpdateOneWithoutCurtidasNestedInput
+  postagem?: Prisma.PostagemUpdateOneWithoutCurtidasNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutCurtidasNestedInput
 }
 
 export type CurtidaUncheckedUpdateInput = {
@@ -492,8 +492,8 @@ export type CurtidaUncheckedUpdateManyWithoutComentarioNestedInput = {
 }
 
 export type CurtidaCreateWithoutUsuarioInput = {
-  postagem?: Prisma.PostagemCreateNestedOneWithoutCurtidasInput
   comentario?: Prisma.ComentarioCreateNestedOneWithoutCurtidasInput
+  postagem?: Prisma.PostagemCreateNestedOneWithoutCurtidasInput
 }
 
 export type CurtidaUncheckedCreateWithoutUsuarioInput = {
@@ -539,8 +539,8 @@ export type CurtidaScalarWhereInput = {
 }
 
 export type CurtidaCreateWithoutPostagemInput = {
-  usuario: Prisma.UserCreateNestedOneWithoutCurtidasInput
   comentario?: Prisma.ComentarioCreateNestedOneWithoutCurtidasInput
+  usuario: Prisma.UserCreateNestedOneWithoutCurtidasInput
 }
 
 export type CurtidaUncheckedCreateWithoutPostagemInput = {
@@ -576,8 +576,8 @@ export type CurtidaUpdateManyWithWhereWithoutPostagemInput = {
 }
 
 export type CurtidaCreateWithoutComentarioInput = {
-  usuario: Prisma.UserCreateNestedOneWithoutCurtidasInput
   postagem?: Prisma.PostagemCreateNestedOneWithoutCurtidasInput
+  usuario: Prisma.UserCreateNestedOneWithoutCurtidasInput
 }
 
 export type CurtidaUncheckedCreateWithoutComentarioInput = {
@@ -619,8 +619,8 @@ export type CurtidaCreateManyUsuarioInput = {
 }
 
 export type CurtidaUpdateWithoutUsuarioInput = {
-  postagem?: Prisma.PostagemUpdateOneWithoutCurtidasNestedInput
   comentario?: Prisma.ComentarioUpdateOneWithoutCurtidasNestedInput
+  postagem?: Prisma.PostagemUpdateOneWithoutCurtidasNestedInput
 }
 
 export type CurtidaUncheckedUpdateWithoutUsuarioInput = {
@@ -642,8 +642,8 @@ export type CurtidaCreateManyPostagemInput = {
 }
 
 export type CurtidaUpdateWithoutPostagemInput = {
-  usuario?: Prisma.UserUpdateOneRequiredWithoutCurtidasNestedInput
   comentario?: Prisma.ComentarioUpdateOneWithoutCurtidasNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutCurtidasNestedInput
 }
 
 export type CurtidaUncheckedUpdateWithoutPostagemInput = {
@@ -665,8 +665,8 @@ export type CurtidaCreateManyComentarioInput = {
 }
 
 export type CurtidaUpdateWithoutComentarioInput = {
-  usuario?: Prisma.UserUpdateOneRequiredWithoutCurtidasNestedInput
   postagem?: Prisma.PostagemUpdateOneWithoutCurtidasNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutCurtidasNestedInput
 }
 
 export type CurtidaUncheckedUpdateWithoutComentarioInput = {
@@ -688,9 +688,9 @@ export type CurtidaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   usuarioId?: boolean
   postagemId?: boolean
   comentarioId?: boolean
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
   comentario?: boolean | Prisma.Curtida$comentarioArgs<ExtArgs>
+  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["curtida"]>
 
 export type CurtidaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -698,9 +698,9 @@ export type CurtidaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   usuarioId?: boolean
   postagemId?: boolean
   comentarioId?: boolean
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
   comentario?: boolean | Prisma.Curtida$comentarioArgs<ExtArgs>
+  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["curtida"]>
 
 export type CurtidaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -708,9 +708,9 @@ export type CurtidaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   usuarioId?: boolean
   postagemId?: boolean
   comentarioId?: boolean
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
   comentario?: boolean | Prisma.Curtida$comentarioArgs<ExtArgs>
+  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["curtida"]>
 
 export type CurtidaSelectScalar = {
@@ -722,27 +722,27 @@ export type CurtidaSelectScalar = {
 
 export type CurtidaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuarioId" | "postagemId" | "comentarioId", ExtArgs["result"]["curtida"]>
 export type CurtidaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
   comentario?: boolean | Prisma.Curtida$comentarioArgs<ExtArgs>
+  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type CurtidaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
   comentario?: boolean | Prisma.Curtida$comentarioArgs<ExtArgs>
+  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type CurtidaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
   comentario?: boolean | Prisma.Curtida$comentarioArgs<ExtArgs>
+  postagem?: boolean | Prisma.Curtida$postagemArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $CurtidaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Curtida"
   objects: {
-    usuario: Prisma.$UserPayload<ExtArgs>
-    postagem: Prisma.$PostagemPayload<ExtArgs> | null
     comentario: Prisma.$ComentarioPayload<ExtArgs> | null
+    postagem: Prisma.$PostagemPayload<ExtArgs> | null
+    usuario: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1143,9 +1143,9 @@ readonly fields: CurtidaFieldRefs;
  */
 export interface Prisma__CurtidaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  usuario<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  postagem<T extends Prisma.Curtida$postagemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Curtida$postagemArgs<ExtArgs>>): Prisma.Prisma__PostagemClient<runtime.Types.Result.GetResult<Prisma.$PostagemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   comentario<T extends Prisma.Curtida$comentarioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Curtida$comentarioArgs<ExtArgs>>): Prisma.Prisma__ComentarioClient<runtime.Types.Result.GetResult<Prisma.$ComentarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  postagem<T extends Prisma.Curtida$postagemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Curtida$postagemArgs<ExtArgs>>): Prisma.Prisma__PostagemClient<runtime.Types.Result.GetResult<Prisma.$PostagemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  usuario<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1580,25 +1580,6 @@ export type CurtidaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Curtida.postagem
- */
-export type Curtida$postagemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Postagem
-   */
-  select?: Prisma.PostagemSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Postagem
-   */
-  omit?: Prisma.PostagemOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PostagemInclude<ExtArgs> | null
-  where?: Prisma.PostagemWhereInput
-}
-
-/**
  * Curtida.comentario
  */
 export type Curtida$comentarioArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1615,6 +1596,25 @@ export type Curtida$comentarioArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.ComentarioInclude<ExtArgs> | null
   where?: Prisma.ComentarioWhereInput
+}
+
+/**
+ * Curtida.postagem
+ */
+export type Curtida$postagemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Postagem
+   */
+  select?: Prisma.PostagemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Postagem
+   */
+  omit?: Prisma.PostagemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PostagemInclude<ExtArgs> | null
+  where?: Prisma.PostagemWhereInput
 }
 
 /**
