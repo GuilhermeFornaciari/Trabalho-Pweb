@@ -48,19 +48,19 @@ export default function FeedPage() {
     carregarFeed();
   }, [pagina]);
 
-  async function handleComentarioSubmit(postId: number, comentId?: number | null) {
+  async function handleComentarioSubmit(postId: number, comentId?: number ) {
     if (!session?.user?.id) {
       alert("Você precisa estar logado para comentar.");
       return;
     }
 
     try {
-      const response = await fetch("/api/comentario/create", {
+      const response = await fetch("../api/comentario/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           postagemId: postId,
-          comentarioId: comentId || null,
+          comentarioId: comentId,
           usuarioId: session.user.id,
           texto: comentario,
         }),

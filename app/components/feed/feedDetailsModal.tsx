@@ -10,7 +10,7 @@ type Props = {
   post: any;
   comentarioTexto: string;
   onChangeComentario: (text: string) => void;
-  onSubmitComentario: (postId: number, comentarioId?: number | null) => void;
+  onSubmitComentario: (postId: number, comentarioId?: number) => void;
   onClose: () => void;
   onCurtir: (postagemId: number, curtido: boolean, curtidaId: number) => void;
   onCurtirComentario: (comentarioId: number, curtido: boolean, curtidaId: number) => void;
@@ -142,7 +142,7 @@ export default function FeedDetailsModal({
           onChangeComentario={onChangeComentario}
           onSubmitComentario={onSubmitComentario}
           replyTo={replyTo}
-          resenhaId={post.id}
+          postId={post.id}
           setReplyTo={setReplyTo}
         />
 
