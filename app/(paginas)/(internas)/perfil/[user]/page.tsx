@@ -12,10 +12,13 @@ import EstatisticasPerfil from "@/components/estatistica/estatisiciaUsuario";
 export type UsuarioPerfil = User & {
   biblioteca: (Biblioteca & {
     livro: Livro;
+    nota: number | null;
+    progresso: number | null;
   })[];
 };
 
-type AbaDisponivel = 'biblioteca' | 'postagens' | 'progresso' | 'estatisticas';
+type AbaDisponivel = 'biblioteca' | 'postagens' | 'estatisticas';
+
 
 export default function PerfilPage({params,}: {params: Promise<{ user: string }>}) {
     const {user} = use(params);
@@ -26,6 +29,11 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
     const [refreshKey, setRefreshKey] = useState(0);
     
     const [abaAtiva, setAbaAtiva] = useState<AbaDisponivel>('biblioteca');
+    const conteudos = {
+      biblioteca: biblioteca(usuario),
+      postagens: postagens(usuario),
+      estatisticas: estatisticas(usuario),
+    };
 
     useEffect(() => {
       const carregarUsuario = async () => {
@@ -112,7 +120,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
         <div className="mt-8">
           {/* Botões de Seleção das Abas */}
           <div className="flex justify-center gap-4 border-b border-[#E8D89A] pb-3 mb-6">
-            {(['biblioteca', 'postagens', 'progresso', 'estatisticas'] as AbaDisponivel[]).map((aba) => (
+            {(['biblioteca', 'postagens', 'estatisticas'] as AbaDisponivel[]).map((aba) => (
               <button
                 key={aba}
                 onClick={() => setAbaAtiva(aba)}
@@ -129,41 +137,47 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
 
           {/* Conteúdo Dinâmico baseado na Aba Ativa */}
           <div className="text-center text-[#8A7A5B] text-sm min-h-[200px]">
-            {abaAtiva === 'biblioteca' && (
-              <div>
-                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Biblioteca</h2>
-                <div className="flex flex-wrap justify-center"> 
-                  {/* centro fica melhor, tabares */}
-                  <BibliotecaContainer livros={usuario?.biblioteca}/>
-                </div>
-              </div>
-            )}
-
-            {abaAtiva === 'postagens' && (
-              <div>
-                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Postagens</h2>
-                <p>Aqui ficarão as publicações e postagens do usuário.</p>
-              </div>
-            )}
-
-            {abaAtiva === 'progresso' && (
-              <div>
-                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Progresso</h2>
-                <p>Acompanhamento de leituras e metas atuais.</p>
-              </div>
-            )}
-
-            {abaAtiva === 'estatisticas' && (
-              <div>
-                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Estatísticas</h2>
-                <p>Gráficos e dados de leitura do usuário.</p>
-                  <EstatisticasPerfil usuario={usuario} />
-              </div>
-            )}
+            {conteudos[abaAtiva]}
           </div>
         </div>
 
       </div>
     </main>
+  );
+}
+
+function biblioteca(usuario: UsuarioPerfil | undefined) {
+  if(!usuario) return null;
+
+  return (
+    <div>
+      <h2 className="text-slate-950 text-2xl font-semibold mb-4">Biblioteca</h2>
+      <div className="flex flex-wrap justify-center"> 
+        <BibliotecaContainer livros={usuario?.biblioteca}/>
+      </div>
+    </div>
+  );
+}
+
+function postagens(usuario: UsuarioPerfil | undefined) {
+  if(!usuario) return null;
+
+  return (
+    <div>
+      <h2 className="text-slate-950 text-2xl font-semibold mb-4">Postagens</h2>
+      <p>Aqui ficarão as publicações e postagens do usuário.</p>
+    </div>
+  );
+} 
+
+function estatisticas(usuario: UsuarioPerfil | undefined) {
+  if(!usuario) return null;
+
+  return (
+    <div>
+      <h2 className="text-slate-950 text-2xl font-semibold mb-4">Estatísticas</h2>
+      <p>Gráficos e dados de leitura do usuário.</p>
+        <EstatisticasPerfil usuario={usuario} />
+    </div>
   );
 }

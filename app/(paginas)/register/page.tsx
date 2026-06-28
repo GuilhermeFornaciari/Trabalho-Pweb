@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import bcrypt from "bcryptjs";
 
 export default function LoginPage() {
   const backgroundImage = "/images/registro-bg.jpg";
@@ -17,7 +18,7 @@ export default function LoginPage() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
 
-  async function createUser() {
+  async function createUser(hash:string) {
     const response = await fetch("../api/usuario/create/", {
       method: "POST",
       headers: {
@@ -27,7 +28,7 @@ export default function LoginPage() {
         nome,
         username,
         email,
-        senha,
+        senha: hash,
       }),
     });
   
@@ -50,7 +51,9 @@ export default function LoginPage() {
       return;
     }
 
-    const result = await createUser();
+    const hash = await bcrypt.hash(senha, 10);
+
+    const result = await createUser(hash);
 
     if (!result.ok) {
       console.log("ERRO ZOD:", result.data);

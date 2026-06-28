@@ -6,14 +6,46 @@ const prisma = PrismaSingleton.getInstance().prismaClient;
 
 
 export async function createResenha(resenha: Omit<Postagem, "id">) {
-  return prisma.postagem.create({
-    data: resenha,
-  });
+  return prisma.$transaction(async (tx) => {
+    const postagem = prisma.postagem.create({
+      data: resenha,
+    });
+
+    await tx.biblioteca.update({
+      where: {
+        usuarioId_livroId: {
+          usuarioId: resenha.usuarioId,
+          livroId: resenha.livroId,
+        },
+      },
+      data: {
+        nota: resenha.nota
+      }
+    });
+
+    return postagem;
+  })
 }
 
 export async function createProgresso(progresso: Omit<Postagem, "id">) {
-  return prisma.postagem.create({
-    data: progresso,
+  return prisma.$transaction(async (tx) => {
+    const postagem = await prisma.postagem.create({
+      data: progresso,
+    })
+
+    await tx.biblioteca.update({
+      where: {
+        usuarioId_livroId: {
+          usuarioId: progresso.usuarioId,
+          livroId: progresso.livroId
+        }
+      },
+      data: {
+        paginaAtual: progresso.paginaAtual
+      }
+    });
+
+    return postagem;
   })
 }
 

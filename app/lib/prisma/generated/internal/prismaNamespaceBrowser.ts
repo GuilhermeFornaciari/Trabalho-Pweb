@@ -208,6 +208,8 @@ export const BibliotecaScalarFieldEnum = {
   livroId: 'livroId',
   dataInicio: 'dataInicio',
   dataConclusao: 'dataConclusao',
+  nota: 'nota',
+  paginaAtual: 'paginaAtual',
   status: 'status'
 } as const
 
