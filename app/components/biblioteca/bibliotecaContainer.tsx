@@ -34,7 +34,6 @@ export default function BibliotecaContainer({
 }
 
 function cardConteudo(elemento: any) {
-  console.log(elemento)
   if(elemento.status !== StatusLeitura.LENDO && elemento.status !== StatusLeitura.LIDO) {
     return ("")
   }
@@ -51,5 +50,25 @@ function cardConteudo(elemento: any) {
         ))}
       </div>
     );
+  }
+  
+  const paginas = elemento.paginaAtual ?? 0;
+  const porcentagem = Math.min(
+    Math.round((paginas / elemento.livro.paginas) * 100),
+    100
+  );
+
+  if(elemento.status === StatusLeitura.LENDO) {
+    return (
+      <div className="flex justify-between items-center">
+        <div className="flex-1 w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+          <div 
+            className="bg-yellow-500 h-full rounded-full transition-all duration-500"
+            style={{ width: `${porcentagem}%` }}
+          />
+        </div>
+        <p className="pl-2">{porcentagem + "%"}</p>
+      </div>
+    )
   }
 }
