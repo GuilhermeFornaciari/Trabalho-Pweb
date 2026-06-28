@@ -3,24 +3,25 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { UsuarioPerfil } from "@/lib/types/usuarioPerfil";
 
 export default function EditarUsuario({
   onRefresh,
-  onClose
+  onClose,
+  usuario
 }: {
   onRefresh: () => void;
   onClose: () => void;
+  usuario: UsuarioPerfil
 }) {
   //const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const { data: session, status, update } = useSession();
-  const [usuario, setUsuario] = useState(session?.user);
+  const [form, setForm] = useState(usuario);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      setUsuario(session.user);
-    }
-  }, [session, status]);
+    setForm(usuario);
+  }, [usuario]);
 
   async function updateUser() {
     const response = await fetch("../api/usuario/update", {
@@ -28,8 +29,18 @@ export default function EditarUsuario({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(usuario),
+      body: JSON.stringify( {
+        id: form.id,
+        nome: form.nome,
+        email: form.email,
+        foto: form.foto,
+        bio: form.bio,
+        role: form.role,
+        username: form.username,
+        dataNascimento: form.dataNascimento
+      }),
     });
+
 
     if (!response.ok) {
         alert("falha em update user");
@@ -38,10 +49,10 @@ export default function EditarUsuario({
 
   const handleSubmit = async () => {
     if (
-      !usuario ||
-      usuario.nome === "" ||
-      usuario.email === "" ||
-      usuario.username === ""
+      !form ||
+      form.nome === "" ||
+      form.email === "" ||
+      form.username === ""
     ) {
       alert("Preencha os campos");
       return;
@@ -71,7 +82,7 @@ export default function EditarUsuario({
           <div className="flex flex-col items-center mb-6">
             <div className="relative w-24 h-24">
               <Image
-                src={usuario?.foto || "/temp/caju.jpeg"}
+                src={form?.foto || "/temp/caju.jpeg"}
                 alt="Foto"
                 fill
                 className="rounded-full object-cover"
@@ -91,9 +102,9 @@ export default function EditarUsuario({
           </label>
           <input
             type="text"
-            value={usuario?.nome ?? ""}
+            value={form?.nome ?? ""}
             onChange={(e) =>
-              setUsuario((prev) =>
+              setForm((prev) =>
                 prev ? { ...prev, nome: e.target.value } : prev
             )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
@@ -104,9 +115,9 @@ export default function EditarUsuario({
           </label>
           <input
             type="text"
-            value={usuario?.username ?? ""}
+            value={form?.username ?? ""}
             onChange={(e) =>
-              setUsuario((prev) => 
+              setForm((prev) => 
                 prev ? { ...prev, username: e.target.value } : prev
             )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
@@ -117,9 +128,9 @@ export default function EditarUsuario({
           </label>
           <input
             type="text"
-            value={usuario?.bio ?? ""}
+            value={form?.bio ?? ""}
             onChange={(e) =>
-              setUsuario((prev) =>
+              setForm((prev) =>
                 prev ? { ...prev, bio: e.target.value } : prev    
             )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
@@ -130,9 +141,9 @@ export default function EditarUsuario({
           </label>
           <input
             type="email"
-            value={usuario?.email ?? ""}
+            value={form?.email ?? ""}
             onChange={(e) => 
-              setUsuario((prev) =>
+              setForm((prev) =>
                 prev ? { ...prev, email: e.target.value } : prev
             )}
             className="w-full mb-4 px-4 py-3 rounded-xl border"
@@ -145,7 +156,7 @@ export default function EditarUsuario({
           <div className="relative mb-6">
             <input
               type={mostrarSenha ? "text" : "password"}
-              value={usuario?.senha ?? ""}
+              value={form?.senha ?? ""}
               onChange={(e) =>
                 onChange(
                   usuario

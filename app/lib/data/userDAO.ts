@@ -11,6 +11,7 @@ export async function find(id: string){
       email: true,
       foto: true,
       bio: true,
+      dataNascimento: true,
       role: true,
       username: true,
       senha: true
@@ -31,6 +32,7 @@ export async function findByUsername(username: string){
       foto: true,
       bio: true,
       role: true,
+      dataNascimento: true,
       username: true,
       biblioteca: {
         include: {
