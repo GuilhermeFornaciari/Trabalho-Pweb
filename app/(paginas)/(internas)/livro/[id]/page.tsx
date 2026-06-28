@@ -179,19 +179,40 @@ export default function DetalhesLivro({
               livro,
               id,
               setMostrarModal,
+              (dados) => setLivro((prev) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  biblioteca: dados,
+                };
+              }),
               adm
             )
           }
           
-          {/* botão de escreever resenha */}
-          <div className="w-4xl m-auto flex justify-end mb-4">
-            <button
-              className="px-5 py-3 rounded-md bg-blue-600 text-white"
-              onClick={() => setMostrarModalResenhaCreate(true)}
-            >
-              Escrever Resenha
-            </button>
-          </div>
+          {(livro?.biblioteca?.status === "LIDO" || livro?.biblioteca?.status === "LENDO")  && (
+              <div className="w-4xl m-auto flex justify-end mb-4">
+                {livro?.biblioteca?.status === "LIDO" && (
+                  <button
+                  className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                  onClick={() => setMostrarModalResenhaCreate(true)}
+                  >
+                    Escrever Resenha
+                  </button>
+                  )
+                }
+                {livro?.biblioteca?.status === "LENDO" && (
+                  <button
+                  className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                  >
+                    Adicionar progresso
+                  </button>
+                  )
+                }
+
+              </div>
+            )
+          }
           
           {/* listagem de resenhas */}
          {resenhas.map((resenha) => (
@@ -351,6 +372,7 @@ function informacoesDoLivro(
   livro: LivroDetalhes,
   id: string,
   setMostrarModal: (value: boolean) => void,
+  setBiblioteca: (value: Biblioteca) => void,
   adm: boolean
 ) {
   const spanStyle = "font-semibold";
@@ -362,7 +384,7 @@ function informacoesDoLivro(
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
-            <BibliotecaButton livro={livro} buttonStyle={buttonStyle}></BibliotecaButton>
+            <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}></BibliotecaButton>
 
           </div>
         )}

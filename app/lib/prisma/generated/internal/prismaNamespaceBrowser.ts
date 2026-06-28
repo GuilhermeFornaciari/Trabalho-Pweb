@@ -181,11 +181,11 @@ export const PostagemScalarFieldEnum = {
   paginasLidas: 'paginasLidas',
   nota: 'nota',
   data: 'data',
-  titulo: 'titulo',
   texto: 'texto',
   temSpoiler: 'temSpoiler',
   usuarioId: 'usuarioId',
-  livroId: 'livroId'
+  livroId: 'livroId',
+  titulo: 'titulo'
 } as const
 
 export type PostagemScalarFieldEnum = (typeof PostagemScalarFieldEnum)[keyof typeof PostagemScalarFieldEnum]
@@ -206,9 +206,9 @@ export type ComentarioScalarFieldEnum = (typeof ComentarioScalarFieldEnum)[keyof
 export const BibliotecaScalarFieldEnum = {
   usuarioId: 'usuarioId',
   livroId: 'livroId',
-  status: 'status',
   dataInicio: 'dataInicio',
-  dataConclusao: 'dataConclusao'
+  dataConclusao: 'dataConclusao',
+  status: 'status'
 } as const
 
 export type BibliotecaScalarFieldEnum = (typeof BibliotecaScalarFieldEnum)[keyof typeof BibliotecaScalarFieldEnum]

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { login } from "@/lib/service/login/LoginService";
+import { login } from "@/lib/service/LoginService";
 
 const loginSchema = z.object({
   email: z.email(),

@@ -1,4 +1,4 @@
-import { getById } from "@/lib/service/colecao/ColecaoService";
+import { getById } from "@/lib/service/ColecaoService";
 import { z } from "zod";
 
 const idSchema = z.coerce.number().int().positive();

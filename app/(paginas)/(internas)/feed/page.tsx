@@ -172,16 +172,17 @@ export default function FeedPage() {
 
       {/* Modal de Detalhes Expandidos */}
       {postSelecionado && (
-      <FeedDetailsModal
-        post={postSelecionado}
-        comentarioTexto={comentario}
-        onChangeComentario={setComentario}
-        onSubmitComentario={handleComentarioSubmit}
-        onClose={() => { setPostSelecionado(null) }}
-        onCurtir={curtir}
-        onCurtirComentario={curtirComentario}
-      />
-    )}
+
+        <FeedDetailsModal
+          post={postSelecionado}
+          comentarioTexto={comentario}
+          onChangeComentario={setComentario}
+          onSubmitComentario={handleComentarioSubmit}
+          onClose={() => { setPostSelecionado(null) }}
+          onCurtir={curtir}
+          onCurtirComentario={curtirComentario}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { getAutores } from "@/lib/service/autor/AutorService";
+import { getAutores } from "@/lib/service/AutorService";
 import { z } from "zod";
 
 const readSchema = z.string().min(1);

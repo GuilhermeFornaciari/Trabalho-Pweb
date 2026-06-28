@@ -1,7 +1,7 @@
 import Biblioteca from "@/(entidades)/biblioteca";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
-import { save } from "@/lib/service/biblioteca/BibliotecaService";
+import { save } from "@/lib/service/BibliotecaService";
 
 const addSchema = z.object({
   livroId: z.coerce.number().int().positive(),
@@ -39,5 +39,5 @@ export async function POST(request: Request) {
     (dados.status === "LENDO") ? new Date() : null,
     null 
   ) 
-  return Response.json(save(biblioteca));
+  return Response.json(await save(biblioteca));
 }

@@ -1,5 +1,5 @@
 import { livrosResenhasRecentes } from "@/lib/data/postagemDAO";
-import { livrosRecentes } from "@/lib/service/livro/LivroService";
+import { livrosRecentes } from "@/lib/service/LivroService";
 import { z } from "zod";
 
 const recentlySchema = z.object({

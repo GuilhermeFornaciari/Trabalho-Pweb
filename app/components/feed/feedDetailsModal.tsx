@@ -194,22 +194,72 @@ export default function FeedDetailsModal({
                         {respostasDesteComentario.length > 0 && (
                           <div className="pl-6 pt-2 space-y-2 border-l-2 border-slate-200 ml-3">
                             {respostasDesteComentario.map((resp: any) => {
-                              // Se você quiser tratar curtidas nas respostas futuramente, a estrutura já está pronta aqui
+                              
+                              // 1. Puxa as curtidas específicas desta RESPOSTA
+                              const curtidasDestaResposta = resp.curtidas || [];
+                              const qtdCurtidasResposta = curtidasDestaResposta.length;
+
+                              // 2. Verifica se o usuário logado curtiu esta resposta específica
+                              const curtidaDoUsuario = curtidasDestaResposta.find(
+                                (c: any) => c.usuarioId === session?.user?.id
+                              );
+                              
+                              const respostaJaCurtida = !!curtidaDoUsuario;
+                              const idDaCurtidaResposta = curtidaDoUsuario ? curtidaDoUsuario.id : -1;
+
                               return (
-                                <div key={resp.id} className="flex gap-2 items-start bg-white p-2 rounded border border-slate-100">
-                                  <img src={resp.usuario?.foto || "https://via.placeholder.com/150"} className="w-5 h-5 rounded-full object-cover" alt="" />
-                                  <div>
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="text-[11px] font-bold text-slate-800">{resp.usuario?.nome}</span>
-                                      <span className="text-[9px] text-slate-400">@{resp.usuario?.username}</span>
+                                <div key={resp.id} className="bg-white p-2.5 rounded border border-slate-100 space-y-1.5">
+                                  <div className="flex gap-2 items-start">
+                                    <img 
+                                      src={resp.usuario?.foto || "https://via.placeholder.com/150"} 
+                                      className="w-5 h-5 rounded-full object-cover mt-0.5" 
+                                      alt="" 
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-1.5 mb-0.5">
+                                        <span className="text-[11px] font-bold text-slate-800">{resp.usuario?.nome}</span>
+                                        <span className="text-[9px] text-slate-400">@{resp.usuario?.username}</span>
+                                      </div>
+                                      <p className="text-slate-600 text-xs leading-normal">{resp.texto}</p>
                                     </div>
-                                    <p className="text-slate-600 text-xs">{resp.texto}</p>
+                                  </div>
+
+                                  {/* Ações da Resposta (Curtir e Responder de dentro) */}
+                                  <div className="flex items-center gap-3 pl-7 text-[10px] font-semibold text-slate-500">
+                                    {/* Botão Curtir */}
+                                    <button 
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        onCurtirComentario(resp.id, respostaJaCurtida, idDaCurtidaResposta);
+                                      }}
+                                      className={`flex items-center gap-1 hover:text-red-500 transition-colors ${respostaJaCurtida ? "text-red-500 font-bold" : ""}`}
+                                    >
+                                      <Heart size={10} className={respostaJaCurtida ? "fill-red-500 text-red-500" : ""} />
+                                      <span>{qtdCurtidasResposta}</span>
+                                    </button>
+
+                                    {/* NOVA AÇÃO: Responder a um comentário de dentro */}
+                                    <button 
+                                      type="button"
+                                      onClick={() => {
+                                        // Mantém o parentId como o ID do comentário raiz (com.id) para o banco agrupar na mesma árvore
+                                        setReplyTo({ id: com.id, username: resp.usuario?.username || "" });
+                                        // Coloca automaticamente a escrita "@username " no input de texto
+                                        onChangeComentario(`@${resp.usuario?.username} `);
+                                      }}
+                                      className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                                    >
+                                      <MessageSquare size={10} />
+                                      <span>Responder</span>
+                                    </button>
                                   </div>
                                 </div>
-                              );
+                              ); 
                             })}
                           </div>
                         )}
+                        
                       </div>
                     );
                   })

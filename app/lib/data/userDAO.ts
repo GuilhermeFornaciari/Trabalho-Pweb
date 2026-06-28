@@ -37,7 +37,12 @@ export async function findByUsername(username: string){
       foto: true,
       bio: true,
       role: true,
-      username: true
+      username: true,
+      biblioteca: {
+        include: {
+          livro: true
+        }
+      }
     },
     where: { username: username },
   });
@@ -63,5 +68,4 @@ export async function updateUser(user: User) {
     console.log(JSON.stringify(opa));
 
     return opa;
-
 }
