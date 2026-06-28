@@ -102,7 +102,7 @@ export default function DetalhesLivro({
     carregarProgresso();
   }, [livro, session?.user.id]);
 
-  async function submitComentario(idResenha: number){
+  async function submitComentario(idResenha: number, comentarioId?: number | null){
     if(!session?.user.id){
       alert("Você precisa estar logado.");
       return;
@@ -118,6 +118,7 @@ export default function DetalhesLivro({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         postagemId: idResenha,
+        comentarioId: comentarioId,
         usuarioId: session.user.id,
         texto: comentario,
       }),
