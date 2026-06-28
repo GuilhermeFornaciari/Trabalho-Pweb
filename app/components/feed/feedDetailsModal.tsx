@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Heart, MessageSquare, Send, CornerDownRight } from "lucide-react";
+import { X, Heart, MessageSquare, Send, CornerDownRight, Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -51,12 +51,6 @@ export default function FeedDetailsModal({
     }
   }, [session, post]);
 
-
-  // Separa os comentários principais (parentId === null) das respostas
-  const comentariosPrincipais = post.comentarios?.filter((c: any) => c.parentId === null) || [];
-  // console.log(comentariosPrincipais);
-  const respostas = post.comentarios?.filter((c: any) => c.parentId !== null) || [];
-
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
@@ -90,9 +84,19 @@ export default function FeedDetailsModal({
                     Progresso: Página {post.paginaAtual} de {post.livro.paginas}
                   </span>
                 ) : (
-                  <span className="bg-amber-50 text-amber-700 text-xs px-2 py-1 rounded font-medium">
-                    Avaliação: {post.nota}/5 Estrelas
-                  </span>
+                  <div className="flex -translate-y-0.5">
+                    {[1, 2, 3, 4, 5].map((valor) => (
+                      <Star
+                        key={valor}
+                        size={14}
+                        className={
+                          valor <= (post.nota ?? 0)
+                            ? "fill-amber-400 text-amber-400"
+                            : "text-slate-200"
+                        }
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             </div>
@@ -126,11 +130,9 @@ export default function FeedDetailsModal({
             </h4>
             
             <div className="space-y-4 mb-6">
-              {/* FILTRO CRUCIAL: Só entram aqui comentários que NÃO possuem um pai (parentId nulo/undefined) */}
+              {/* Comentários que NÃO possuem um pai*/}
               {post.comentarios && post.comentarios.filter((c: any) => !c.parentId).length > 0 ? (
-                post.comentarios
-                  .filter((c: any) => !c.parentId) // Garante que posts filhos não virem posts principais
-                  .map((com: any) => {
+                post.comentarios.filter((c: any) => !c.parentId).map((com: any) => {
                     
                     // 1. Puxa as curtidas internas trazidas pelo Prisma para este comentário específico
                     const curtidasDesteComentario = com.curtidas || [];
@@ -239,13 +241,12 @@ export default function FeedDetailsModal({
                                       <span>{qtdCurtidasResposta}</span>
                                     </button>
 
-                                    {/* NOVA AÇÃO: Responder a um comentário de dentro */}
+                                    {/* Responder a um comentário de dentro */}
                                     <button 
                                       type="button"
                                       onClick={() => {
                                         // Mantém o parentId como o ID do comentário raiz (com.id) para o banco agrupar na mesma árvore
                                         setReplyTo({ id: com.id, username: resp.usuario?.username || "" });
-                                        // Coloca automaticamente a escrita "@username " no input de texto
                                         onChangeComentario(`@${resp.usuario?.username} `);
                                       }}
                                       className="flex items-center gap-1 hover:text-blue-600 transition-colors"
@@ -259,7 +260,7 @@ export default function FeedDetailsModal({
                             })}
                           </div>
                         )}
-                        
+
                       </div>
                     );
                   })

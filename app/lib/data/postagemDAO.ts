@@ -17,33 +17,64 @@ export async function createProgresso(progresso: Omit<Postagem, "id">) {
   })
 }
 
-export async function livrosResenhasRecentes(livroId: number){
-  const dados = await prisma.postagem.findMany({
-    where: {
-      livroId,
-      nota: {
-        not: null,
-      },
+
+export async function livrosResenhasRecentes(livroId: number, pagina: number, limite = 10) {
+  const where = {
+    livroId,
+    nota: {
+      not: null,
     },
-    include: {
-      usuario: {
-        select: {
-          id: true,
-          nome: true,
-          username: true,
-          foto: true,
+  };
+
+  const [dados, total] = await Promise.all([
+    prisma.postagem.findMany({
+      where,
+      include: {
+        usuario: {
+          select: {
+            id: true,
+            nome: true,
+            username: true,
+            foto: true,
+          },
+        },
+        curtidas: true,
+        comentarios: {
+          include: {
+            curtidas: true,
+            usuario: {
+              select: {
+                id: true,
+                nome: true,
+                username: true,
+                foto: true,
+              },
+            },
+          },
+          orderBy: {
+            data: "asc",
+          },
         },
       },
-      curtidas: true,
-    },
-    orderBy: {
-      data: "desc",
-    },
-  });
+      orderBy: {
+        data: "desc",
+      },
+      skip: (pagina - 1) * limite,
+      take: limite,
+    }),
 
-  console.dir(dados[0].curtidas, { depth: null });
+    prisma.postagem.count({
+      where,
+    }),
+  ]);
 
-  return dados;
+  
+  return {
+    resenhas: dados, 
+    total,
+    totalPaginas: Math.ceil(total / limite),
+    paginaAtual: pagina,
+  };
 }
 
 export async function ultimoProgresso(usuarioId: string, livroId: number) {

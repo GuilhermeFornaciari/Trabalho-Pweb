@@ -4,7 +4,7 @@ import { Star, BookOpen, MessageSquare, Heart } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-type FeedPost = any; // Substitua pelo tipo correto inferido do Prisma com os Includes
+type FeedPost = any; 
 
 type Props = {
   post: FeedPost;
@@ -32,6 +32,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
     const curtidaDoUsuario = post.curtidas.find(
       (c: { usuarioId: string; id: number }) => c.usuarioId === session.user.id
     );
+    
     setCurtido(!!curtidaDoUsuario);
     setCurtidaId(curtidaDoUsuario?.id ?? -1);
     setQtdCurtidas(post.curtidas.length);
@@ -42,7 +43,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
   return (
     <div 
       onClick={() => onClick(post)}
-      className="w-full max-w-2xl mx-auto mb-6 bg-white border border-slate-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer overflow-hidden"
+        className="min-w-[700px] w-full bg-white max-w-2xl mx-auto mb-6 bg-white border border-slate-100 rounded-xl shadow-sm" // gambiarra que funcionou e n mexer por favor 
     >
       {/* Cabeçalho do Card (Comum a ambos) */}
       <div className="p-5 pb-3 flex items-center gap-3">
@@ -51,6 +52,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
           alt={post.usuario.nome} 
           className="w-10 h-10 rounded-full object-cover border border-slate-200"
         />
+
         <div>
           <div className="flex items-center gap-1.5">
             <span className="font-semibold text-slate-800 text-sm">{post.usuario.nome}</span>
@@ -104,7 +106,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
             </div>
           </div>
         ) : (
-          /* --- LAYOUT DE RESENHA (MAIS VISTOSO/STYLISH) --- */
+          /* --- LAYOUT DE RESENHA --- */
           <div className="relative border-l-4 border-amber-400 bg-amber-50/40 rounded-r-xl p-5">
             <div className="flex justify-between items-start gap-4 mb-3">
               <div className="min-w-0">

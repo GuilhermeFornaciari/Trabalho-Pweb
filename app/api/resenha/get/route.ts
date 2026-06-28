@@ -3,6 +3,7 @@ import { z } from "zod";
 
 const recentlySchema = z.object({
   id: z.coerce.number().int().positive(),
+  pagina: z.coerce.number().int().positive(),
 });
 
 export async function GET(request: Request) {
@@ -11,6 +12,7 @@ export async function GET(request: Request) {
 
     const resultado = recentlySchema.safeParse({
       id: searchParams.get("livroId"),
+      pagina: searchParams.get("pagina"),
     });
 
     if (!resultado.success) {
@@ -20,9 +22,9 @@ export async function GET(request: Request) {
       );
     }
 
-    const { id } = resultado.data;
+    const { id, pagina } = resultado.data;
 
-    return Response.json(await livrosResenhasRecentes(id));
+    return Response.json(await livrosResenhasRecentes(id, pagina));
 
   } catch (e) {
     return Response.json(
