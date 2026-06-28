@@ -3,12 +3,6 @@ import PrismaSingleton from "../prisma/PrismaSingleton";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
-export async function create(email: string, senha: string, nome: string, foto:string, username: string, bio: string){
-    const prisma = PrismaSingleton.getInstance().prismaClient.user;
-    const data = ({ email, senha,  nome, foto, username, bio })
-    return prisma.create({ data });
-}
-
 export async function find(id: string){
   const user = await prisma.user.findUnique({
     select: {
