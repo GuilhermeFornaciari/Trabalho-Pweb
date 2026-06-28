@@ -17,7 +17,7 @@ type Props = {
   resenha: ResenhaDetalhes;
   comentario: string;
   onChangeComentario: (texto: string) => void;
-  onSubmitComentario: (idResenha: number, comentarioId?: number | null) => void;
+  onSubmitComentario: (idPost: number, comentarioId?: number) => void;
   onClose: () => void;
   curtir: (postagemId: number, curtido: boolean, curtidaId: number) => void;
   onCurtirComentario: (comentarioId: number, curtido: boolean, curtidaId: number) => void;
@@ -129,7 +129,7 @@ export default function ResenhaModal({
           comentario={comentario}
           onSubmitComentario={onSubmitComentario}
           onChangeComentario={onChangeComentario}
-          resenhaId={resenha.id}
+          postId={resenha.id}
           setReplyTo={setReplyTo}
           replyTo={replyTo}
         />

@@ -2,15 +2,15 @@ import { CornerDownRight, Send, X } from "lucide-react";
 
 type Props = {
   comentario: string;
-  resenhaId: number;
+  postId: number;
   onChangeComentario: (texto: string) => void;
-  onSubmitComentario: (idResenha: number, comentarioId?: number | null) => void;
+  onSubmitComentario: (idPost: number, comentarioId?: number) => void;
   replyTo: {id: number, username: string} | null;
   setReplyTo: (value: { id: number; username: string } | null) => void;
 };
 
 
-export default function ComentarioInput({comentario, onSubmitComentario, onChangeComentario, resenhaId, replyTo, setReplyTo}: Props){
+export default function ComentarioInput({comentario, onSubmitComentario, onChangeComentario, postId, replyTo, setReplyTo}: Props){
 
     return(
          <div className="p-4 border-t border-slate-100 bg-white space-y-2">
@@ -19,7 +19,12 @@ export default function ComentarioInput({comentario, onSubmitComentario, onChang
               <span className="flex items-center gap-1">
                 <CornerDownRight size={14} /> Respondendo a @{replyTo.username}
               </span>
-              <button onClick={() => setReplyTo(null)} className="text-blue-500 hover:text-blue-700">
+              <button className="text-blue-500 hover:text-blue-700" 
+                  onClick={() => {setReplyTo(null);
+                   if (comentario.startsWith(`@${replyTo.username}`)) {
+                      onChangeComentario("");
+                    }} }>
+
                 <X size={14} />
               </button>
             </div>
@@ -28,7 +33,8 @@ export default function ComentarioInput({comentario, onSubmitComentario, onChang
           <form 
             onSubmit={(e) => {
               e.preventDefault();
-              onSubmitComentario(resenhaId, replyTo?.id || null);
+              const paiId = replyTo ? replyTo.id : undefined;
+              onSubmitComentario(postId, paiId);
               setReplyTo(null);
             }}
             className="flex gap-2 items-center"

@@ -1,7 +1,7 @@
 'use client'
 
 import { use, useEffect, useState } from "react";
-import { Biblioteca, Colecao, Livro, Postagem, StatusLeitura } from "@/lib/prisma/generated/client";
+import { Biblioteca, Postagem, StatusLeitura } from "@/lib/prisma/generated/client";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -102,7 +102,7 @@ export default function DetalhesLivro({
     carregarProgresso();
   }, [livro, session?.user.id]);
 
-  async function submitComentario(idResenha: number, comentarioId?: number | null){
+  async function submitComentario(idPost: number, comentarioId?: number){
     if(!session?.user.id){
       alert("Você precisa estar logado.");
       return;
@@ -112,12 +112,12 @@ export default function DetalhesLivro({
       alert("Livro sem ID.");
       return;
     }
-
+  
     const response = await fetch("../api/comentario/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        postagemId: idResenha,
+        postagemId: idPost,
         comentarioId: comentarioId,
         usuarioId: session.user.id,
         texto: comentario,
