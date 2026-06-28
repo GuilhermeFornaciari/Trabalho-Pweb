@@ -12,6 +12,7 @@ import BibliotecaButton from "@/components/biblioteca/bibliotecaButton";
 import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 import Modal from "@/components/modal";
 import ProgressoForm from "@/components/livro/progressoForm";
+import Paginacao from "@/components/paginacao";
 
 type ResenhaDetalhes = Postagem & {
   usuario: {
@@ -20,6 +21,7 @@ type ResenhaDetalhes = Postagem & {
     username: string;
     foto: string | null;
   };
+  comentarios: any [];
   curtidas: any[];
 };
 
@@ -28,12 +30,15 @@ export default function DetalhesLivro({
 }: {
   params: Promise<{ id: string }>
 }) {
-  const {id} = use(params);
+  const { id } = use(params);
   const [livro, setLivro] = useState<LivroDetalhes | null>(null);
 
-  const [mostrarModal, setMostrarModal] = useState(false);  
+  // Estados de Controle de Modais distintos
+  const [mostrarModalDeletar, setMostrarModalDeletar] = useState(false);  
+  const [mostrarModalResenhasLista, setMostrarModalResenhasLista] = useState(false); // Novo estado isolado
+
   const { data: session } = useSession();
-  const adm = session?.user?.role === "ADM";
+  const adm = session?.user?.role === "admin";
   
   const [mostrarModalResenha, setMostrarModalResenha] = useState<ResenhaDetalhes | null>(null);
   const [comentario, setComentario] = useState("");
@@ -44,27 +49,37 @@ export default function DetalhesLivro({
   const [resenha, setResenha] = useState("");
   const [spoiler, setSpoiler] = useState(false);
   const [nota, setNota] = useState(0);
-
   
   const [resenhas, setResenhas] = useState<ResenhaDetalhes[]>([]);
+  const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
 
-  useEffect(() => {
-    async function carregarResenhas() {
-      const response = await fetch(`/api/resenha/get?livroId=${id}`);
+  async function carregarResenhas() {
+    const response = await fetch(`/api/resenha/get?livroId=${id}&pagina=${pagina}`);
 
-      if (response.ok) {
-        const data = await response.json();
-        setResenhas(data);
+    if (response.ok) {
+      const data = await response.json();
+
+      setResenhas(data.resenhas || []);
+      setTotalPaginas(Math.ceil((data.total || 1) / 10));
+
+      if (mostrarModalResenha) {
+        const novaResenha = data.resenhas?.find(
+          (r: ResenhaDetalhes) => r.id === mostrarModalResenha.id
+        );
+
+        if (novaResenha) {
+          setMostrarModalResenha(novaResenha);
+        }
       }
+
+      // console.log(mostrarModalResenha)
     }
-
-    carregarResenhas();
-  }, [id]);
-
-  async function curtidas(){
-    
   }
 
+  useEffect(() => {
+    carregarResenhas();
+  }, [id, pagina]);
 
   async function submitComentario(idResenha: number){
     if(!session?.user.id){
@@ -79,28 +94,24 @@ export default function DetalhesLivro({
 
     const response = await fetch("../api/comentario/create", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         postagemId: idResenha,
         usuarioId: session.user.id,
         texto: comentario,
-
       }),
     });
 
     if (!response.ok) {
       const erro = await response.json();
-      console.log(erro);
       alert(JSON.stringify(erro, null, 2));
       return;
     }
     
-    
     setMostrarModalResenha(null);
     setComentario("");
-    alert("Comentario criado com sucesso!");
+    await carregarResenhas();
+    alert("Comentário criado com sucesso!");
   }
 
   async function submitResenha() {
@@ -116,9 +127,7 @@ export default function DetalhesLivro({
 
     const response = await fetch("../api/resenha/create", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         livroId: livro.id,
         usuarioId: session.user.id,
@@ -131,7 +140,6 @@ export default function DetalhesLivro({
 
     if (!response.ok) {
       const erro = await response.json();
-      console.log(erro);
       alert(JSON.stringify(erro, null, 2));
       return;
     }
@@ -140,11 +148,9 @@ export default function DetalhesLivro({
     setResenha("");
     setNota(0);
     setSpoiler(false);
-
+    await carregarResenhas();
     alert("Resenha criada com sucesso!");
   }
-
-
 
   const route = useRouter();
 
@@ -157,10 +163,9 @@ export default function DetalhesLivro({
       }
     }
     carregarLivro();
-  }, [])
+  }, [id]);
   
   async function apagarLivro(id: number, colecaoId: number | null) {
-
     const res = await fetch(`/api/livro/delete?id=${id}&colecaoId=${colecaoId}`, {
       method: "DELETE",
     });
@@ -173,210 +178,242 @@ export default function DetalhesLivro({
     route.push("/catalogo");
   }
 
-  return(
-      (livro) ? 
-        <>
-          {/* topo do livro */}
-          {livro &&
-            informacoesDoLivro(
-              livro,
-              id,
-              setMostrarModal,
-              (dados) => setLivro((prev) => {
-                if (!prev) return prev;
-                return {
-                  ...prev,
-                  biblioteca: dados,
-                };
-              }),
-              adm
-            )
-          }
-          
-          {(livro?.biblioteca?.status === "LIDO" || livro?.biblioteca?.status === "LENDO")  && (
-              <div className="w-4xl m-auto flex justify-end mb-4">
-                {livro?.biblioteca?.status === "LIDO" && (
-                  <button
-                    className="px-5 py-3 rounded-md bg-blue-600 text-white"
-                    onClick={() => setMostrarModalResenhaCreate(true)}
-                  >
-                    Escrever Resenha
-                  </button>
-                  )
-                }
-                {livro?.biblioteca?.status === "LENDO" && (
-                  <button
-                    className="px-5 py-3 rounded-md bg-blue-600 text-white"
-                    onClick={() => setModalProgresso(true)}
-                  >
-                    Adicionar progresso
-                  </button>
-                  )
-                }
+  async function curtir(postagemId: number, curtido: boolean, curtidaId: number ) {
+    if (!session?.user.id) return;
 
-              </div>
-            )
-          }
-          
-          {/* listagem de resenhas */}
-         {resenhas.map((resenha) => (
-            <ResenhaCard
-              key={resenha.id}
-              resenha={resenha}
-              onClick={setMostrarModalResenha}
-            />
-          ))}
+    if (curtido) {
+      await fetch("../api/curtida/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ curtidaId }),
+      });
+    } else {
+      await fetch("../api/curtida/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usuarioId: session.user.id,
+          postagemId,
+        }),
+      });
+    }
+    await carregarResenhas();
+  }
+      
+  async function curtirComentario(comentarioId: number, curtido: boolean, curtidaId: number) {
+    if (!session?.user?.id) return;
 
+    try {
+      if (curtido) {
+        await fetch("/api/curtida/delete", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ curtidaId }),
+        });
+      } else {
+        await fetch("/api/curtida/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            usuarioId: session.user.id,
+            comentarioId,
+          }),
+        });
+      }
+      await carregarResenhas();
+    } catch (error) {
+      console.error("Erro ao processar curtida do comentário:", error);
+    }
+  }
 
+ return (
+  livro ? (
+    <>
+      {/* Topo do livro */}
+      {informacoesDoLivro(
+        livro,
+        id,
+        setMostrarModalDeletar, 
+        (dados) => setLivro((prev) => prev ? { ...prev, biblioteca: dados } : prev),
+        adm
+      )}
+      
+      {/* Barra de Ações - Removemos o botão "Ver Resenhas" antigo */}
+      <div className="w-4xl m-auto flex justify-end gap-3 mb-6">
+        {livro?.biblioteca?.status === "LIDO" && (
+          <button
+            className="px-5 py-3 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+            onClick={() => setMostrarModalResenhaCreate(true)}
+          >
+            Escrever Resenha
+          </button>
+        )}
 
-          {/* criar resenha (usuario) */}
-          {mostrarModalResenhaCreate && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-2xl">
-                <h2 className="text-xl font-semibold mb-4">
-                  Nova Resenha
-                </h2>
+        {livro?.biblioteca?.status === "LENDO" && (
+          <button
+            className="px-5 py-3 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+            onClick={() => setModalProgresso(true)}
+          >
+            Adicionar progresso
+          </button>
+        )}
+      </div>
+      
+      {/* Seção Fixa de Resenhas na Página */}
+      <div className="w-4xl m-auto border-t border-slate-100 pt-8 my-6">
+        <h2 className="text-xl font-bold text-slate-800 mb-6">Resenhas dos Leitores</h2>
 
-                <form
-                  className="flex flex-col gap-4"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    submitResenha();
-                  }}
-                >
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map((valor) => (
-                      <Star
-                        key={valor}
-                        size={32}
-                        onClick={() => setNota(valor)}
-                        className={`cursor-pointer ${
-                          valor <= nota
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
+        {/* Paginação incorporada como parte estrutural da página */}
+        <Paginacao
+          isModal={false}
+          paginaAtual={pagina}
+          totalPaginas={totalPaginas}
+          onPaginaChange={(novaPagina) => setPagina(novaPagina)}
+        >
+          <div className="space-y-4">
+            {resenhas.length === 0 ? (
+              <p className="text-sm text-slate-500 text-center py-6">
+                Nenhuma resenha encontrada para este livro. Seja o primeiro a comentar!
+              </p>
+            ) : (
+              resenhas.map((resenha) => (
+                <ResenhaCard
+                  key={resenha.id}
+                  resenha={resenha}
+                  onClick={setMostrarModalResenha}
+                  curtir={curtir}
+                />
+              ))
+            )}
+          </div>
+        </Paginacao>
+      </div>
 
-                  <div>
-                    <label className="block mb-1 font-medium">
-                      Título
-                    </label>
+        {/* Criar resenha (usuário) */}
+        {mostrarModalResenhaCreate && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-2xl">
+              <h2 className="text-xl font-semibold mb-4">Nova Resenha</h2>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitResenha();
+                }}
+              >
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((valor) => (
+                    <Star
+                      key={valor}
+                      size={32}
+                      onClick={() => setNota(valor)}
+                      className={`cursor-pointer ${
+                        valor <= nota ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
 
-                    <input
+                <div>
+                  <label className="block mb-1 font-medium">Título</label>
+                  <input
                     type="text"
-                      value={titulo}
-                      onChange={(e) => setTitulo(e.target.value)}
-                      className="w-full border rounded-md p-2"
-                      required
-                    />
-                  </div>
+                    value={titulo}
+                    onChange={(e) => setTitulo(e.target.value)}
+                    className="w-full border rounded-md p-2"
+                    required
+                  />
+                </div>
 
-                  <div>
-                    <label className="block mb-1 font-medium">
-                      Resenha
-                    </label>
+                <div>
+                  <label className="block mb-1 font-medium">Resenha</label>
+                  <textarea
+                    value={resenha}
+                    onChange={(e) => setResenha(e.target.value)}
+                    rows={8}
+                    className="w-full border rounded-md p-2"
+                    required
+                  />
+                </div>
 
-                    <textarea
-                      value={resenha}
-                      onChange={(e) => setResenha(e.target.value)}
-                      rows={8}
-                      className="w-full border rounded-md p-2"
-                      required
-                    />
-                  </div>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={spoiler}
+                    onChange={(e) => setSpoiler(e.target.checked)}
+                  />
+                  Contém spoiler
+                </label>
 
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={spoiler}
-                      onChange={(e) => setSpoiler(e.target.checked)}
-                    />
-
-                    Contém spoiler
-                  </label>
-
-                  <div className="flex justify-end gap-3 mt-4">
-                    <button
-                      type="button"
-                      className="px-4 py-2 bg-gray-300 rounded-md"
-                      onClick={() => setMostrarModalResenhaCreate(false)}
-                    >
-                      Cancelar
-                    </button>
-
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-green-600 text-white rounded-md"
-                    >
-                      Salvar Resenha
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-          
-
-          {/* modal de exclusão do livro (adm) */}
-          {mostrarModal && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-              <div className="bg-white p-6 rounded-md shadow-lg min-w-sm">
-                <h2 className="text-lg font-semibold mb-4">
-                  Confirmar exclusão
-                </h2>
-
-                <p className="mb-6">
-                  Tem certeza que deseja apagar este livro?
-                </p>
-
-                <div className="flex justify-end gap-3">
+                <div className="flex justify-end gap-3 mt-4">
                   <button
                     type="button"
                     className="px-4 py-2 bg-gray-300 rounded-md"
-                    onClick={() => setMostrarModal(false)}
+                    onClick={() => setMostrarModalResenhaCreate(false)}
                   >
-                    Não
+                    Cancelar
                   </button>
-
                   <button
-                    type="button"
-                    className="px-4 py-2 bg-red-500 text-white rounded-md"
-                    onClick={() => { apagarLivro(livro.id, livro.colecaoId) }}
+                    type="submit"
+                    className="px-4 py-2 bg-green-600 text-white rounded-md"
                   >
-                    Sim
+                    Salvar Resenha
                   </button>
                 </div>
+              </form>
+            </div>
+          </div>
+        )}
+        
+        {/* Modal de exclusão do livro (adm) */}
+        {mostrarModalDeletar && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-md shadow-lg min-w-sm">
+              <h2 className="text-lg font-semibold mb-4">Confirmar exclusão</h2>
+              <p className="mb-6">Tem certeza que deseja apagar este livro?</p>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-300 rounded-md"
+                  onClick={() => setMostrarModalDeletar(false)}
+                >
+                  Não
+                </button>
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-red-500 text-white rounded-md"
+                  onClick={() => { apagarLivro(livro.id, livro.colecaoId) }}
+                >
+                  Sim
+                </button>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* modal de ver a resenha pronta pra poder comentar e curitr */}
-           {mostrarModalResenha && (
-            <ResenhaModal
-              resenha={mostrarModalResenha}
-              comentario={comentario}
-              onChangeComentario={setComentario}
-              onSubmitComentario={submitComentario}
-              onClose={() => setMostrarModalResenha(null)}
-            />
-          )}
+        {/* Modal detalhado da resenha (Comentários e curtidas) */}
+        {mostrarModalResenha && (
+          <ResenhaModal
+            resenha={mostrarModalResenha}
+            comentario={comentario}
+            onChangeComentario={setComentario}
+            onSubmitComentario={submitComentario}
+            onClose={() => setMostrarModalResenha(null)}
+            curtir={curtir}
+            onCurtirComentario={curtirComentario}
+          />
+        )}
 
-          {modalProgresso && (
-            <Modal open={modalProgresso} onClose={() => setModalProgresso(false)}>
-              <ProgressoForm/>
-            </Modal>
-          )}
-
-        </>       
-      : ''
+        {/* Modal de Progresso (Descomente caso queira usar) */}
+        {modalProgresso && (
+          <Modal open={modalProgresso} onClose={() => setModalProgresso(false)}>
+            <ProgressoForm/>
+          </Modal>
+        )}
+      </>      
+    ) : ''
   );
 }
-
-
-
-
 
 function informacoesDoLivro(
   livro: LivroDetalhes,
@@ -395,7 +432,6 @@ function informacoesDoLivro(
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
             <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}></BibliotecaButton>
-
           </div>
         )}
       </div>
@@ -406,7 +442,7 @@ function informacoesDoLivro(
           <p>{livro.autores.map(a => a.nome).join(", ")}</p>
 
           {livro.colecao && (
-            <Link href={`/colecao/${livro.colecao.id}`}>
+            <Link href={`/colecao/${livro.colecao.id}`} className="text-blue-600 hover:underline">
               {livro.colecao.nome} #{livro.posicao_colecao}
             </Link>
           )}
@@ -422,7 +458,6 @@ function informacoesDoLivro(
           <p><span className={spanStyle}>Páginas:</span> {livro.paginas}</p>
           <p><span className={spanStyle}>Ano:</span> {livro.ano}</p>
         </div>
-
   
         <div className="flex justify-end gap-4 mt-6">
           {adm && (
@@ -442,7 +477,6 @@ function informacoesDoLivro(
               </button>
             </>
           )}
-
         </div>
       </div>
     </div>

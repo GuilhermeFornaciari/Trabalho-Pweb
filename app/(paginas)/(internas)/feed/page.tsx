@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import FeedCard from "@/components/feed/feedCard";
 import FeedDetailsModal from "@/components/feed/feedDetailsModal";
+import Paginacao from "@/components/paginacao";
 
 export default function FeedPage() {
   const { data: session } = useSession();
@@ -12,25 +13,40 @@ export default function FeedPage() {
   const [comentario, setComentario] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
   // Carrega todas as postagens globais do feed
   async function carregarFeed() {
     try {
-      const response = await fetch("/api/feed/get");
+      // setLoading(true);
+      const response = await fetch(`/api/feed/get?pagina=${pagina}`);
 
-      if (!response.ok) return [];
+      if (!response.ok) {
+          setPosts([]);
+        return null;
+      }
 
       const data = await response.json();
-      setPosts(data);
+
+      // Ajustado para 'resenhas' e 'totalPaginas' conforme o retorno modificado do backend
+      setTotalPaginas(data.totalPaginas || 1);
+      setPosts(data.resenhas || []);
 
       return data;
+    } catch (error) {
+      console.error("Erro ao carregar o feed:", error);
+      setPosts([]);
+      return null;
     } finally {
       setLoading(false);
     }
   }
 
+  // Monitora tanto o carregamento inicial quanto a mudança de páginas
   useEffect(() => {
     carregarFeed();
-  }, []);
+  }, [pagina]);
 
   async function handleComentarioSubmit(postId: number, comentId?: number | null) {
     if (!session?.user?.id) {
@@ -38,27 +54,25 @@ export default function FeedPage() {
       return;
     }
 
-    console.log("Comentario id:", comentId);
-
     try {
       const response = await fetch("/api/comentario/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           postagemId: postId,
-          comentarioId: comentId || null, // Se vier preenchido, vira uma resposta. Se não, comentário raiz do post.
+          comentarioId: comentId || null,
           usuarioId: session.user.id,
-          texto: comentario, // Certifique-se de que o nome dessa variável de estado bate com o seu useState
+          texto: comentario,
         }),
       });
 
       if (response.ok) {
-        setComentario(""); // Limpa o input
-        await carregarFeed();
+        setComentario(""); 
+        const dadosAtualizados = await carregarFeed();
 
-        // Atualiza o modal aberto com os novos dados se necessário
-        if (postSelecionado) {
-          const postAtualizado = posts.find((p) => p.id === postId);
+        // Atualiza o modal aberto com os novos comentários baseando-se na lista atualizada
+        if (postSelecionado && dadosAtualizados?.resenhas) {
+          const postAtualizado = dadosAtualizados.resenhas.find((p: any) => p.id === postId);
           if (postAtualizado) {
             setPostSelecionado(postAtualizado);
           }
@@ -102,7 +116,6 @@ export default function FeedPage() {
 
     try {
       if (curtido) {
-        // Deleta a curtida usando o ID dela
         const response = await fetch("/api/curtida/delete", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -110,7 +123,6 @@ export default function FeedPage() {
         });
         if (!response.ok) return;
       } else {
-        // Cria a curtida omitindo postagemId para o Zod validar como comentário
         const response = await fetch("/api/curtida/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -122,27 +134,21 @@ export default function FeedPage() {
         if (!response.ok) return;
       }
 
-      // Recarrega os dados globais
-      const novosPosts = await carregarFeed();
+      const novosDados = await carregarFeed();
 
-      if (postSelecionado) {
-        const atualizado = novosPosts.find(
+      if (postSelecionado && novosDados?.resenhas) {
+        const atualizado = novosDados.resenhas.find(
           (p: any) => p.id === postSelecionado.id
         );
 
         if (atualizado) {
           setPostSelecionado(atualizado);
         }
-        console.log(atualizado?.curtidas);
       }
-
-      
     } catch (error) {
       console.error("Erro ao processar curtida do comentário:", error);
     }
   }
-
-
 
   return (
     <div className="min-h-screen bg-slate-50/60 py-8 px-4">
@@ -154,25 +160,34 @@ export default function FeedPage() {
       {loading ? (
         <p className="text-center text-sm text-slate-500 mt-10">Carregando publicações...</p>
       ) : (
-        <div className="space-y-4">
-          {posts.map((post) => (
-            <FeedCard 
-              key={post.id} 
-              post={post} 
-             onClick={(p) => setPostSelecionado(p)} 
-             onCurtir={curtir} 
-            />
-          ))}
+        <div className="max-w-2xl mx-auto"> 
+          {/* Passamos o isModal={false} para ele se comportar como parte da página */}
+          <Paginacao
+            isModal={false}
+            paginaAtual={pagina}         
+            totalPaginas={totalPaginas}   
+            onPaginaChange={(novaPagina) => setPagina(novaPagina)}
+          >
+            <div className="space-y-4">
+              {posts.map((post) => (
+                <FeedCard 
+                  key={post.id} 
+                  post={post} 
+                  onClick={(p) => setPostSelecionado(p)} 
+                  onCurtir={curtir} 
+                />
+              ))}
 
-          {posts.length === 0 && (
-            <p className="text-center text-sm text-slate-400 italic mt-12">Nenhuma atividade no momento.</p>
-          )}
+              {posts.length === 0 && (
+                <p className="text-center text-sm text-slate-400 italic mt-12">Nenhuma atividade no momento.</p>
+              )}
+            </div>
+          </Paginacao>
         </div>
       )}
 
-      {/* Modal de Detalhes Expandidos */}
+      {/* O Modal de Detalhes continua abrindo por cima normalmente quando um card for clicado */}
       {postSelecionado && (
-
         <FeedDetailsModal
           post={postSelecionado}
           comentarioTexto={comentario}

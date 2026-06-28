@@ -1,19 +1,21 @@
 import { Postagem } from "@/lib/prisma/generated/client";
-import { Star, Heart } from "lucide-react";
+import { Star, Heart, MessageSquare } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 type ResenhaDetalhes = Postagem & {
   usuario: { id: number; nome: string; username: string; foto: string | null };
+  comentarios: any[];
   curtidas: any[];
 };
 
 type Props = {
   resenha: ResenhaDetalhes;
   onClick: (resenha: ResenhaDetalhes) => void;
+  curtir: (postagemId: number, curtido: boolean, curtidaId: number) => void;
 };
 
-export default function ResenhaCard({ resenha, onClick }: Props) {
+export default function ResenhaCard({ resenha, onClick, curtir }: Props) {
       const { data: session } = useSession();
   
       const [curtido, setCurtido] = useState(false);
@@ -32,48 +34,6 @@ export default function ResenhaCard({ resenha, onClick }: Props) {
         setCurtidaId(curtidaDoUsuario?.id ?? -1);
         setQtdCurtidas(resenha.curtidas.length);
       }, [session, resenha]);
-  
-      async function curtir(postagemId: number) {
-        if (!session?.user.id) return;
-  
-        if (curtido) {
-          const response = await fetch("../api/curtida/delete", {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              curtidaId,
-            }),
-          });
-  
-          if (!response.ok) return;
-  
-          setCurtido(false);
-          setQtdCurtidas((q:number) => q - 1);
-  
-        } else {
-          const response = await fetch("../api/curtida/create", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              usuarioId: session.user.id,
-              postagemId,
-              comentarioId: undefined,
-            }),
-          });
-  
-          if (!response.ok) return;
-  
-          const data = await response.json();
-  
-          setCurtido(true);
-          setCurtidaId(data.id); // <- assumindo que curtirPostComent retorna a curtida criada
-          setQtdCurtidas((q: number) => q + 1);
-        }
-      }
 
       
   return (
@@ -107,11 +67,19 @@ export default function ResenhaCard({ resenha, onClick }: Props) {
 
       <p className="text-sm text-slate-600 mb-4 line-clamp-2">{resenha.texto}</p>
 
-      <div className="flex items-center gap-1 text-xs text-slate-400">
-        <button onClick={(e) => {e.stopPropagation(); curtir(resenha.id);}} className="flex items-center gap-1.5 hover:text-red-500 transition-colors">
+      <div className="flex items-center gap-4 text-xs text-slate-400">
+        <button onClick={(e) => {e.stopPropagation();
+            setCurtido(cur => !cur);
+            setQtdCurtidas((q:number) => curtido ? q - 1 : q + 1); 
+           curtir(resenha.id, curtido, curtidaId);}} className="flex items-center gap-1.5 hover:text-red-500 transition-colors">
           <Heart size={15} className={curtido ? "fill-red-500 text-red-500" : "text-slate-500"}/>
           <span>{qtdCurtidas} Curtidas</span>
         </button>
+
+        <div className="flex items-center gap-1.5">
+          <MessageSquare size={15} />
+          <span>{resenha.comentarios?.length || 0} Comentários</span>
+        </div>
       </div>
     </div>
   );
