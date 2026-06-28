@@ -30,6 +30,8 @@ export default function FeedDetailsModal({
 
   const { data: session } = useSession();
 
+  console.log(post);
+
   // console.log("curtidas", post.curtidas);
 
   // Curtidas do Post Principal
@@ -80,7 +82,7 @@ export default function FeedDetailsModal({
               <img src={post.livro.capa} alt="" className="w-20 h-30 rounded shadow-md object-cover flex-shrink-0" />
               <div>
                 <h2 className="text-xl font-bold text-slate-900">{post.livro.titulo}</h2>
-                <p className="text-xs text-slate-500 mb-2">Autor(es) vinculados ao livro</p>
+                <p className="text-xs text-slate-500 mb-2">{post.livro.autores.map((e: any) => e.autor.nome).join(",")}</p>
                 {isProgresso ? (
                   <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded font-medium">
                     Progresso: Página {post.paginaAtual} de {post.livro.paginas}
@@ -103,8 +105,8 @@ export default function FeedDetailsModal({
               </div>
             </div>
 
-            {!isProgresso && <h3 className="text-lg font-bold text-slate-800 mb-2">{post.titulo}</h3>}
-            <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap font-serif bg-slate-50 p-4 rounded-xl border border-slate-100">
+            {!isProgresso && <h3 className="text-lg font-bold text-slate-800 mb-2 break-words text-wrap">{post.titulo}</h3>}
+            <p className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap font-serif bg-slate-50 p-4 rounded-xl border border-slate-100 break-words text-wrap">
               {post.texto}
             </p>
           </div>

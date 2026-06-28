@@ -27,6 +27,15 @@ export async function buscarPostagensFeed(pagina: number, limite = 10) {
             titulo: true,
             capa: true,
             paginas: true,
+            autores: {
+              include: {
+                autor: {
+                  select: {
+                    nome: true
+                  }
+                }
+              }
+            }
           },
         },
         // Traz APENAS as curtidas do Post Principal
