@@ -61,7 +61,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
           <p className="text-xs text-slate-500">
             {isProgresso ? (
               <span className="text-blue-600 font-medium flex items-center gap-1 mt-0.5">
-                <BookOpen size={12} /> atualizou o progresso de leitura
+                <BookOpen size={12} /> registrou um novo progresso de leitura
               </span>
             ) : (
               <span className="text-amber-600 font-medium flex items-center gap-1 mt-0.5">
@@ -75,6 +75,14 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
         </span>
       </div>
 
+      {(isProgresso && post.texto) && (
+        <div className="px-6 pb-2 mt-2">
+          <p className="line-clamp-2 break-words">
+            {post.texto}
+          </p>
+        </div>
+      )}
+
       {/* Corpo do Card: Distinção Visual */}
       <div className="px-5 pb-4">
         {isProgresso ? (
@@ -83,7 +91,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
             <img 
               src={post.livro.capa} 
               alt={post.livro.titulo} 
-              className="w-12 h-18 rounded object-cover shadow-sm flex-shrink-0"
+              className="w-18 h-25 rounded object-cover shadow-sm flex-shrink-0"
             />
             <div className="flex-1 min-w-0">
               <h4 className="font-semibold text-slate-800 text-sm truncate">{post.livro.titulo}</h4>
@@ -97,53 +105,45 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
                 />
               </div>
               <span className="text-[11px] font-bold text-blue-600 mt-1 block">{porcentagem}% concluído</span>
-              
-              {post.texto && (
-                <p className="text-slate-600 text-sm italic mt-2 line-clamp-2 border-l-2 border-slate-300 pl-2">
-                  "{post.texto}"
-                </p>
-              )}
             </div>
           </div>
         ) : (
           /* --- LAYOUT DE RESENHA --- */
-          <div className="relative border-l-4 border-amber-400 bg-amber-50/40 rounded-r-xl p-5">
-            <div className="flex justify-between items-start gap-4 mb-3">
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-1">
-                  {post.livro.titulo}
+          <div className="relative flex items-center gap-2 border-l-4 border-amber-400 bg-amber-50/40 rounded-r-xl p-3">
+              <img src={post.livro.capa} alt="" className="w-18 h-25 rounded object-cover" />
+            <div>
+              <div className="flex flex-1 justify-between items-start gap-4 mb-3">
+                <div className="min-w-0">
+                  <span className="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-1 ">
+                    {post.livro.titulo}
+                  </span>
+                  <h3 className="text-xl font-extrabold text-slate-900 tracking-tight leading-snug truncate">
+                    {post.titulo}
+                  </h3>
+                </div>
+                
+                {/* Nota em Estrelas */}
+                <div className="flex bg-white px-2 py-1 rounded-md shadow-sm border border-slate-100 shrink-0">
+                  {[1, 2, 3, 4, 5].map((valor) => (
+                    <Star
+                      key={valor}
+                      size={14}
+                      className={valor <= (post.nota ?? 0) ? "fill-amber-400 text-amber-400" : "text-slate-200"}
+                    />
+                  ))}
+                </div>
+              </div>
+              {post.temSpoiler && (
+                <span className="inline-block bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase mb-2">
+                  Contém Spoiler
                 </span>
-                <h3 className="text-xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                  {post.titulo}
-                </h3>
-              </div>
-              
-              {/* Nota em Estrelas */}
-              <div className="flex bg-white px-2 py-1 rounded-md shadow-sm border border-slate-100 shrink-0">
-                {[1, 2, 3, 4, 5].map((valor) => (
-                  <Star
-                    key={valor}
-                    size={14}
-                    className={valor <= (post.nota ?? 0) ? "fill-amber-400 text-amber-400" : "text-slate-200"}
-                  />
-                ))}
-              </div>
-            </div>
+              )}
 
-            {post.temSpoiler && (
-              <span className="inline-block bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase mb-2">
-                Contém Spoiler
-              </span>
-            )}
 
-            {/* Texto formatado com destaque de Resenha */}
-            <p className="text-slate-700 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap font-serif">
-              {post.texto}
-            </p>
-            
-            <div className="mt-4 pt-3 border-t border-amber-100/60 flex items-center gap-3">
-              <img src={post.livro.capa} alt="" className="w-6 h-9 rounded object-cover" />
-              <span className="text-xs text-slate-500 italic">Resenha crítica completa</span>
+              {/* Texto formatado com destaque de Resenha */}
+              <p className="text-slate-700 text-sm leading-relaxed line-clamp-4 whitespace-pre-wrap font-serif line-clamp-2 break-all">
+                {post.texto}
+              </p>
             </div>
           </div>
         )}
@@ -168,4 +168,33 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
       </div>
     </div>
   );
+}
+
+function exibirProgresso(post: FeedPost, porcentagem: number) {
+   <div className="bg-slate-50 rounded-lg p-4 border border-slate-100 flex items-center gap-4">
+    <img 
+      src={post.livro.capa} 
+      alt={post.livro.titulo} 
+      className="w-12 h-18 rounded object-cover shadow-sm flex-shrink-0"
+    />
+    <div className="flex-1 min-w-0">
+      <h4 className="font-semibold text-slate-800 text-sm truncate">{post.livro.titulo}</h4>
+      <p className="text-xs text-slate-500 mb-2">Página {post.paginaAtual} de {post.livro.paginas}</p>
+      
+      {/* Barra de Progresso */}
+      <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+        <div 
+          className="bg-blue-600 h-full rounded-full transition-all duration-500"
+          style={{ width: `${porcentagem}%` }}
+        />
+      </div>
+      <span className="text-[11px] font-bold text-blue-600 mt-1 block">{porcentagem}% concluído</span>
+      
+      {post.texto && (
+        <p className="text-slate-600 text-sm italic mt-2 line-clamp-2 border-l-2 border-slate-300 pl-2">
+          "{post.texto}"
+        </p>
+      )}
+    </div>
+  </div>
 }
