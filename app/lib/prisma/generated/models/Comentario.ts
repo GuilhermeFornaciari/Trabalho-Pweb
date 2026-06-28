@@ -232,10 +232,10 @@ export type ComentarioWhereInput = {
   usuarioId?: Prisma.StringFilter<"Comentario"> | string
   postagemId?: Prisma.IntFilter<"Comentario"> | number
   parentId?: Prisma.IntNullableFilter<"Comentario"> | number | null
-  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  postagem?: Prisma.XOR<Prisma.PostagemScalarRelationFilter, Prisma.PostagemWhereInput>
   parent?: Prisma.XOR<Prisma.ComentarioNullableScalarRelationFilter, Prisma.ComentarioWhereInput> | null
   respostas?: Prisma.ComentarioListRelationFilter
+  postagem?: Prisma.XOR<Prisma.PostagemScalarRelationFilter, Prisma.PostagemWhereInput>
+  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   curtidas?: Prisma.CurtidaListRelationFilter
 }
 
@@ -246,10 +246,10 @@ export type ComentarioOrderByWithRelationInput = {
   usuarioId?: Prisma.SortOrder
   postagemId?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
-  usuario?: Prisma.UserOrderByWithRelationInput
-  postagem?: Prisma.PostagemOrderByWithRelationInput
   parent?: Prisma.ComentarioOrderByWithRelationInput
   respostas?: Prisma.ComentarioOrderByRelationAggregateInput
+  postagem?: Prisma.PostagemOrderByWithRelationInput
+  usuario?: Prisma.UserOrderByWithRelationInput
   curtidas?: Prisma.CurtidaOrderByRelationAggregateInput
 }
 
@@ -263,10 +263,10 @@ export type ComentarioWhereUniqueInput = Prisma.AtLeast<{
   usuarioId?: Prisma.StringFilter<"Comentario"> | string
   postagemId?: Prisma.IntFilter<"Comentario"> | number
   parentId?: Prisma.IntNullableFilter<"Comentario"> | number | null
-  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  postagem?: Prisma.XOR<Prisma.PostagemScalarRelationFilter, Prisma.PostagemWhereInput>
   parent?: Prisma.XOR<Prisma.ComentarioNullableScalarRelationFilter, Prisma.ComentarioWhereInput> | null
   respostas?: Prisma.ComentarioListRelationFilter
+  postagem?: Prisma.XOR<Prisma.PostagemScalarRelationFilter, Prisma.PostagemWhereInput>
+  usuario?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   curtidas?: Prisma.CurtidaListRelationFilter
 }, "id">
 
@@ -299,10 +299,10 @@ export type ComentarioScalarWhereWithAggregatesInput = {
 export type ComentarioCreateInput = {
   data: Date | string
   texto: string
-  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
-  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
   parent?: Prisma.ComentarioCreateNestedOneWithoutRespostasInput
   respostas?: Prisma.ComentarioCreateNestedManyWithoutParentInput
+  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
+  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutComentarioInput
 }
 
@@ -320,10 +320,10 @@ export type ComentarioUncheckedCreateInput = {
 export type ComentarioUpdateInput = {
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
-  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
   parent?: Prisma.ComentarioUpdateOneWithoutRespostasNestedInput
   respostas?: Prisma.ComentarioUpdateManyWithoutParentNestedInput
+  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutComentarioNestedInput
 }
 
@@ -576,9 +576,9 @@ export type ComentarioUpdateOneWithoutCurtidasNestedInput = {
 export type ComentarioCreateWithoutUsuarioInput = {
   data: Date | string
   texto: string
-  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
   parent?: Prisma.ComentarioCreateNestedOneWithoutRespostasInput
   respostas?: Prisma.ComentarioCreateNestedManyWithoutParentInput
+  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutComentarioInput
 }
 
@@ -633,9 +633,9 @@ export type ComentarioScalarWhereInput = {
 export type ComentarioCreateWithoutPostagemInput = {
   data: Date | string
   texto: string
-  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
   parent?: Prisma.ComentarioCreateNestedOneWithoutRespostasInput
   respostas?: Prisma.ComentarioCreateNestedManyWithoutParentInput
+  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutComentarioInput
 }
 
@@ -678,9 +678,9 @@ export type ComentarioUpdateManyWithWhereWithoutPostagemInput = {
 export type ComentarioCreateWithoutRespostasInput = {
   data: Date | string
   texto: string
-  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
-  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
   parent?: Prisma.ComentarioCreateNestedOneWithoutRespostasInput
+  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
+  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutComentarioInput
 }
 
@@ -702,9 +702,9 @@ export type ComentarioCreateOrConnectWithoutRespostasInput = {
 export type ComentarioCreateWithoutParentInput = {
   data: Date | string
   texto: string
-  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
-  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
   respostas?: Prisma.ComentarioCreateNestedManyWithoutParentInput
+  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
+  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
   curtidas?: Prisma.CurtidaCreateNestedManyWithoutComentarioInput
 }
 
@@ -742,9 +742,9 @@ export type ComentarioUpdateToOneWithWhereWithoutRespostasInput = {
 export type ComentarioUpdateWithoutRespostasInput = {
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
-  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
   parent?: Prisma.ComentarioUpdateOneWithoutRespostasNestedInput
+  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutComentarioNestedInput
 }
 
@@ -777,10 +777,10 @@ export type ComentarioUpdateManyWithWhereWithoutParentInput = {
 export type ComentarioCreateWithoutCurtidasInput = {
   data: Date | string
   texto: string
-  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
-  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
   parent?: Prisma.ComentarioCreateNestedOneWithoutRespostasInput
   respostas?: Prisma.ComentarioCreateNestedManyWithoutParentInput
+  postagem: Prisma.PostagemCreateNestedOneWithoutComentariosInput
+  usuario: Prisma.UserCreateNestedOneWithoutComentariosInput
 }
 
 export type ComentarioUncheckedCreateWithoutCurtidasInput = {
@@ -812,10 +812,10 @@ export type ComentarioUpdateToOneWithWhereWithoutCurtidasInput = {
 export type ComentarioUpdateWithoutCurtidasInput = {
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
-  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
   parent?: Prisma.ComentarioUpdateOneWithoutRespostasNestedInput
   respostas?: Prisma.ComentarioUpdateManyWithoutParentNestedInput
+  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
 }
 
 export type ComentarioUncheckedUpdateWithoutCurtidasInput = {
@@ -839,9 +839,9 @@ export type ComentarioCreateManyUsuarioInput = {
 export type ComentarioUpdateWithoutUsuarioInput = {
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
   parent?: Prisma.ComentarioUpdateOneWithoutRespostasNestedInput
   respostas?: Prisma.ComentarioUpdateManyWithoutParentNestedInput
+  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutComentarioNestedInput
 }
 
@@ -874,9 +874,9 @@ export type ComentarioCreateManyPostagemInput = {
 export type ComentarioUpdateWithoutPostagemInput = {
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
   parent?: Prisma.ComentarioUpdateOneWithoutRespostasNestedInput
   respostas?: Prisma.ComentarioUpdateManyWithoutParentNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutComentarioNestedInput
 }
 
@@ -909,9 +909,9 @@ export type ComentarioCreateManyParentInput = {
 export type ComentarioUpdateWithoutParentInput = {
   data?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   texto?: Prisma.StringFieldUpdateOperationsInput | string
-  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
-  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
   respostas?: Prisma.ComentarioUpdateManyWithoutParentNestedInput
+  postagem?: Prisma.PostagemUpdateOneRequiredWithoutComentariosNestedInput
+  usuario?: Prisma.UserUpdateOneRequiredWithoutComentariosNestedInput
   curtidas?: Prisma.CurtidaUpdateManyWithoutComentarioNestedInput
 }
 
@@ -980,10 +980,10 @@ export type ComentarioSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   usuarioId?: boolean
   postagemId?: boolean
   parentId?: boolean
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Comentario$parentArgs<ExtArgs>
   respostas?: boolean | Prisma.Comentario$respostasArgs<ExtArgs>
+  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   curtidas?: boolean | Prisma.Comentario$curtidasArgs<ExtArgs>
   _count?: boolean | Prisma.ComentarioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comentario"]>
@@ -995,9 +995,9 @@ export type ComentarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   usuarioId?: boolean
   postagemId?: boolean
   parentId?: boolean
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Comentario$parentArgs<ExtArgs>
+  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comentario"]>
 
 export type ComentarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1007,9 +1007,9 @@ export type ComentarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   usuarioId?: boolean
   postagemId?: boolean
   parentId?: boolean
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Comentario$parentArgs<ExtArgs>
+  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comentario"]>
 
 export type ComentarioSelectScalar = {
@@ -1023,31 +1023,31 @@ export type ComentarioSelectScalar = {
 
 export type ComentarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "data" | "texto" | "usuarioId" | "postagemId" | "parentId", ExtArgs["result"]["comentario"]>
 export type ComentarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Comentario$parentArgs<ExtArgs>
   respostas?: boolean | Prisma.Comentario$respostasArgs<ExtArgs>
+  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   curtidas?: boolean | Prisma.Comentario$curtidasArgs<ExtArgs>
   _count?: boolean | Prisma.ComentarioCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ComentarioIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Comentario$parentArgs<ExtArgs>
+  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ComentarioIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
   parent?: boolean | Prisma.Comentario$parentArgs<ExtArgs>
+  postagem?: boolean | Prisma.PostagemDefaultArgs<ExtArgs>
+  usuario?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ComentarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Comentario"
   objects: {
-    usuario: Prisma.$UserPayload<ExtArgs>
-    postagem: Prisma.$PostagemPayload<ExtArgs>
     parent: Prisma.$ComentarioPayload<ExtArgs> | null
     respostas: Prisma.$ComentarioPayload<ExtArgs>[]
+    postagem: Prisma.$PostagemPayload<ExtArgs>
+    usuario: Prisma.$UserPayload<ExtArgs>
     curtidas: Prisma.$CurtidaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1451,10 +1451,10 @@ readonly fields: ComentarioFieldRefs;
  */
 export interface Prisma__ComentarioClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  usuario<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  postagem<T extends Prisma.PostagemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PostagemDefaultArgs<ExtArgs>>): Prisma.Prisma__PostagemClient<runtime.Types.Result.GetResult<Prisma.$PostagemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   parent<T extends Prisma.Comentario$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comentario$parentArgs<ExtArgs>>): Prisma.Prisma__ComentarioClient<runtime.Types.Result.GetResult<Prisma.$ComentarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   respostas<T extends Prisma.Comentario$respostasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comentario$respostasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComentarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  postagem<T extends Prisma.PostagemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PostagemDefaultArgs<ExtArgs>>): Prisma.Prisma__PostagemClient<runtime.Types.Result.GetResult<Prisma.$PostagemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  usuario<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   curtidas<T extends Prisma.Comentario$curtidasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comentario$curtidasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CurtidaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
