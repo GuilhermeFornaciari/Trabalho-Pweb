@@ -1,7 +1,7 @@
 'use client'
 
 import { use, useEffect, useState } from "react";
-import { Biblioteca, Colecao, Livro, Postagem } from "@/lib/prisma/generated/client";
+import { Biblioteca, Colecao, Livro, Postagem, StatusLeitura } from "@/lib/prisma/generated/client";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -11,7 +11,7 @@ import ResenhaModal from "@/components/resenha/resenhaModal";
 import BibliotecaButton from "@/components/biblioteca/bibliotecaButton";
 import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 import Modal from "@/components/modal";
-import ProgressoForm from "@/components/livro/progressoForm";
+import ProgressoForm from "@/components/progresso/progressoForm";
 import Paginacao from "@/components/paginacao";
 
 type ResenhaDetalhes = Postagem & {
@@ -45,6 +45,7 @@ export default function DetalhesLivro({
   
   const [mostrarModalResenhaCreate, setMostrarModalResenhaCreate] = useState(false);
   const [modalProgresso, setModalProgresso] = useState(false);
+  const [progresso, setProgresso] = useState<Postagem | null>(null);
   const [titulo, setTitulo] = useState("");
   const [resenha, setResenha] = useState("");
   const [spoiler, setSpoiler] = useState(false);
@@ -76,10 +77,30 @@ export default function DetalhesLivro({
       // console.log(mostrarModalResenha)
     }
   }
+  
+  async function carregarProgresso() {
+    if(session === null || livro === null) return;
+    const req = await fetch(
+      `/api/progresso/getLast?usuarioId=${session.user.id}&livroId=${livro.id}`
+    );
+
+    if(!req.ok) return;
+
+    const dados = await req.json();
+    setProgresso(dados.dados);
+  }
 
   useEffect(() => {
     carregarResenhas();
   }, [id, pagina]);
+
+  useEffect(() => {
+    if(!livro) return;
+    if(!session?.user.id) return;
+    if(livro.biblioteca?.status !== StatusLeitura.LENDO) return;
+
+    carregarProgresso();
+  }, [livro, session?.user.id]);
 
   async function submitComentario(idResenha: number){
     if(!session?.user.id){
@@ -404,10 +425,10 @@ export default function DetalhesLivro({
           />
         )}
 
-        {/* Modal de Progresso (Descomente caso queira usar) */}
+        {/* Modal de Progresso */}
         {modalProgresso && (
           <Modal open={modalProgresso} onClose={() => setModalProgresso(false)}>
-            <ProgressoForm/>
+            <ProgressoForm livro={livro} progresso={progresso} onClose={() => setModalProgresso(false)} onSave={carregarProgresso}/>
           </Modal>
         )}
       </>      

@@ -11,7 +11,7 @@ const addSchema = z.object({
   livroId: z.coerce.number().int().positive().min(1),
 })
 
-export default async function POST(request: Request) {
+export async function POST(request: Request) {
     const session = await auth();
   
     if(!session?.user.id) {
@@ -25,6 +25,7 @@ export default async function POST(request: Request) {
     const valiDados = addSchema.safeParse(req);
 
     if(!valiDados.success) {
+      console.log(valiDados.error)
     return Response.json(
       {
         message: "Dados inválidos.",

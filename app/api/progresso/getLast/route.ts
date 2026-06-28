@@ -7,7 +7,7 @@ const progressoSchema = z.object({
   livroId: z.coerce.number().int().positive()
 });
 
-export async function GET(request: Request, {params}: {params: { dados: {usuarioId: string, livroId: string}}}) {
+export async function GET(request: Request, {params}: {params: {usuarioId: string, livroId: string}}) {
   const session = await auth();
 
   if(!session?.user.id) {
@@ -17,8 +17,15 @@ export async function GET(request: Request, {params}: {params: { dados: {usuario
     )
   }
 
-  const {dados} = await params;
-  const valiDados = progressoSchema.safeParse(dados);
+  const { searchParams } = new URL(request.url);
+
+  const usuarioId = searchParams.get("usuarioId");
+  const livroId = searchParams.get("livroId");
+  
+  const valiDados = progressoSchema.safeParse({
+    usuarioId,
+    livroId
+  });
 
   if(!valiDados.success) {
     return Response.json(
