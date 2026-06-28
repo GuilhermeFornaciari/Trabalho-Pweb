@@ -7,12 +7,15 @@ import { useSession } from "next-auth/react";
 import EditarUsuario from "@/components/usuario/editarForm";
 import Modal from "@/components/modal";
 import BibliotecaContainer from "@/components/biblioteca/bibliotecaContainer";
+import EstatisticasPerfil from "@/components/estatistica/estatisiciaUsuario";
 
 export type UsuarioPerfil = User & {
   biblioteca: (Biblioteca & {
     livro: Livro;
   })[];
 };
+
+type AbaDisponivel = 'biblioteca' | 'postagens' | 'progresso' | 'estatisticas';
 
 export default function PerfilPage({params,}: {params: Promise<{ user: string }>}) {
     const {user} = use(params);
@@ -21,6 +24,8 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
     const [modalAberto, setModalAberto] = useState(false);
     const [usuario, setUsuario] = useState<UsuarioPerfil>();
     const [refreshKey, setRefreshKey] = useState(0);
+    
+    const [abaAtiva, setAbaAtiva] = useState<AbaDisponivel>('biblioteca');
 
     useEffect(() => {
       const carregarUsuario = async () => {
@@ -90,6 +95,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
               <p className="text-[#8A7A5B] text-sm max-w-xs"> {usuario?.bio} </p>
            </div>
         </div>
+
           {(modalAberto && session?.user.id === usuario?.id)  && 
             (
               <Modal open={modalAberto} onClose={() => setModalAberto(false)}>
@@ -102,16 +108,62 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
             )
           }
 
-        {/* Área futura — postagens, biblioteca, etc. */}
-        <div className="mt-3 text-center text-[#8A7A5B] text-sm">
-          <h1 className="text-slate-950 text-2xl font-semibold">Biblioteca</h1>
-          <div className="flex flex-wrap">
-            <BibliotecaContainer livros={usuario?.biblioteca}/>
+        {/* Sistema de Abas */}
+        <div className="mt-8">
+          {/* Botões de Seleção das Abas */}
+          <div className="flex justify-center gap-4 border-b border-[#E8D89A] pb-3 mb-6">
+            {(['biblioteca', 'postagens', 'progresso', 'estatisticas'] as AbaDisponivel[]).map((aba) => (
+              <button
+                key={aba}
+                onClick={() => setAbaAtiva(aba)}
+                className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition-all capitalize
+                  ${abaAtiva === aba 
+                    ? 'bg-[#F7D774] text-[#4F442E] shadow-sm' 
+                    : 'text-[#8A7A5B] hover:bg-[#F7D774]/20'
+                  }`}
+              >
+                {aba}
+              </button>
+            ))}
+          </div>
+
+          {/* Conteúdo Dinâmico baseado na Aba Ativa */}
+          <div className="text-center text-[#8A7A5B] text-sm min-h-[200px]">
+            {abaAtiva === 'biblioteca' && (
+              <div>
+                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Biblioteca</h2>
+                <div className="flex flex-wrap justify-center"> 
+                  {/* centro fica melhor, tabares */}
+                  <BibliotecaContainer livros={usuario?.biblioteca}/>
+                </div>
+              </div>
+            )}
+
+            {abaAtiva === 'postagens' && (
+              <div>
+                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Postagens</h2>
+                <p>Aqui ficarão as publicações e postagens do usuário.</p>
+              </div>
+            )}
+
+            {abaAtiva === 'progresso' && (
+              <div>
+                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Progresso</h2>
+                <p>Acompanhamento de leituras e metas atuais.</p>
+              </div>
+            )}
+
+            {abaAtiva === 'estatisticas' && (
+              <div>
+                <h2 className="text-slate-950 text-2xl font-semibold mb-4">Estatísticas</h2>
+                <p>Gráficos e dados de leitura do usuário.</p>
+                  <EstatisticasPerfil usuario={usuario} />
+              </div>
+            )}
           </div>
         </div>
 
       </div>
-
     </main>
   );
 }
