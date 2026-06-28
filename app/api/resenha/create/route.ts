@@ -1,15 +1,13 @@
-import { createLivro } from "@/lib/data/livroDAO";
-import Livro from "@/(entidades)/livro";
-import { boolean, z } from "zod";
+import { z } from "zod";
 import { Postagem } from "@/lib/prisma/generated/client";
 import { createResenha } from "@/lib/data/postagemDAO";
 
 const createSchema = z.object({
   livroId: z.coerce.number().int().positive(),
   usuarioId: z.string(),
-  titulo: z.string().min(1),
-  texto: z.string().min(1),
-  nota: z.int().positive(),
+  titulo: z.string(),
+  texto: z.string(),
+  nota: z.int().min(0).max(5),
   spoiler: z.boolean(),
 });
 
@@ -50,7 +48,7 @@ export async function POST(request: Request) {
     console.error(e);
 
     return Response.json(
-      { message: "Não foi possível registrar o livro." },
+      { message: "Não foi possível salvar a resenha." },
       { status: 500 }
     );
   }

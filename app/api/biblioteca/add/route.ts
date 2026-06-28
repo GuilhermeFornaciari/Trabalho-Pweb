@@ -11,7 +11,7 @@ const addSchema = z.object({
 export async function POST(request: Request) {
   const session = await auth();
 
-  if(!session) {
+  if(!session?.user.id) {
     return Response.json(
       {message: "Não autorizado: usuário não logado."},
       {status: 401}
