@@ -10,6 +10,8 @@ import ResenhaCard from "@/components/resenha/resenhaCard";
 import ResenhaModal from "@/components/resenha/resenhaModal";
 import BibliotecaButton from "@/components/biblioteca/bibliotecaButton";
 import { LivroDetalhes } from "@/lib/types/livroDetalhes";
+import Modal from "@/components/modal";
+import ProgressoForm from "@/components/livro/progressoForm";
 
 type ResenhaDetalhes = Postagem & {
   usuario: {
@@ -37,6 +39,7 @@ export default function DetalhesLivro({
   const [comentario, setComentario] = useState("");
   
   const [mostrarModalResenhaCreate, setMostrarModalResenhaCreate] = useState(false);
+  const [modalProgresso, setModalProgresso] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [resenha, setResenha] = useState("");
   const [spoiler, setSpoiler] = useState(false);
@@ -194,8 +197,8 @@ export default function DetalhesLivro({
               <div className="w-4xl m-auto flex justify-end mb-4">
                 {livro?.biblioteca?.status === "LIDO" && (
                   <button
-                  className="px-5 py-3 rounded-md bg-blue-600 text-white"
-                  onClick={() => setMostrarModalResenhaCreate(true)}
+                    className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                    onClick={() => setMostrarModalResenhaCreate(true)}
                   >
                     Escrever Resenha
                   </button>
@@ -203,7 +206,8 @@ export default function DetalhesLivro({
                 }
                 {livro?.biblioteca?.status === "LENDO" && (
                   <button
-                  className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                    className="px-5 py-3 rounded-md bg-blue-600 text-white"
+                    onClick={() => setModalProgresso(true)}
                   >
                     Adicionar progresso
                   </button>
@@ -357,7 +361,13 @@ export default function DetalhesLivro({
               onSubmitComentario={submitComentario}
               onClose={() => setMostrarModalResenha(null)}
             />
-)}
+          )}
+
+          {modalProgresso && (
+            <Modal open={modalProgresso} onClose={() => setModalProgresso(false)}>
+              <ProgressoForm/>
+            </Modal>
+          )}
 
         </>       
       : ''
