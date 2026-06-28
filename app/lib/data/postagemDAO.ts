@@ -11,7 +11,11 @@ export async function createResenha(resenha: Omit<Postagem, "id">) {
   });
 }
 
-
+export async function createProgresso(progresso: Omit<Postagem, "id">) {
+  return prisma.postagem.create({
+    data: progresso,
+  })
+}
 
 
 export async function livrosResenhasRecentes(livroId: number, pagina: number, limite = 10) {

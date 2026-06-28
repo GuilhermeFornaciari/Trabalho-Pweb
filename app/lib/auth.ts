@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import PrismaSingleton from "@/lib/prisma/PrismaSingleton"; 
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { find } from "./data/userDAO";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
@@ -54,10 +55,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }) 
   ],
   callbacks: {
-    async jwt({token, user}) {
+    async jwt({token, user, trigger}) {
+      if (trigger === "update") {
+        const usuario = await find(token.sub!);
+
+        if (usuario) {
+          token.nome = usuario.nome;
+          token.email = usuario.email;
+          token.username = usuario.username;
+          token.bio = usuario.bio;
+          token.foto = usuario.foto;
+          token.role = usuario.role;
+          token.dataNascimento = usuario.dataNascimento ? usuario.dataNascimento.toISOString() : '';
+        }
+        return token;
+     }
+
+
       if(user) {
         token.role = user.role;
         token.username = user.username;
+        token.email = user.email;
         token.foto = user.foto;
         token.nome = user.nome;
         token.dataNascimento = (user.dataNascimento) ? user.dataNascimento.toISOString() : '';
