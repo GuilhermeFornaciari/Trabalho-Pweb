@@ -12,7 +12,7 @@ export default function EditarUsuario({
 }: {
   onRefresh: () => void;
   onClose: () => void;
-  usuario: UsuarioPerfil
+  usuario: UsuarioPerfil | undefined
 }) {
   //const [mostrarSenha, setMostrarSenha] = useState(false);
 
@@ -24,6 +24,8 @@ export default function EditarUsuario({
   }, [usuario]);
 
   async function updateUser() {
+    if(form === undefined) return;
+
     const response = await fetch("../api/usuario/update", {
       method: "PUT",
       headers: {

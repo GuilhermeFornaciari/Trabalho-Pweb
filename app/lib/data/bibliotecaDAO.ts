@@ -36,20 +36,20 @@ export async function salvarLivro(dados: Biblioteca) {
       },
     });
 
-    if(!bibliotecaExistente && dados.status === StatusLeitura.LENDO) {
-      await tx.postagem.create({
-        data: {
-          paginaAtual: 0,
-          paginasLidas: 0,
-          nota: null,
-          titulo: null,
-          texto: null,
-          temSpoiler: false,
-          usuarioId: dados.usuarioId,
-          livroId: dados.livroId,
-        },
-      });
-    }
+    // if(!bibliotecaExistente && dados.status === StatusLeitura.LENDO) {
+    //   await tx.postagem.create({
+    //     data: {
+    //       paginaAtual: 0,
+    //       paginasLidas: 0,
+    //       nota: null,
+    //       titulo: null,
+    //       texto: null,
+    //       temSpoiler: false,
+    //       usuarioId: dados.usuarioId,
+    //       livroId: dados.livroId,
+    //     },
+    //   });
+    // }
 
     return biblioteca;
   });

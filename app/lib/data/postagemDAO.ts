@@ -45,3 +45,18 @@ export async function livrosResenhasRecentes(livroId: number){
 
   return dados;
 }
+
+export async function ultimoProgresso(usuarioId: string, livroId: number) {
+  return await prisma.postagem.findFirst({
+    where: {
+      usuarioId: usuarioId,
+      livroId: livroId,
+      paginaAtual: {
+        not: null,
+      }
+    },
+    orderBy: {
+      data: "desc"
+    }
+  })
+}

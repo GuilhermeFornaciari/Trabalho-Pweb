@@ -7,7 +7,7 @@ const usuarioUser = z.string();
 export async function GET( request: Request, { params }: { params: { user: string } }) {
   const session = await auth();
   
-  if(!session) {
+  if(!session?.user.id) {
     return Response.json(
       {message: "Não autorizado: usuário não logado."},
       {status: 401}
