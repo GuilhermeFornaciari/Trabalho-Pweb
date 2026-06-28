@@ -39,9 +39,9 @@ function cardConteudo(elemento: any) {
     return ("")
   }
   
-  if(elemento.livro.status === StatusLeitura.LIDO) {
+  if(elemento.status === StatusLeitura.LIDO) {
     return (
-      <div>
+      <div className="flex justify-center items-center">
         {[1, 2, 3, 4, 5].map((valor) => (
           <Star
           key={valor}
@@ -50,7 +50,6 @@ function cardConteudo(elemento: any) {
           />
         ))}
       </div>
-    )
+    );
   }
-  
 }
