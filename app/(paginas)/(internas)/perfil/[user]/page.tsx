@@ -165,7 +165,6 @@ function postagens(usuario: UsuarioPerfil | undefined) {
   return (
     <div>
       <h2 className="text-slate-950 text-2xl font-semibold mb-4">Postagens</h2>
-      <p>Aqui ficarão as publicações e postagens do usuário.</p>
     </div>
   );
 } 
