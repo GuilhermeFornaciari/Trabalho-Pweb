@@ -29,6 +29,7 @@ export default function Header() {
           }
           <Link href="/catalogo" className={navItemsStyle + (pathName.match("/catalogo") ? navItemDestacadoStyle : "")}>Catalogo</Link>
           <Link href="/feed" className={navItemsStyle + (pathName.match("/feed") ? navItemDestacadoStyle : "")}>Feed</Link>
+          <Link href="/amigos" className={navItemsStyle + (pathName.match("/amigos") ? navItemDestacadoStyle : "")}>Amizades</Link>
         </div>
 
          <div className="relative">

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const usuarioUser = z.string();
 
-export async function GET( request: Request, { params }: { params: { user: string } }) {
+export async function GET( request: Request, { params }: { params: Promise<{ user: string }> }) {
   try {
     const { user } = await params;
     const resultado = usuarioUser.safeParse(user);

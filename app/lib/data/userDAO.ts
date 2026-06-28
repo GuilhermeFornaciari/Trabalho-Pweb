@@ -18,7 +18,8 @@ export async function find(id: string){
       foto: true,
       bio: true,
       role: true,
-      username: true
+      username: true,
+      senha: true
     },
     where: { id },
   });

@@ -21,7 +21,7 @@ export async function GET( request: Request, { params }: { params: Promise<{ id:
 
   const search = await getAutorId(autorId);
 
-  if ("message" in search) {
+  if ("message" in search && "status" in search) {
     return Response.json(
       { message: search.message },
       { status: search.status }

@@ -3,8 +3,9 @@ import { z } from "zod";
 
 const idSchema = z.coerce.number().int().positive();
 
-export async function GET( request: Request,{ params }: { params: { id: string } } ) { 
-  const resultado = idSchema.safeParse(params.id);
+export async function GET( request: Request,{ params }: { params: Promise<{ id: string }> } ) { 
+  const { id } = await params;
+  const resultado = idSchema.safeParse(id);
 
   if (!resultado.success) {
     return Response.json(
@@ -13,9 +14,9 @@ export async function GET( request: Request,{ params }: { params: { id: string }
     );
   }
 
-  const id = resultado.data;
+  const colecaoId = resultado.data;
 
-  const search = await getById(id);
+  const search = await getById(colecaoId);
 
   if ("message" in search) {
     return Response.json(

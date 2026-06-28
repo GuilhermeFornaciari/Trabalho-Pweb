@@ -6,7 +6,7 @@ const idSchema = z.object({
   id: z.coerce.number().int().positive(),
 });
 
-export async function GET( request: Request, { params }: { params: { id: string } }) {
+export async function GET( request: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if(!session) {
     return Response.json(
