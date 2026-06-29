@@ -28,7 +28,7 @@ export async function DELETE(request: Request) {
   } catch(e){
     console.error(e);
 
-        return Response.json(
+      return Response.json(
       { message: "Não foi possível apagar o comnetario." },
       { status: 500 }
     );

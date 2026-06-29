@@ -22,7 +22,7 @@ export default function LivroCard ({
         </div>
         {children}
         <div>
-          <h2 className="font-semibold text-[#4F442E] line-clamp-2 truncate">
+          <h2 className="font-semibold text-center text-stone-950 line-clamp-2 truncate">
             {livro.titulo}
           </h2>
         </div>

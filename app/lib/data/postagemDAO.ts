@@ -1,50 +1,81 @@
 import { Postagem } from "../prisma/generated/client";
 import PrismaSingleton from "../prisma/PrismaSingleton";
+import { sincronizarBiblioteca } from "./bibliotecaDAO";
 
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
+export async function find(postId: number) {
+  return prisma.postagem.findUnique({
+    where: {
+      id: postId
+    }
+  })
+}
+
+export async function deletePost(post: Postagem, usuarioId: string, livroId: number) {
+  return await prisma.$transaction(async (tx) => {
+    const proximoPost = await tx.postagem.findFirst({
+      where: {
+        usuarioId: usuarioId,
+        livroId: livroId,
+        paginaAtual: {
+          not: null,
+        },
+        id: {
+          not: post.id,
+        },
+      },
+      orderBy: {
+        data: "desc",
+      },
+    });
+
+
+    if(proximoPost) {
+      await tx.postagem.update({
+        where: {
+          id: proximoPost.id,
+        },
+          data: {
+          paginasLidas: {
+            increment: post.paginasLidas ?? 0,
+          },
+        },
+      });
+    }
+
+    
+    const result = await tx.postagem.delete({
+      where: {
+        id: post.id,
+      },
+    });
+
+    await sincronizarBiblioteca(tx, usuarioId, livroId);
+    return result;
+  })
+
+}
 
 export async function createResenha(resenha: Omit<Postagem, "id">) {
   return prisma.$transaction(async (tx) => {
-    const postagem = prisma.postagem.create({
+    const postagem = tx.postagem.create({
       data: resenha,
     });
 
-    await tx.biblioteca.update({
-      where: {
-        usuarioId_livroId: {
-          usuarioId: resenha.usuarioId,
-          livroId: resenha.livroId,
-        },
-      },
-      data: {
-        nota: resenha.nota
-      }
-    });
-
+    await sincronizarBiblioteca(tx, resenha.usuarioId, resenha.livroId);
     return postagem;
   })
 }
 
 export async function createProgresso(progresso: Omit<Postagem, "id">) {
   return prisma.$transaction(async (tx) => {
-    const postagem = await prisma.postagem.create({
+    const postagem = await tx.postagem.create({
       data: progresso,
     })
 
-    await tx.biblioteca.update({
-      where: {
-        usuarioId_livroId: {
-          usuarioId: progresso.usuarioId,
-          livroId: progresso.livroId
-        }
-      },
-      data: {
-        paginaAtual: progresso.paginaAtual
-      }
-    });
-
+    await sincronizarBiblioteca(tx, progresso.usuarioId, progresso.livroId);
     return postagem;
   })
 }
