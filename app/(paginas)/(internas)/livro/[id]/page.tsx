@@ -13,6 +13,7 @@ import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 import Modal from "@/components/modal";
 import ProgressoForm from "@/components/progresso/progressoForm";
 import Paginacao from "@/components/paginacao";
+import { UsuarioPerfil } from "@/lib/types/usuarioPerfil";
 
 type ResenhaDetalhes = Postagem & {
   usuario: {
@@ -247,13 +248,18 @@ export default function DetalhesLivro({
       console.error("Erro ao processar curtida do comentário:", error);
     }
   }
-
+  
+const notaMediaLivro =
+  resenhas.length === 0
+    ? 0
+    : resenhas.reduce((soma, r) => soma + (r.nota ?? 0), 0) / resenhas.length;
  return (
   livro ? (
     <>
       {/* Topo do livro */}
       {informacoesDoLivro(
         livro,
+        notaMediaLivro,
         id,
         setMostrarModalDeletar, 
         (dados) => setLivro((prev) => prev ? { ...prev, biblioteca: dados } : prev),
@@ -439,6 +445,7 @@ export default function DetalhesLivro({
 
 function informacoesDoLivro(
   livro: LivroDetalhes,
+  notaMediaLivro: number,
   id: string,
   setMostrarModal: (value: boolean) => void,
   setBiblioteca: (value: Biblioteca) => void,
@@ -453,7 +460,7 @@ function informacoesDoLivro(
         <img src={livro.capa} alt="Capa" className="w-50 h-75 rounded-sm" />
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
-            <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}></BibliotecaButton>
+            <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}/>
           </div>
         )}
       </div>
@@ -468,6 +475,36 @@ function informacoesDoLivro(
               {livro.colecao.nome} #{livro.posicao_colecao}
             </Link>
           )}
+
+
+            <div className="flex items-center gap-0.5">
+            {[1, 2, 3, 4, 5].map((valor) => {
+              const preenchimento = Math.max(0,Math.min(1, notaMediaLivro - (valor - 1)));
+              const tamanhoEstrela = 20;
+
+              return ( 
+                <div key={valor} className={"relative w-[" + tamanhoEstrela + "px] h-[" + tamanhoEstrela + "px]"}>
+                {/* <div key={valor} className="relative w-[25px] h-[25px]"> */}
+                  {/* estrela vazia */}
+                  <Star
+                    size={tamanhoEstrela}
+                    className="absolute text-slate-300"
+                  />
+
+                  {/* parte preenchida */}
+                  <div
+                    className="absolute overflow-hidden"
+                    style={{ width: `${preenchimento * 100}%` }}
+                  >
+                    <Star
+                      size={tamanhoEstrela}
+                      className="fill-amber-400 text-amber-400"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <div className="my-5">

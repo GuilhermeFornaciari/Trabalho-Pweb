@@ -3,8 +3,9 @@ import { LivroDetalhes } from "@/lib/types/livroDetalhes";
 import Modal from "@/components/modal";
 import { StatusLeitura } from "@/lib/prisma/generated/enums";
 import { useSession } from "next-auth/react";
-import Biblioteca from "@/(entidades)/biblioteca";
+// import Biblioteca from "@/(entidades)/biblioteca";
 import { statusStyle } from "@/lib/types/statusStyle";
+import { Biblioteca } from "@/lib/prisma/generated/client";
 
 export default function BibliotecaButton({
   livro,

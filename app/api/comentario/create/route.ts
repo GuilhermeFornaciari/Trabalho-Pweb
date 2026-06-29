@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const dados = resultado.data;
 
 
-    const comentario: Omit<Comentario, "id"> = {
+    const comentario: Omit<Comentario, "id" | "createdAt"> = {
       postagemId: dados.postagemId,
       usuarioId: dados.usuarioId,
       texto: dados.texto,

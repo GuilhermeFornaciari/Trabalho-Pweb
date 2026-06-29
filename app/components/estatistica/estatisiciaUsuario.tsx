@@ -1,118 +1,21 @@
 'use client'
 
-import { UsuarioPerfil } from "@/lib/types/usuarioPerfil"; // Ajuste o caminho se necessário
-import { StatusLeitura } from "@/lib/prisma/generated/client";
-
-// --- DADOS FICTÍCIOS (MOCK DATA) ---
-// Simulando exatamente a estrutura gerada pelo seu Schema do Prisma
-const mockBiblioteca: UsuarioPerfil['biblioteca'] = [
-  {
-    usuarioId: "user-123",
-    livroId: 1,
-    status: "LIDO" as StatusLeitura,
-    dataInicio: new Date("2026-01-05"),
-    dataConclusao: new Date("2026-01-20"), // 15 dias de leitura
-    livro: {
-      id: 1,
-      titulo: "O Hobbit",
-      ano: 1937,
-      genero: "Fantasia",
-      paginas: 320,
-      capa: "/temp/hobbit.jpg",
-      createdAt: new Date(),
-      sinopse: "A jornada de Bilbo Bolseiro...",
-      colecaoId: null,
-      posicao_colecao: null,
-    }
-  },
-  {
-    usuarioId: "user-123",
-    livroId: 2,
-    status: "LIDO" as StatusLeitura,
-    dataInicio: new Date("2026-02-01"),
-    dataConclusao: new Date("2026-02-25"), // 24 dias de leitura
-    livro: {
-      id: 2,
-      titulo: "Duna",
-      ano: 1965,
-      genero: "Ficção Científica",
-      paginas: 680,
-      capa: "/temp/duna.jpg",
-      createdAt: new Date(),
-      sinopse: "A epopeia de Paul Atreides...",
-      colecaoId: null,
-      posicao_colecao: null,
-    }
-  },
-  {
-    usuarioId: "user-123",
-    livroId: 3,
-    status: "LIDO" as StatusLeitura,
-    dataInicio: new Date("2026-03-10"),
-    dataConclusao: new Date("2026-03-18"), // 8 dias de leitura
-    livro: {
-      id: 3,
-      titulo: "O Nome do Vento",
-      ano: 2007,
-      genero: "Fantasia",
-      paginas: 656,
-      capa: "/temp/nomedovento.jpg",
-      createdAt: new Date(),
-      sinopse: "A história de Kvothe...",
-      colecaoId: null,
-      posicao_colecao: null,
-    }
-  },
-  {
-    usuarioId: "user-123",
-    livroId: 4,
-    status: "LENDO" as StatusLeitura,
-    dataInicio: new Date("2026-06-01"),
-    dataConclusao: null,
-    livro: {
-      id: 4,
-      titulo: "Corte de Espinhos e Rosas",
-      ano: 2015,
-      genero: "Fantasia",
-      paginas: 434,
-      capa: "/temp/acotar.jpg",
-      createdAt: new Date(),
-      sinopse: "A jornada de Feyre...",
-      colecaoId: null,
-      posicao_colecao: null,
-    }
-  },
-  {
-    usuarioId: "user-123",
-    livroId: 5,
-    status: "QUERO_LER" as StatusLeitura,
-    dataInicio: null,
-    dataConclusao: null,
-    livro: {
-      id: 5,
-      titulo: "Neuromancer",
-      ano: 1984,
-      genero: "Ficção Científica",
-      paginas: 320,
-      capa: "/temp/neuro.jpg",
-      createdAt: new Date(),
-      sinopse: "O início do cyberpunk...",
-      colecaoId: null,
-      posicao_colecao: null,
-    }
-  }
-];
+import { UsuarioPerfil } from "@/lib/types/usuarioPerfil"; 
+import { useEffect, useState } from "react";
 
 interface EstatisticasPerfilProps {
   usuario: UsuarioPerfil | undefined;
 }
 
+type ItemBiblioteca = NonNullable<UsuarioPerfil["biblioteca"]>[number];
+
 export default function EstatisticasPerfil({ usuario }: EstatisticasPerfilProps) {
-  // SE o usuário real vindo do banco não tiver dados na biblioteca,
-  // nós injetamos o mockBiblioteca para fins de exibição/teste.
-  const registros = usuario?.biblioteca && usuario.biblioteca.length > 0 
-    ? usuario.biblioteca 
-    : mockBiblioteca;
+  const [registros, setRegistros] = useState<ItemBiblioteca[]>([]);
+
+  useEffect(() => {
+    if (!usuario?.biblioteca) return;
+    setRegistros(usuario.biblioteca);
+  }, [usuario?.biblioteca]);
 
   // --- CÁLCULOS COM OS DADOS ---
   const livrosLidos = registros.filter(b => b.status === "LIDO");
