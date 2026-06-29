@@ -138,7 +138,7 @@ export default function FeedDetails({
           </button>
         </div>
 
-        {postagemEmEdicao && (
+        {(isProgresso && postagemEmEdicao) && (
           <Modal open={postagemEmEdicao !== null} onClose={() => setPostagemEmEdicao(null)}>
             <ProgressoForm 
               livro={post.livro} 
@@ -166,7 +166,7 @@ export default function FeedDetails({
                 </div>
                 {modalAcoes && <MenuAcoes 
                   style="absolute right-5 top-10 z-30 min-w-[170px] overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
-                  onEditar={handleAbrirEdicao} // Atribuído a função de preenchimento
+                  onEditar={(isProgresso) ? () => setPostagemEmEdicao(post) : handleAbrirEdicao} // Atribuído a função de preenchimento
                   onApagar={async () => {
                     await onDelete(post.id);
                     onClose();
