@@ -167,3 +167,11 @@ export async function getUserPosts(
     paginaAtual: pagina
   };
 }
+
+export async function deleteUser(usuarioId: string){
+  return prisma.user.delete({
+    where: {
+      id: usuarioId,
+    }
+  })
+}

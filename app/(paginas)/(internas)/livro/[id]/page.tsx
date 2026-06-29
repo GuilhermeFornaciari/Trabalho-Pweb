@@ -14,6 +14,7 @@ import Modal from "@/components/modal";
 import ProgressoForm from "@/components/progresso/progressoForm";
 import Paginacao from "@/components/paginacao";
 import { UsuarioPerfil } from "@/lib/types/usuarioPerfil";
+import ResenhaEditeCreateModal from "@/components/resenha/resenhaEditCreate";
 
 type ResenhaDetalhes = Postagem & {
   usuario: {
@@ -179,7 +180,7 @@ useEffect(() => {
       return;
     }
 
-    const response = await fetch("../api/resenha/create", {
+    const response = await fetch("../api/resenha/upsert", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -350,78 +351,19 @@ const notaMediaLivro =
 
         {/* Criar resenha (usuário) */}
         {mostrarModalResenhaCreate && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-2xl">
-              <h2 className="text-xl font-semibold mb-4">Nova Resenha</h2>
-              <form
-                className="flex flex-col gap-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  submitResenha();
-                }}
-              >
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((valor) => (
-                    <Star
-                      key={valor}
-                      size={32}
-                      onClick={() => setNota(valor)}
-                      className={`cursor-pointer ${
-                        valor <= nota ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                <div>
-                  <label className="block mb-1 font-medium">Título</label>
-                  <input
-                    type="text"
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                    className="w-full border rounded-md p-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-1 font-medium">Resenha</label>
-                  <textarea
-                    value={resenha}
-                    onChange={(e) => setResenha(e.target.value)}
-                    rows={8}
-                    className="w-full border rounded-md p-2"
-                    required
-                  />
-                </div>
-
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={spoiler}
-                    onChange={(e) => setSpoiler(e.target.checked)}
-                  />
-                  Contém spoiler
-                </label>
-
-                <div className="flex justify-end gap-3 mt-4">
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-gray-300 rounded-md"
-                    onClick={() => setMostrarModalResenhaCreate(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-green-600 text-white rounded-md"
-                  >
-                    Salvar Resenha
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+          <ResenhaEditeCreateModal
+            isOpen={mostrarModalResenhaCreate}
+            onClose={() => setMostrarModalResenhaCreate(false)}
+            titulo={titulo}
+            setTitulo={setTitulo}
+            resenha={resenha}
+            setResenha={setResenha}
+            nota={nota}
+            setNota={setNota}
+            spoiler={spoiler}
+            setSpoiler={setSpoiler}
+            onSubmit={submitResenha}
+          />
         )}
         
         {/* Modal de exclusão do livro (adm) */}
@@ -467,6 +409,7 @@ const notaMediaLivro =
           idComentarioSendoEditado={idComentarioSendoEditado}
           setIdComentarioSendoEditado={setIdComentarioSendoEditado}
           setApagarComentario={setApagarComentario}
+          onUpdateResenha={carregarResenhas}
         />
       )}
 
@@ -518,14 +461,12 @@ function informacoesDoLivro(
             <div className="flex items-center gap-0.5">
             {[1, 2, 3, 4, 5].map((valor) => {
               const preenchimento = Math.max(0,Math.min(1, notaMediaLivro - (valor - 1)));
-              const tamanhoEstrela = 20;
 
               return ( 
-                <div key={valor} className={"relative w-[" + tamanhoEstrela + "px] h-[" + tamanhoEstrela + "px]"}>
-                {/* <div key={valor} className="relative w-[25px] h-[25px]"> */}
+                <div key={valor} className="relative w-[25px] h-[25px]"> 
                   {/* estrela vazia */}
                   <Star
-                    size={tamanhoEstrela}
+                    size={25}
                     className="absolute text-slate-300"
                   />
 
@@ -535,7 +476,7 @@ function informacoesDoLivro(
                     style={{ width: `${preenchimento * 100}%` }}
                   >
                     <Star
-                      size={tamanhoEstrela}
+                      size={25}
                       className="fill-amber-400 text-amber-400"
                     />
                   </div>

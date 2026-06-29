@@ -58,15 +58,31 @@ export async function deletePost(post: Postagem, usuarioId: string, livroId: num
 
 }
 
-export async function createResenha(resenha: Omit<Postagem, "id">) {
+export async function upsertResenha(id: number | undefined, resenha: Omit<Postagem, "id">) {
   return prisma.$transaction(async (tx) => {
-    const postagem = tx.postagem.create({
-      data: resenha,
+    const postagemId = id ?? -1;
+
+    const postagem = await tx.postagem.upsert({
+      where: {
+        id: postagemId,
+      },
+      update: {
+        titulo: resenha.titulo,
+        texto: resenha.texto,
+        nota: resenha.nota,
+        temSpoiler: resenha.temSpoiler,
+        // Opcional: remover ou manter a data original. 
+        // Se quiser atualizar a data da resenha para a data da edição, descomente a linha abaixo:
+        // data: resenha.data 
+      },
+      create: resenha,
     });
 
+    // Mantém a sincronização da biblioteca em ambos os casos
     await sincronizarBiblioteca(tx, resenha.usuarioId, resenha.livroId);
+    
     return postagem;
-  })
+  });
 }
 
 export async function createProgresso(progresso: Omit<Postagem, "id">) {
