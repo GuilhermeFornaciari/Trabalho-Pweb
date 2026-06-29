@@ -23,6 +23,7 @@ type AbaDisponivel = 'biblioteca' | 'postagens' | 'estatisticas';
 
 export default function PerfilPage({params,}: {params: Promise<{ user: string }>}) {
   const {user} = use(params);
+  const [loadingPage, setLoadingPage] = useState(true);
   const { data: session } = useSession();
   const backgroundImage = "/images/fundo-perfil.jpg";
   const [modalAberto, setModalAberto] = useState(false);
@@ -40,6 +41,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
   };
   
   useEffect(() => {
+    setLoadingPage(true);
     const carregarUsuario = async () => {
       const response = await fetch(`../api/usuario/${user}`);
       
@@ -47,6 +49,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
         const data = await response.json();
         setUsuario(data.dados);
       }
+      setLoadingPage(false);
     };
     
     carregarUsuario();
@@ -88,8 +91,14 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
     return data.dados.posts;
   }
 
+  if(loadingPage) {
+    return (
+      <p>Carregando informações...</p>
+    );
+  }
+
   return (
-    <main className="relative min-h-screen">
+    <>
       <div className="fixed inset-0 -z-10 bg-cover bg-center" style={{ backgroundImage }}/>
         <div className="w-5xl mx-auto px-4 py-10">
         {/* Cabeçalho do perfil */}
@@ -103,7 +112,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
                   alt="Foto do usuário"
                   fill
                   className="rounded-full object-cover border-4 border-[#F7D774]"
-                />
+                  />
               </div>
               { session?.user.id === usuario?.id && 
                 (
@@ -149,13 +158,13 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
           <div className="flex justify-center gap-4 border-b border-[#E8D89A]">
             {(['biblioteca', 'postagens', 'estatisticas'] as AbaDisponivel[]).map((aba) => (
               <button
-                key={aba}
-                onClick={() => setAbaAtiva(aba)}
-                className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition-all capitalize
-                  ${abaAtiva === aba 
-                    ? 'bg-[#F7D774] text-[#4F442E] shadow-sm' 
-                    : 'text-[#8A7A5B] hover:bg-[#F7D774]/20'
-                  }`}
+              key={aba}
+              onClick={() => setAbaAtiva(aba)}
+              className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition-all capitalize
+                ${abaAtiva === aba 
+                  ? 'bg-[#F7D774] text-[#4F442E] shadow-sm' 
+                  : 'text-[#8A7A5B] hover:bg-[#F7D774]/20'
+                }`}
               >
                 {aba}
               </button>
@@ -169,7 +178,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
         </div>
 
       </div>
-    </main>
+    </>
   );
 }
 

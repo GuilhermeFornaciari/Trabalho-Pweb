@@ -67,7 +67,7 @@ export default function AmigosPage() {
   };
 
   return (
-    <main className="w-full max-w-5xl px-4 py-8">
+    <main className="w-full max-w-5xl mx-auto px-4 py-8">
       <div className="rounded-2xl border border-[#E8D89A] bg-[#FFF8EB] p-6 shadow-sm">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold text-[#4F442E]">Amizades</h1>

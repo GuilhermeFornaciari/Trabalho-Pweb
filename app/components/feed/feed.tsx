@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import FeedCard from "@/components/feed/feedCard";
-import FeedDetailsModal from "@/components/feed/feedDetailsModal";
+import FeedDetails from "@/components/feed/feedDetails";
 import Paginacao from "@/components/paginacao";
 
 type FeedProps = {
@@ -163,7 +163,7 @@ async function curtirComentario(
       )}
 
       {postSelecionado && (
-        <FeedDetailsModal
+        <FeedDetails
           post={postSelecionado}
           comentarioTexto={comentario}
           onChangeComentario={setComentario}

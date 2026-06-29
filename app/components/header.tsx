@@ -20,7 +20,7 @@ export default function Header() {
   const rotaPerfil = session?.user ? `/perfil/${session.user.username}` : "/login";
 
   return (
-    <header className="fixed top-0 left-0 w-full h-24 z-50 bg-yellow-300 border-b-3 border-slate-950 flex items-center">
+    <header className="sticky top-0 left-0 w-full h-[90px] z-50 bg-yellow-300 border-b-3 border-slate-950 flex items-center">
       <div className="w-7xl m-auto flex items-center justify-between">
         <Link href="/catalogo"><Image loading="eager" src="/libris.png" width={70} height={70} alt="Libris logo"/></Link>
         <div>
@@ -38,9 +38,17 @@ export default function Header() {
         </div>
 
          <div className="relative">
-            <div className="relative w-14 h-14 cursor-pointer" onClick={() => setPerfilOpc(!perfilOpc)}>
-              <Image src={foto} alt="Foto do usuário" fill className="rounded-full object-cover border-2 border-black"/>
-              {/* <span className="absolute right-0 top-16">Olá, </span> */}
+            <div className="flex justify-center items-center gap-2">
+              {session?.user?.nome && (
+                <div className="flex flex-col">
+                  <p className="text-sm">Olá,</p>
+                  <span className="max-w-sm truncate font-bold">{session?.user?.nome}</span>
+                </div>
+              )}
+              <div className="relative w-14 h-14 cursor-pointer" onClick={() => setPerfilOpc(!perfilOpc)}>
+                <Image src={foto} alt="Foto do usuário" fill className="rounded-full object-cover border-2 border-black"/>
+                {/* <span className="absolute right-0 top-16">Olá, </span> */}
+              </div>
             </div>
 
             {perfilOpc && (
