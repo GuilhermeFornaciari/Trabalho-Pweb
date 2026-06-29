@@ -86,9 +86,10 @@ export async function updateUser(user: User) {
 
 export async function getUserPosts(
   user: string,
-  ultimoId?: number,
+  pagina: number = 1,
   quantidade: number = 10
 ) {
+  console.log("POSTS:", user)
   const [dados, total] = await Promise.all([
     prisma.postagem.findMany({
       where: {
@@ -100,15 +101,8 @@ export async function getUserPosts(
         { id: "desc" },
       ],
 
+      skip: (pagina - 1) * quantidade,
       take: quantidade,
-
-      cursor: ultimoId
-        ? {
-            id: ultimoId,
-          }
-        : undefined,
-
-      skip: ultimoId ? 1 : 0,
 
       include: {
         usuario: {
@@ -169,8 +163,7 @@ export async function getUserPosts(
   return {
     posts: dados,
     total,
-    temMais: dados.length === quantidade,
-    proximaPagina: dados.length > 0 ? dados[dados.length - 1].id : null,
-    paginaAnterior: ultimoId
+    totalPaginas: Math.ceil(total / quantidade),
+    paginaAtual: pagina
   };
 }

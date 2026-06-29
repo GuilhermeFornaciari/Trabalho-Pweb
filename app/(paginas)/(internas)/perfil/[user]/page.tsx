@@ -8,6 +8,7 @@ import EditarUsuario from "@/components/usuario/editarForm";
 import Modal from "@/components/modal";
 import BibliotecaContainer from "@/components/biblioteca/bibliotecaContainer";
 import EstatisticasPerfil from "@/components/estatistica/estatisiciaUsuario";
+import Feed from "@/components/feed/feed";
 
 export type UsuarioPerfil = User & {
   biblioteca: (Biblioteca & {
@@ -21,45 +22,71 @@ type AbaDisponivel = 'biblioteca' | 'postagens' | 'estatisticas';
 
 
 export default function PerfilPage({params,}: {params: Promise<{ user: string }>}) {
-    const {user} = use(params);
-    const { data: session } = useSession();
-    const backgroundImage = "/images/fundo-perfil.jpg";
-    const [modalAberto, setModalAberto] = useState(false);
-    const [usuario, setUsuario] = useState<UsuarioPerfil>();
-    const [refreshKey, setRefreshKey] = useState(0);
-    
-    const [abaAtiva, setAbaAtiva] = useState<AbaDisponivel>('biblioteca');
-    const conteudos = {
-      biblioteca: biblioteca(usuario),
-      postagens: postagens(usuario),
-      estatisticas: estatisticas(usuario),
-    };
-
-    useEffect(() => {
-      const carregarUsuario = async () => {
-        const response = await fetch(`../api/usuario/${user}`);
-
-        if(response.ok){
-          const data = await response.json();
-          console.log(data);
-          setUsuario(data.dados);
-        }
-      };
-
-      carregarUsuario();
-    }, [refreshKey]);
-
-    useEffect(() => {
-      if (modalAberto) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "";
+  const {user} = use(params);
+  const { data: session } = useSession();
+  const backgroundImage = "/images/fundo-perfil.jpg";
+  const [modalAberto, setModalAberto] = useState(false);
+  const [usuario, setUsuario] = useState<UsuarioPerfil>();
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+  const [abaAtiva, setAbaAtiva] = useState<AbaDisponivel>('biblioteca');
+  const conteudos = {
+    biblioteca: biblioteca(usuario),
+    postagens: postagens(posts, loadingPosts, pagina, totalPaginas, setPagina, carregarFeed),
+    estatisticas: estatisticas(usuario),
+  };
+  
+  useEffect(() => {
+    const carregarUsuario = async () => {
+      const response = await fetch(`../api/usuario/${user}`);
+      
+      if(response.ok){
+        const data = await response.json();
+        setUsuario(data.dados);
       }
+    };
+    
+    carregarUsuario();
+  }, [refreshKey]);
+  
+  useEffect(() => {
+    if (modalAberto) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    
+    return () => {
+      document.body.style.overflow = ""; 
+    };
+  }, [modalAberto]);
+  
+  useEffect(() => {
+    if(!usuario) return;
+    carregarFeed();
+  }, [usuario, pagina]);
 
-      return () => {
-        document.body.style.overflow = ""; 
-      };
-    }, [modalAberto]);
+  async function carregarFeed() {
+    setLoadingPosts(true);
+    if(!usuario?.id) return;
+
+    const response = await fetch(`/api/usuario/posts?usuarioId=${usuario.id}&pagina=${pagina}&quantidade=5`);
+    if (!response.ok) {
+      setPosts([]);
+      return [];
+    }
+  
+    const data = await response.json();
+  
+    setPosts(data.dados.posts);
+    setTotalPaginas(data.dados.totalPaginas);
+    setLoadingPosts(false);
+
+    return data.dados.posts;
+  }
 
   return (
     <main className="relative min-h-screen">
@@ -117,9 +144,9 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
           }
 
         {/* Sistema de Abas */}
-        <div className="mt-8">
+        <div className="">
           {/* Botões de Seleção das Abas */}
-          <div className="flex justify-center gap-4 border-b border-[#E8D89A] pb-3 mb-6">
+          <div className="flex justify-center gap-4 border-b border-[#E8D89A]">
             {(['biblioteca', 'postagens', 'estatisticas'] as AbaDisponivel[]).map((aba) => (
               <button
                 key={aba}
@@ -136,7 +163,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
           </div>
 
           {/* Conteúdo Dinâmico baseado na Aba Ativa */}
-          <div className="text-center text-[#8A7A5B] text-sm min-h-[200px]">
+          <div className="text-center text-[#8A7A5B] text-sm min-h-[200px] mt-5">
             {conteudos[abaAtiva]}
           </div>
         </div>
@@ -150,21 +177,30 @@ function biblioteca(usuario: UsuarioPerfil | undefined) {
   if(!usuario) return null;
 
   return (
-    <div>
-      <h2 className="text-slate-950 text-2xl font-semibold mb-4">Biblioteca</h2>
-      <div className="flex flex-wrap justify-center"> 
-        <BibliotecaContainer livros={usuario?.biblioteca}/>
-      </div>
+    <div className="flex flex-wrap justify-center"> 
+      <BibliotecaContainer livros={usuario?.biblioteca}/>
     </div>
   );
 }
 
-function postagens(usuario: UsuarioPerfil | undefined) {
-  if(!usuario) return null;
-
+function postagens(
+  posts: any[],
+  loadingPosts: boolean,
+  pagina: number,
+  totalPaginas: number,
+  onPaginaChange: (pagina: number) => void,
+  onReload: () => Promise<any[]>
+) {
   return (
-    <div>
-      <h2 className="text-slate-950 text-2xl font-semibold mb-4">Postagens</h2>
+    <div className="max-w-3xl m-auto">
+      <Feed
+        posts={posts}
+        loading={loadingPosts}
+        pagina={pagina}
+        totalPaginas={totalPaginas}
+        onPaginaChange={onPaginaChange}
+        onReload={onReload}
+        />
     </div>
   );
 } 
@@ -174,8 +210,6 @@ function estatisticas(usuario: UsuarioPerfil | undefined) {
 
   return (
     <div>
-      <h2 className="text-slate-950 text-2xl font-semibold mb-4">Estatísticas</h2>
-      <p>Gráficos e dados de leitura do usuário.</p>
         <EstatisticasPerfil usuario={usuario} />
     </div>
   );
