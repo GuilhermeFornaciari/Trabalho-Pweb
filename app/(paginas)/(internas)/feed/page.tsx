@@ -9,6 +9,10 @@ export default function FeedPage() {
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
+  function deletePost(postId: number) {
+    setPosts((prev) => prev.filter((post) => post.id !== postId));
+  }
+
   async function carregarFeed() {
     const response = await fetch(`/api/feed/get?pagina=${pagina}`);
     if (!response.ok) {
@@ -38,6 +42,7 @@ export default function FeedPage() {
         totalPaginas={totalPaginas}
         onPaginaChange={setPagina}
         onReload={carregarFeed}
+        onDelete={(postId: number) => deletePost(postId)}
         />
     </div>
   );
