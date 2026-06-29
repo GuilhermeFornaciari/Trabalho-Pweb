@@ -80,7 +80,7 @@ export default function Feed({
         postagemId: postId,
         usuarioId: session.user.id,
         texto: comentario,
-        parentId: parentId || null, // Passado explicitamente como parentId para respostas
+        parentId: parentId || null, // Passado como parentId para respostas
         idComentarioSendoEditado: idComentarioSendoEditado, // Passado se for alteração do próprio comentário
       }),
     });
@@ -196,7 +196,7 @@ export default function Feed({
         onChangeComentario={setComentario}
         onSubmitComentario={handleComentarioSubmit}
         onClose={() => {
-          setPostSelecionado(null); // Isso aqui fecha o modal de verdade desmuntando o componente
+          setPostSelecionado(null);
           setIdComentarioSendoEditado(null);
           setComentario("");
         }}
