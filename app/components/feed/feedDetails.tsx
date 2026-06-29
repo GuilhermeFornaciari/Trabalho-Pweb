@@ -1,11 +1,12 @@
 'use client'
 
-import { X, Heart, Star } from "lucide-react";
+import { X, Heart, Star, MoreVertical } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ComentarioList from "../comentario/comentarioList";
 import ComentarioInput from "../comentario/comentarioInput";
 import Modal from "../modal";
+import MenuAcoes from "../modalAcoes";
 
 type Props = {
   post: any;
@@ -18,6 +19,7 @@ type Props = {
   idComentarioSendoEditado: number | null;
   setIdComentarioSendoEditado: (id: number | null) => void;
   setApagarComentario: (id: number) => void;
+  onDelete: (postId: number) => void;
 };
 
 export default function FeedDetails({
@@ -30,7 +32,8 @@ export default function FeedDetails({
   onCurtirComentario,
   idComentarioSendoEditado,
   setIdComentarioSendoEditado,
-  setApagarComentario
+  setApagarComentario,
+  onDelete
 }: Props) {
   if (!post) return null;
   const isProgresso = post.paginaAtual !== null;
@@ -38,6 +41,7 @@ export default function FeedDetails({
   const [curtido, setCurtido] = useState(false);
   const [curtidaId, setCurtidaId] = useState(-1);
   const [qtdCurtidas, setQtdCurtidas] = useState(0);
+  const [modalAcoes, setModalAcoes] = useState(false);
 
   const [replyTo, setReplyTo] = useState<{ id: number; username: string } | null>(null);
 
@@ -73,9 +77,29 @@ export default function FeedDetails({
           </button>
         </div>
 
-        {/* Conteúdo Rolável */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          
+
+        <div className="relative flex-1 overflow-y-auto p-6 space-y-6">
+          {(session?.user.id === post.usuarioId) && (
+            <>
+              <div className="absolute top-3 right-2">
+                <button 
+                  onClick={() => setModalAcoes(!modalAcoes)}
+                  className="text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors"
+                >
+                  <MoreVertical size={16} />
+                </button>
+              </div>
+              {modalAcoes && <MenuAcoes 
+                style="absolute right-5 top-10 z-30 min-w-[170px] overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
+                onEditar={() => {console.log("EDITAR")}}
+                onApagar={async () => {
+                  await onDelete(post.id);
+                  onClose();
+                }}
+                onClose={() => setModalAcoes(false)}
+              />}
+            </>
+          )}
           {/* Post Principal */}
           <div>
             <div className="flex gap-4 items-start mb-4">

@@ -36,10 +36,14 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
   const [abaAtiva, setAbaAtiva] = useState<AbaDisponivel>('biblioteca');
   const conteudos = {
     biblioteca: biblioteca(usuario),
-    postagens: postagens(posts, loadingPosts, pagina, totalPaginas, setPagina, carregarFeed),
+    postagens: postagens(posts, loadingPosts, pagina, totalPaginas, setPagina, carregarFeed, deletePost),
     estatisticas: estatisticas(usuario),
   };
   
+  function deletePost(postId: number) {
+    setPosts((prev) => prev.filter((post) => post.id !== postId));
+  }
+
   useEffect(() => {
     setLoadingPage(true);
     const carregarUsuario = async () => {
@@ -195,7 +199,8 @@ function postagens(
   pagina: number,
   totalPaginas: number,
   onPaginaChange: (pagina: number) => void,
-  onReload: () => Promise<any[]>
+  onReload: () => Promise<any[]>,
+  onDelete: (postId: number) => void
 ) {
   return (
     <div className="max-w-3xl m-auto">
@@ -206,6 +211,7 @@ function postagens(
         totalPaginas={totalPaginas}
         onPaginaChange={onPaginaChange}
         onReload={onReload}
+        onDelete={(postId: number) => onDelete(postId)}
         />
     </div>
   );

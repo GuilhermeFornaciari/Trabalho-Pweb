@@ -73,7 +73,7 @@ export async function sincronizarBiblioteca(
       },
     },
     data: {
-      progresso: ultimoProgresso?.paginaAtual ?? 0,
+      paginaAtual: ultimoProgresso?.paginaAtual ?? 0,
       nota: resenha?.nota ?? null,
     },
   });

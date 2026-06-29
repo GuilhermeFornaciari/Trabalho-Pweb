@@ -7,6 +7,7 @@ const deleteSchema = z.object({
 });
 
 export async function DELETE(request: Request) {
+  console.log("DELETEEEE")
   const session = await auth();
   
   if(!session?.user.id) {

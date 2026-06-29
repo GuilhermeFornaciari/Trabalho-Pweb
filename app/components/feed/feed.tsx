@@ -13,6 +13,7 @@ type FeedProps = {
   totalPaginas: number;
   onPaginaChange: (pagina: number) => void;
   onReload: () => Promise<any[]>;
+  onDelete: (postId: number) => void
 };
 
 export default function Feed({
@@ -22,11 +23,11 @@ export default function Feed({
   totalPaginas,
   onPaginaChange,
   onReload,
+  onDelete
 }: FeedProps) {
   const { data: session } = useSession();
   const [postSelecionado, setPostSelecionado] = useState<any | null>(null);
   const [comentario, setComentario] = useState("");
-  
   const [idComentarioSendoEditado, setIdComentarioSendoEditado] = useState<number | null>(null);
   const [apagarComentario, setApagarComentario] = useState<number>(-1);
 
@@ -41,6 +42,22 @@ export default function Feed({
 
     if (atualizado) {
       setPostSelecionado(atualizado);
+    }
+  }
+
+  async function apagarPost(postId: number) {
+    const resultado = await fetch(`/api/post/delete`, {
+      method: "DELETE",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        postId: postId
+      })
+    });
+
+    console.log(resultado);
+
+    if(resultado.ok) {
+      onDelete(postId);
     }
   }
 
@@ -205,6 +222,7 @@ export default function Feed({
         idComentarioSendoEditado={idComentarioSendoEditado}
         setIdComentarioSendoEditado={setIdComentarioSendoEditado}
         setApagarComentario={setApagarComentario}
+        onDelete={(postId: number) => apagarPost(postId)}
       />
 )}
     </>
