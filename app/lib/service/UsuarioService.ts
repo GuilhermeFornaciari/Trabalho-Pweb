@@ -13,9 +13,9 @@ export async function getByUsername(username: string) {
   }
 }
 
-export async function buscarPostagensDoUsuario(usuario: string, ultimoId?: number, quantidade?: number) {
+export async function buscarPostagensDoUsuario(usuario: string, pagina: number, quantidade?: number) {
   try{
-    const posts = await getUserPosts(usuario, ultimoId, quantidade);
+    const posts = await getUserPosts(usuario, pagina, quantidade);
     return {dados: posts, status: 200};
   } catch(e) {
     console.error(e);

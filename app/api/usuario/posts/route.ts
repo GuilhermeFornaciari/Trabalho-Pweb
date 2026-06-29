@@ -4,7 +4,7 @@ import { buscarPostagensDoUsuario } from "@/lib/service/UsuarioService";
 
 const feedSchema = z.object({
   usuarioId: z.string().min(1),
-  ultimoId: z.coerce.number().int().positive().optional(),
+  pagina: z.coerce.number().int().positive(),
   quantidade: z.coerce.number().int().positive().optional(),
 });
 
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
   const resultado = feedSchema.safeParse({
     usuarioId: searchParams.get("usuarioId"),
-    ultimoId: searchParams.get("ultimoId") ?? undefined,
+    pagina: searchParams.get("pagina") ?? undefined,
     quantidade: searchParams.get("quantidade") ?? undefined,
   });
 
@@ -33,9 +33,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const { usuarioId, ultimoId, quantidade } = resultado.data;
+  const { usuarioId, pagina, quantidade } = resultado.data;
 
-  return Response.json(
-    await buscarPostagensDoUsuario(usuarioId, ultimoId, quantidade)
-  );
+  return Response.json(await buscarPostagensDoUsuario(usuarioId, pagina, quantidade));
 }
