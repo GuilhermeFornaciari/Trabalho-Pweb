@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ComentarioList from "../comentario/comentarioList";
 import ComentarioInput from "../comentario/comentarioInput";
+import Modal from "../modal";
 
 type Props = {
   post: any;
@@ -19,7 +20,7 @@ type Props = {
   setApagarComentario: (id: number) => void;
 };
 
-export default function FeedDetailsModal({
+export default function FeedDetails({
   post,
   comentarioTexto,
   onChangeComentario,
@@ -33,14 +34,7 @@ export default function FeedDetailsModal({
 }: Props) {
   if (!post) return null;
   const isProgresso = post.paginaAtual !== null;
-
   const { data: session } = useSession();
-
-  console.log(post);
-
-  // console.log("curtidas", post.curtidas);
-
-  // Curtidas do Post Principal
   const [curtido, setCurtido] = useState(false);
   const [curtidaId, setCurtidaId] = useState(-1);
   const [qtdCurtidas, setQtdCurtidas] = useState(0);
@@ -62,7 +56,7 @@ export default function FeedDetailsModal({
   }, [session, post]);
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <Modal open={!!post} onClose={onClose}>
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
         
         {/* Header do Modal */}
@@ -164,6 +158,6 @@ export default function FeedDetailsModal({
         />
 
       </div>
-    </div>
+    </Modal>
   );
 }

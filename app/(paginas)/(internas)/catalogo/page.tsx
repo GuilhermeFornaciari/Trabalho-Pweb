@@ -48,7 +48,7 @@ export default function CatalogoPage() {
   }, [busca, filtro]);
 
   return (
-    <div className="max-w-7xl mx-auto py-2">
+    <div className="max-w-7xl mx-auto py-8">
       <div className="bg-[#FFFDF8] border border-[#F3E5AB] rounded-3xl shadow-lg p-6 mb-8">
         <input
           type="text"

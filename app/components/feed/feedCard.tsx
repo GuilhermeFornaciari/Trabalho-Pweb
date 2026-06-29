@@ -42,7 +42,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
   return (
     <div 
       onClick={() => onClick(post)}
-        className="min-w-[700px] w-full bg-white max-w-2xl mx-auto mb-6 bg-white border border-slate-100 rounded-xl shadow-sm" // gambiarra que funcionou e n mexer por favor 
+        className="min-w-[700px] w-full bg-white max-w-2xl mx-auto mb-6 bg-white border border-amber-300 rounded-xl shadow-sm" // gambiarra que funcionou e n mexer por favor 
     >
       {/* Cabeçalho do Card (Comum a ambos) */}
       <div className="p-5 pb-3 flex items-center gap-3">
