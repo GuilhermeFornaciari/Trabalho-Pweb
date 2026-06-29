@@ -1,6 +1,7 @@
 import { Postagem } from "@/lib/prisma/generated/client";
-import { Heart, MessageSquare } from "lucide-react";
+import { Heart, MessageSquare, MoreVertical } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 type ResenhaDetalhes = Postagem & {
   usuario: { id: number; nome: string; username: string; foto: string | null };
@@ -13,10 +14,22 @@ type Props = {
   onChangeComentario: (texto: string) => void;
   onCurtirComentario: (comentarioId: number, curtido: boolean, curtidaId: number) => void;
   setReplyTo: (value: { id: number; username: string } | null) => void;
+  idComentarioSendoEditado: number | null;
+  setIdComentarioSendoEditado: (id: number | null) => void;
+  setApagarComentario: (value: number) => void;
 };
 
-export default function ComentarioList({ resenha, onCurtirComentario, onChangeComentario, setReplyTo }: Props) {
+export default function ComentarioList({ 
+  resenha, 
+  onCurtirComentario, 
+  onChangeComentario, 
+  setReplyTo, 
+  idComentarioSendoEditado,
+  setIdComentarioSendoEditado, 
+  setApagarComentario 
+}: Props) {
   const { data: session } = useSession();
+  const [comentarioMenuAbertoId, setComentarioMenuAbertoId] = useState<number | null>(null);
 
   return (
     <div>
@@ -43,7 +56,33 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
             ) || [];
 
             return (
-              <div key={com.id} className="bg-slate-50/60 p-3 rounded-lg border border-slate-100 space-y-2">
+              /* COMENTÁRIO PAI (relative e pr-8 para o texto não passar por baixo do botão) */
+              <div key={com.id} className="bg-slate-50/60 p-3 pr-8 rounded-lg border border-slate-100 space-y-2 relative">
+                
+                {/* Botão 3 Pontinhos do Comentário Pai */}
+                {session?.user?.id === com.usuarioId && (
+                  <div className="absolute top-3 right-2">
+                    <button 
+                      onClick={() => setComentarioMenuAbertoId(comentarioMenuAbertoId === com.id ? null : com.id)}
+                      className="text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors"
+                    >
+                      <MoreVertical size={16} />
+                    </button>
+
+                    {comentarioMenuAbertoId === com.id && (
+                      <MenuTresPontinhos 
+                        idComentarioSendoEditado={idComentarioSendoEditado}
+                        setIdComentarioSendoEditado={setIdComentarioSendoEditado}
+                        setApagarComentario={setApagarComentario}
+                        idComentario={com.id} // ou resp.id no bloco correspondente
+                        fecharMenu={() => setComentarioMenuAbertoId(null)}
+                        setComentario={onChangeComentario}
+                        comentario={com.texto} // ou resp.texto
+                      />
+                    )}
+                  </div>
+                )}
+
                 <div className="flex gap-3 items-start">
                   <img 
                     src={com.usuario?.foto || "https://via.placeholder.com/150"} 
@@ -76,7 +115,6 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
                   <button 
                     type="button"
                     onClick={() => {
-                      // Define o ID do comentário pai e preenche o @ do autor
                       setReplyTo({ id: com.id, username: com.usuario?.username || "" });
                       onChangeComentario(`@${com.usuario?.username} `);
                     }}
@@ -87,11 +125,10 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
                   </button>
                 </div>
 
-                {/* Renderiza as Respostas Vinculadas de forma aninhada */}
+                {/* RESPOSTAS VINCULADAS (COMENTÁRIO DE COMENTÁRIO) */}
                 {respostasDesteComentario.length > 0 && (
                   <div className="pl-6 pt-2 space-y-2 border-l-2 border-slate-200 ml-3">
                     {respostasDesteComentario.map((resp: any) => {
-                      
                       const curtidasDestaResposta = resp.curtidas || [];
                       const qtdCurtidasResposta = curtidasDestaResposta.length;
 
@@ -103,7 +140,33 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
                       const idDaCurtidaResposta = curtidaDoUsuarioResposta ? curtidaDoUsuarioResposta.id : -1;
 
                       return (
-                        <div key={resp.id} className="bg-white p-2.5 rounded border border-slate-100 space-y-1.5">
+                        /* COMENTÁRIO DE COMENTÁRIO (relative e pr-8) */
+                        <div key={resp.id} className="bg-white p-2.5 pr-8 rounded border border-slate-100 space-y-1.5 relative">
+                          
+                          {/* Botão 3 Pontinhos do Subcomentário */}
+                          {session?.user?.id === resp.usuarioId && (
+                            <div className="absolute top-2.5 right-1.5">
+                              <button 
+                                onClick={() => setComentarioMenuAbertoId(comentarioMenuAbertoId === resp.id ? null : resp.id)}
+                                className="text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors"
+                              >
+                                <MoreVertical size={14} />
+                              </button>
+
+                              {comentarioMenuAbertoId === resp.id && (
+                                <MenuTresPontinhos 
+                                  idComentarioSendoEditado={idComentarioSendoEditado}
+                                  setIdComentarioSendoEditado={setIdComentarioSendoEditado}
+                                  setApagarComentario={setApagarComentario}
+                                  idComentario={resp.id} 
+                                  fecharMenu={() => setComentarioMenuAbertoId(null)}
+                                  setComentario={onChangeComentario}
+                                  comentario={resp.texto} 
+                                />
+                              )}
+                            </div>
+                          )}
+
                           <div className="flex gap-2 items-start">
                             <img 
                               src={resp.usuario?.foto || "https://via.placeholder.com/150"} 
@@ -136,8 +199,6 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
                             <button 
                               type="button"
                               onClick={() => {
-                                // Vincula ao ID pai principal (com.id) para agrupar na árvore certa do Prisma, 
-                                // mas exibe visualmente o username de quem enviou esta sub-resposta (resp.usuario)
                                 setReplyTo({ id: com.id, username: resp.usuario?.username || "" });
                                 onChangeComentario(`@${resp.usuario?.username} `);
                               }}
@@ -152,7 +213,6 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
                     })}
                   </div>
                 )}
-
               </div>
             );
           })
@@ -160,6 +220,58 @@ export default function ComentarioList({ resenha, onCurtirComentario, onChangeCo
           <p className="text-xs text-slate-400 italic text-center py-4">Nenhum comentário ainda. Seja o primeiro!</p>
         )}
       </div>
+    </div>
+  );
+}
+
+// O SEU COMPONENTE DO MODAL REAJUSTADO
+type MenuProps = {
+  idComentarioSendoEditado: number | null;
+  setIdComentarioSendoEditado: (value: number | null) => void;
+  setApagarComentario: (value: number) => void;
+  idComentario: number;
+  fecharMenu: () => void;
+  setComentario: (texto: string) => void;
+  comentario: string;
+}
+
+function MenuTresPontinhos({ 
+  idComentarioSendoEditado, 
+  setIdComentarioSendoEditado, 
+  setApagarComentario, 
+  idComentario, 
+  fecharMenu, 
+  setComentario, 
+  comentario 
+}: MenuProps) {
+  return (
+    <div className="absolute right-0 top-6 bg-white border border-gray-200 rounded-md shadow-lg min-w-[150px] overflow-hidden z-30 text-slate-700">
+      <button 
+        onClick={() => {
+          // Se já for este comentário, cancela. Se não, ativa a edição dele.
+          if (idComentarioSendoEditado === idComentario) {
+            setIdComentarioSendoEditado(null);
+            setComentario("");
+          } else {
+            setIdComentarioSendoEditado(idComentario);
+            setComentario(comentario); // Joga o texto atual para o input do formulário
+          }
+          fecharMenu();
+        }} 
+        className="w-full text-left px-3 py-2 text-xs hover:bg-gray-50 transition-colors"
+      >
+        {idComentarioSendoEditado === idComentario ? "Cancelar Edição" : "Editar comentário"}
+      </button>
+
+      <button
+        onClick={() => {
+          setApagarComentario(idComentario);
+          fecharMenu();
+        }}
+        className="w-full text-left px-3 py-2 text-xs hover:bg-red-50 text-red-600 font-medium transition-colors"
+      >
+        Apagar comentário
+      </button>
     </div>
   );
 }

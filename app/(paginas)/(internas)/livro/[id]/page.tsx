@@ -42,7 +42,6 @@ export default function DetalhesLivro({
   const adm = session?.user?.role === "admin";
   
   const [mostrarModalResenha, setMostrarModalResenha] = useState<ResenhaDetalhes | null>(null);
-  const [comentario, setComentario] = useState("");
   
   const [mostrarModalResenhaCreate, setMostrarModalResenhaCreate] = useState(false);
   const [modalProgresso, setModalProgresso] = useState(false);
@@ -55,6 +54,11 @@ export default function DetalhesLivro({
   const [resenhas, setResenhas] = useState<ResenhaDetalhes[]>([]);
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
+
+  const [idComentarioSendoEditado, setIdComentarioSendoEditado] = useState<number | null>(null);
+  const [comentario, setComentario] = useState("");
+
+  const [apagarComentario, setApagarComentario] = useState(-1)
 
   async function carregarResenhas() {
     const response = await fetch(`/api/resenha/get?livroId=${id}&pagina=${pagina}`);
@@ -103,39 +107,66 @@ export default function DetalhesLivro({
     carregarProgresso();
   }, [livro, session?.user.id]);
 
-  async function submitComentario(idPost: number, comentarioId?: number){
-    if(!session?.user.id){
-      alert("Você precisa estar logado.");
-      return;
-    }
+async function submitComentario(idPost: number, parentId?: number) {
+  if (!session?.user?.id) {
+    alert("Você precisa estar logado.");
+    return;
+  }
 
-    if (!livro?.id) {
-      alert("Livro sem ID.");
-      return;
-    }
-  
-    const response = await fetch("../api/comentario/create", {
-      method: "POST",
+  // Enviamos tudo para a mesma rota. 
+  // Se 'idComentarioSendoEditado' for nulo, a API entende como criação.
+  const response = await fetch("../api/comentario/upsert", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      postagemId: idPost,
+      usuarioId: session.user.id,
+      texto: comentario,
+      parentId: parentId, // preenchido se for uma resposta a outro comentário
+      idComentarioSendoEditado: idComentarioSendoEditado, // preenchido se for edição do próprio comentário
+    }),
+  });
+
+  if (!response.ok) {
+    const erro = await response.json();
+    alert(JSON.stringify(erro, null, 2));
+    return;
+  }
+
+  alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário criado!");
+
+  // Resetar estados
+  setIdComentarioSendoEditado(null);
+  setComentario("");
+  await carregarResenhas();
+  setMostrarModalResenha(null);
+}
+
+// Lógica separada e exclusiva para DELETAR (atrelada ao estado apagarComentario que você já possui)
+useEffect(() => {
+  async function deletarComentario() {
+    if (apagarComentario === -1) return;
+
+    const req = await fetch("../api/comentario/delete", {
+      method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        postagemId: idPost,
-        comentarioId: comentarioId,
-        usuarioId: session.user.id,
-        texto: comentario,
+        comentarioId: apagarComentario,
       }),
     });
 
-    if (!response.ok) {
-      const erro = await response.json();
+    if (!req.ok) {
+      const erro = await req.json();
       alert(JSON.stringify(erro, null, 2));
-      return;
+    } else {
+      alert("Comentário apagado com sucesso!");
+      await carregarResenhas();
+      setMostrarModalResenha(null);
     }
-    
-    setMostrarModalResenha(null);
-    setComentario("");
-    await carregarResenhas();
-    alert("Comentário criado com sucesso!");
+    setApagarComentario(-1);
   }
+  deletarComentario();
+}, [apagarComentario]);
 
   async function submitResenha() {
     if (!session?.user?.id) {
@@ -421,16 +452,23 @@ const notaMediaLivro =
 
         {/* Modal detalhado da resenha (Comentários e curtidas) */}
         {mostrarModalResenha && (
-          <ResenhaModal
-            resenha={mostrarModalResenha}
-            comentario={comentario}
-            onChangeComentario={setComentario}
-            onSubmitComentario={submitComentario}
-            onClose={() => setMostrarModalResenha(null)}
-            curtir={curtir}
-            onCurtirComentario={curtirComentario}
-          />
-        )}
+        <ResenhaModal
+          resenha={mostrarModalResenha}
+          comentario={comentario}
+          onChangeComentario={setComentario}
+          onSubmitComentario={submitComentario}
+          onClose={() => {
+            setMostrarModalResenha(null);
+            setIdComentarioSendoEditado(null);
+            setComentario("");
+          }}
+          curtir={curtir}
+          onCurtirComentario={curtirComentario}
+          idComentarioSendoEditado={idComentarioSendoEditado}
+          setIdComentarioSendoEditado={setIdComentarioSendoEditado}
+          setApagarComentario={setApagarComentario}
+        />
+      )}
 
         {/* Modal de Progresso */}
         {modalProgresso && (

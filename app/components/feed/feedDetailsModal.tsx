@@ -14,6 +14,9 @@ type Props = {
   onClose: () => void;
   onCurtir: (postagemId: number, curtido: boolean, curtidaId: number) => void;
   onCurtirComentario: (comentarioId: number, curtido: boolean, curtidaId: number) => void;
+  idComentarioSendoEditado: number | null;
+  setIdComentarioSendoEditado: (id: number | null) => void;
+  setApagarComentario: (id: number) => void;
 };
 
 export default function FeedDetailsModal({
@@ -23,7 +26,10 @@ export default function FeedDetailsModal({
   onSubmitComentario,
   onClose,
   onCurtir,
-  onCurtirComentario
+  onCurtirComentario,
+  idComentarioSendoEditado,
+  setIdComentarioSendoEditado,
+  setApagarComentario
 }: Props) {
   if (!post) return null;
   const isProgresso = post.paginaAtual !== null;
@@ -133,6 +139,10 @@ export default function FeedDetailsModal({
             onCurtirComentario={onCurtirComentario}
             resenha={post}
             setReplyTo={setReplyTo}
+            idComentarioSendoEditado={idComentarioSendoEditado}
+            setIdComentarioSendoEditado={setIdComentarioSendoEditado}
+            setApagarComentario={setApagarComentario}
+
           />
 
           
@@ -146,6 +156,11 @@ export default function FeedDetailsModal({
           replyTo={replyTo}
           postId={post.id}
           setReplyTo={setReplyTo}
+          isEditing={idComentarioSendoEditado !== null} 
+          onCancelarEdicao={() => {
+            setIdComentarioSendoEditado(null);
+            onChangeComentario("");
+          }}
         />
 
       </div>

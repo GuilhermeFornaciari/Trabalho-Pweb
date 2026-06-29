@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import FeedCard from "@/components/feed/feedCard";
 import FeedDetailsModal from "@/components/feed/feedDetailsModal";
@@ -27,6 +27,9 @@ export default function Feed({
   const [postSelecionado, setPostSelecionado] = useState<any | null>(null);
   const [comentario, setComentario] = useState("");
   
+  const [idComentarioSendoEditado, setIdComentarioSendoEditado] = useState<number | null>(null);
+  const [apagarComentario, setApagarComentario] = useState<number>(-1);
+
   async function atualizarFeed() {
     const novosPosts = await onReload();
 
@@ -39,96 +42,120 @@ export default function Feed({
     if (atualizado) {
       setPostSelecionado(atualizado);
     }
-}
+  }
 
-  async function handleComentarioSubmit(postId: number, comentId?: number) {
+  useEffect(() => {
+    async function deletarComentario() {
+      if (apagarComentario === -1) return;
+
+      const response = await fetch("/api/comentario/delete", { 
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          comentarioId: apagarComentario,
+        }),
+      });
+
+      if (!response.ok) {
+        alert("Erro ao apagar o comentário.");
+      } else {
+        alert("Comentário apagado com sucesso!");
+        await atualizarFeed();
+      }
+      
+      setApagarComentario(-1);
+    }
+    deletarComentario();
+  }, [apagarComentario]);
+
+  async function handleComentarioSubmit(postId: number, parentId?: number) {
     if (!session?.user?.id) return;
 
-    const response = await fetch("/api/comentario/create", {
+    const response = await fetch("/api/comentario/upsert", { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         postagemId: postId,
-        comentarioId: comentId,
         usuarioId: session.user.id,
         texto: comentario,
+        parentId: parentId || null, // Passado explicitamente como parentId para respostas
+        idComentarioSendoEditado: idComentarioSendoEditado, // Passado se for alteração do próprio comentário
       }),
     });
 
     if (!response.ok) {
-      alert("Erro ao adicionar comentário.");
+      alert("Erro ao processar comentário.");
       return;
     }
 
+    alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário enviado!");
+
     setComentario("");
+    setIdComentarioSendoEditado(null);
     await atualizarFeed();
-}
+  }
 
   async function curtir(
-  postagemId: number,
-  curtido: boolean,
-  curtidaId: number
-) {
-  if (!session?.user?.id) return;
+    postagemId: number,
+    curtido: boolean,
+    curtidaId: number
+  ) {
+    if (!session?.user?.id) return;
 
-  const response = await fetch(
-    curtido
-      ? "/api/curtida/delete"
-      : "/api/curtida/create",
-    {
-      method: curtido ? "DELETE" : "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        curtido
-          ? { curtidaId }
-          : {
-              postagemId,
-              usuarioId: session.user.id,
-            }
-      ),
-    }
-  );
+    const response = await fetch(
+      curtido ? "/api/curtida/delete" : "/api/curtida/create",
+      {
+        method: curtido ? "DELETE" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          curtido
+            ? { curtidaId }
+            : {
+                postagemId,
+                usuarioId: session.user.id,
+              }
+        ),
+      }
+    );
 
-  if (!response.ok) return;
+    if (!response.ok) return;
 
-  await atualizarFeed();
-}
+    await atualizarFeed();
+  }
 
-async function curtirComentario(
-  comentarioId: number,
-  curtido: boolean,
-  curtidaId: number
-) {
-  if (!session?.user?.id) return;
+  async function curtirComentario(
+    comentarioId: number,
+    curtido: boolean,
+    curtidaId: number
+  ) {
+    if (!session?.user?.id) return;
 
-  const response = await fetch(
-    curtido
-      ? "/api/curtida/delete"
-      : "/api/curtida/create",
-    {
-      method: curtido ? "DELETE" : "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        curtido
-          ? { curtidaId }
-          : {
-              comentarioId,
-              usuarioId: session.user.id,
-            }
-      ),
-    }
-  );
+    const response = await fetch(
+      curtido ? "/api/curtida/delete" : "/api/curtida/create",
+      {
+        method: curtido ? "DELETE" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          curtido
+            ? { curtidaId }
+            : {
+                comentarioId,
+                usuarioId: session.user.id,
+              }
+        ),
+      }
+    );
 
-  if (!response.ok) return;
+    if (!response.ok) return;
 
-  await atualizarFeed();
-}
+    await atualizarFeed();
+  }
 
   return (
     <>
@@ -163,16 +190,23 @@ async function curtirComentario(
       )}
 
       {postSelecionado && (
-        <FeedDetailsModal
-          post={postSelecionado}
-          comentarioTexto={comentario}
-          onChangeComentario={setComentario}
-          onSubmitComentario={handleComentarioSubmit}
-          onClose={() => setPostSelecionado(null)}
-          onCurtir={curtir}
-          onCurtirComentario={curtirComentario}
-        />
-      )}
+      <FeedDetailsModal
+        post={postSelecionado}
+        comentarioTexto={comentario}
+        onChangeComentario={setComentario}
+        onSubmitComentario={handleComentarioSubmit}
+        onClose={() => {
+          setPostSelecionado(null); // Isso aqui fecha o modal de verdade desmuntando o componente
+          setIdComentarioSendoEditado(null);
+          setComentario("");
+        }}
+        onCurtir={curtir}
+        onCurtirComentario={curtirComentario}
+        idComentarioSendoEditado={idComentarioSendoEditado}
+        setIdComentarioSendoEditado={setIdComentarioSendoEditado}
+        setApagarComentario={setApagarComentario}
+      />
+)}
     </>
   );
 }
