@@ -36,12 +36,22 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
   const [abaAtiva, setAbaAtiva] = useState<AbaDisponivel>('biblioteca');
   const conteudos = {
     biblioteca: biblioteca(usuario),
-    postagens: postagens(posts, loadingPosts, pagina, totalPaginas, setPagina, carregarFeed, deletePost),
+    postagens: postagens(posts, loadingPosts, pagina, totalPaginas, setPagina, carregarFeed, deletePost, updatePost),
     estatisticas: estatisticas(usuario),
   };
   
   function deletePost(postId: number) {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
+  }
+
+  function updatePost(postAtualizado: any | null) {
+    setPosts((prev) => {
+      if (!postAtualizado) return prev;
+
+      return prev.map((post) =>
+        post.id === postAtualizado.id ? postAtualizado : post
+      );
+    });
   }
 
   useEffect(() => {
@@ -200,7 +210,8 @@ function postagens(
   totalPaginas: number,
   onPaginaChange: (pagina: number) => void,
   onReload: () => Promise<any[]>,
-  onDelete: (postId: number) => void
+  onDelete: (postId: number) => void,
+  onEdit: (post: any | null) => void
 ) {
   return (
     <div className="max-w-3xl m-auto">
@@ -212,7 +223,8 @@ function postagens(
         onPaginaChange={onPaginaChange}
         onReload={onReload}
         onDelete={(postId: number) => onDelete(postId)}
-        />
+        onEdit={(post: any | null) => onEdit(post)}
+      />
     </div>
   );
 } 

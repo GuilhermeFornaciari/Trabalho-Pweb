@@ -473,7 +473,7 @@ const notaMediaLivro =
         {/* Modal de Progresso */}
         {modalProgresso && (
           <Modal open={modalProgresso} onClose={() => setModalProgresso(false)}>
-            <ProgressoForm livro={livro} progresso={progresso} onClose={() => setModalProgresso(false)} onSave={carregarProgresso}/>
+            <ProgressoForm livro={livro} progresso={progresso} onClose={() => setModalProgresso(false)} onSave={(dados: any|null) => carregarProgresso}/>
           </Modal>
         )}
       </>      

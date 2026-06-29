@@ -7,6 +7,8 @@ import ComentarioList from "../comentario/comentarioList";
 import ComentarioInput from "../comentario/comentarioInput";
 import Modal from "../modal";
 import MenuAcoes from "../modalAcoes";
+import ProgressoForm from "../progresso/progressoForm";
+import { Postagem } from "@/lib/prisma/generated/client";
 
 type Props = {
   post: any;
@@ -20,6 +22,7 @@ type Props = {
   setIdComentarioSendoEditado: (id: number | null) => void;
   setApagarComentario: (id: number) => void;
   onDelete: (postId: number) => void;
+  onEdit: (post: any | null) => void;
 };
 
 export default function FeedDetails({
@@ -33,7 +36,8 @@ export default function FeedDetails({
   idComentarioSendoEditado,
   setIdComentarioSendoEditado,
   setApagarComentario,
-  onDelete
+  onDelete,
+  onEdit
 }: Props) {
   if (!post) return null;
   const isProgresso = post.paginaAtual !== null;
@@ -42,6 +46,7 @@ export default function FeedDetails({
   const [curtidaId, setCurtidaId] = useState(-1);
   const [qtdCurtidas, setQtdCurtidas] = useState(0);
   const [modalAcoes, setModalAcoes] = useState(false);
+  const [postagemEmEdicao, setPostagemEmEdicao] = useState<Postagem | null>(null);
 
   const [replyTo, setReplyTo] = useState<{ id: number; username: string } | null>(null);
 
@@ -77,6 +82,20 @@ export default function FeedDetails({
           </button>
         </div>
 
+        {postagemEmEdicao && (
+          <Modal open={postagemEmEdicao !== null} onClose={() => setPostagemEmEdicao(null)}>
+            <ProgressoForm 
+              livro={post.livro} 
+              progresso={postagemEmEdicao} 
+              edit={true} 
+              onClose={() => setPostagemEmEdicao(null)} 
+              onSave={(post) => {
+                onEdit(post)
+                onClose()
+              }}
+            />
+          </Modal>
+        )}
 
         <div className="relative flex-1 overflow-y-auto p-6 space-y-6">
           {(session?.user.id === post.usuarioId) && (
@@ -91,7 +110,7 @@ export default function FeedDetails({
               </div>
               {modalAcoes && <MenuAcoes 
                 style="absolute right-5 top-10 z-30 min-w-[170px] overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
-                onEditar={() => {console.log("EDITAR")}}
+                onEditar={() => setPostagemEmEdicao(post)}
                 onApagar={async () => {
                   await onDelete(post.id);
                   onClose();

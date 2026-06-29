@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import FeedCard from "@/components/feed/feedCard";
 import FeedDetails from "@/components/feed/feedDetails";
 import Paginacao from "@/components/paginacao";
+import { Postagem } from "@/lib/prisma/generated/client";
 
 type FeedProps = {
   posts: any[];
@@ -14,6 +15,7 @@ type FeedProps = {
   onPaginaChange: (pagina: number) => void;
   onReload: () => Promise<any[]>;
   onDelete: (postId: number) => void
+  onEdit: (post: any | null) => void
 };
 
 export default function Feed({
@@ -23,7 +25,8 @@ export default function Feed({
   totalPaginas,
   onPaginaChange,
   onReload,
-  onDelete
+  onDelete,
+  onEdit
 }: FeedProps) {
   const { data: session } = useSession();
   const [postSelecionado, setPostSelecionado] = useState<any | null>(null);
@@ -223,8 +226,9 @@ export default function Feed({
         setIdComentarioSendoEditado={setIdComentarioSendoEditado}
         setApagarComentario={setApagarComentario}
         onDelete={(postId: number) => apagarPost(postId)}
+        onEdit={(post: Postagem | null) => onEdit(post)}
       />
-)}
+    )}
     </>
   );
 }

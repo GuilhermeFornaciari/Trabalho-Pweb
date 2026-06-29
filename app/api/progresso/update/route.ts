@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const editSchema = z.object({
   postId: z.number().positive(),
-  texto: z.string().optional,
+  texto: z.string().optional(),
   temSpoiler: z.boolean()
 })
 

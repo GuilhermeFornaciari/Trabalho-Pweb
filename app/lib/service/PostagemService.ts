@@ -69,7 +69,7 @@ export async function editarProgresso(usuarioId: string, dados: any) {
   }
 
   try {
-    const resultado = updateProgresso(usuarioId, dados);
+    const resultado = await updateProgresso(usuarioId, dados);
     if(!resultado) {
       return {dados: null, status: 500}
     }

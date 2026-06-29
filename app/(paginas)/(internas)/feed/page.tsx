@@ -13,6 +13,22 @@ export default function FeedPage() {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
   }
 
+  function updatePost(postAtualizado: any | null) {
+  if (!postAtualizado) return;
+
+  setPosts(prev =>
+    prev.map(post =>
+      post.id === postAtualizado.id
+        ? {
+            ...post,
+            texto: postAtualizado.texto,
+            temSpoiler: postAtualizado.temSpoiler,
+          }
+        : post
+    )
+  );
+}
+
   async function carregarFeed() {
     const response = await fetch(`/api/feed/get?pagina=${pagina}`);
     if (!response.ok) {
@@ -43,6 +59,7 @@ export default function FeedPage() {
         onPaginaChange={setPagina}
         onReload={carregarFeed}
         onDelete={(postId: number) => deletePost(postId)}
+        onEdit={(post: any | null) => updatePost(post)}
         />
     </div>
   );

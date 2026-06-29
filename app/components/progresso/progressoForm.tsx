@@ -5,18 +5,20 @@ export default function ProgressoForm({
   livro,
   progresso,
   onClose,
-  onSave
+  onSave,
+  edit = false,
 }: {
   livro: Livro,
   progresso: Postagem | null
   onClose: () => void ,
-  onSave: () => void
+  onSave: (dados: any | null) => void,
+  edit?: boolean
 }) {
   const [formatoSelecionado, setFormatoSelecionado] = useState("inteiro");
   const [form, setForm] = useState({
-    texto: "",
+    texto: (progresso) ? progresso.texto ?? "" : "",
     pagina: "",
-    spoiler: false,
+    spoiler: (progresso) ? progresso.temSpoiler ?? false : false,
   });
 
   const pagina = progresso?.paginaAtual ?? 0;
@@ -77,9 +79,33 @@ async function RegistrarProgresso() {
     return;
   }
 
-  await onSave();
+  await onSave(null);
   onClose();
-}
+};
+
+  async function EditarProgresso() {
+    if(!progresso) return;
+    const req = await fetch("/api/progresso/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        postId: progresso?.id,
+        texto: form.texto,
+        temSpoiler: form.texto.length > 0 ? form.spoiler : false,
+      }),
+    });
+
+    if(!req.ok) {
+      alert("Falha ao editar progresso.");
+      return;
+    }
+    const data = await req.json();
+    console.log(data);
+    await onSave(data.dados ?? null);
+    onClose();
+  }
 
   return (
     <div className="relative bg-white flex flex-col w-3xl p-5 pb-13 rounded-md overflow-hidden">
@@ -111,31 +137,35 @@ async function RegistrarProgresso() {
             Contém spoiler
           </label>
           </div>
-        <p className="font-semibold">Página atual</p>
-        <input type="text" name="pagina" value={form.pagina} onChange={handleChange} id="paginas" inputMode="numeric" placeholder="Digite seu progresso" className="border p-3 rounded-md outline-none"/>
-        <div className="flex justify-between w-lg m-auto">
-          <div className="flex items-center">
-            <input type="radio" name="progressoFormato" id="inteiro" value="inteiro" 
-              checked={formatoSelecionado === "inteiro"} 
-              onChange={() => setFormatoSelecionado("inteiro")}
-            />
-            <label htmlFor="inteiro" className="pl-3">Páginas</label>
+        {!edit && (
+          <>
+            <p className="font-semibold">Página atual</p>
+            <input type="text" name="pagina" value={form.pagina} onChange={handleChange} id="paginas" inputMode="numeric" placeholder="Digite seu progresso" className="border p-3 rounded-md outline-none"/>
+            <div className="flex justify-between w-lg m-auto">
+              <div className="flex items-center">
+                 <input type="radio" name="progressoFormato" id="inteiro" value="inteiro" 
+                   checked={formatoSelecionado === "inteiro"} 
+                   onChange={() => setFormatoSelecionado("inteiro")}
+                   />
+                 <label htmlFor="inteiro" className="pl-3">Páginas</label>
+               </div>
+              <div className="flex items-center">
+                <input type="radio" name="progressoFormato" id="porcentagem" value="porcentagem"
+                  checked={formatoSelecionado === "porcentagem"}
+                  onChange={() => setFormatoSelecionado("porcentagem")}
+                  />
+               <label htmlFor="porcentagem" className="pl-3">Porcentagem</label>
+              </div>
           </div>
-          <div className="flex items-center">
-            <input type="radio" name="progressoFormato" id="porcentagem" value="porcentagem"
-              checked={formatoSelecionado === "porcentagem"}
-              onChange={() => setFormatoSelecionado("porcentagem")}
-            />
-            <label htmlFor="porcentagem" className="pl-3">Porcentagem</label>
-          </div>
-        </div>
+          </>
+        )}
         {
           <p className="font-semibold mt-3">
             Progresso atual: <span className="text-green-500">{pagina}</span> / <span>{livro.paginas}</span> - <span className="text-green-500">{porcentagemAtual + "%"}</span>
           </p>
         }
       </div>
-      <button onClick={RegistrarProgresso} className="absolute bottom-0 right-0 left-0 bg-yellow-400 py-2 font-semibold">Salvar</button>
+      <button onClick={edit ? EditarProgresso : RegistrarProgresso} className="absolute bottom-0 right-0 left-0 bg-yellow-400 py-2 font-semibold">Salvar</button>
     </div>
   )
 }
