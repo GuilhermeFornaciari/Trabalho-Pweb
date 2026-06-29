@@ -35,6 +35,7 @@ export type UserMinAggregateOutputType = {
   senha: string | null
   username: string | null
   dataNascimento: Date | null
+  createdAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type UserMaxAggregateOutputType = {
   senha: string | null
   username: string | null
   dataNascimento: Date | null
+  createdAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -61,6 +63,7 @@ export type UserCountAggregateOutputType = {
   senha: number
   username: number
   dataNascimento: number
+  createdAt: number
   _all: number
 }
 
@@ -76,6 +79,7 @@ export type UserMinAggregateInputType = {
   senha?: true
   username?: true
   dataNascimento?: true
+  createdAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -89,6 +93,7 @@ export type UserMaxAggregateInputType = {
   senha?: true
   username?: true
   dataNascimento?: true
+  createdAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -102,6 +107,7 @@ export type UserCountAggregateInputType = {
   senha?: true
   username?: true
   dataNascimento?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -188,6 +194,7 @@ export type UserGroupByOutputType = {
   senha: string
   username: string
   dataNascimento: Date | null
+  createdAt: Date
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -222,6 +229,7 @@ export type UserWhereInput = {
   senha?: Prisma.StringFilter<"User"> | string
   username?: Prisma.StringFilter<"User"> | string
   dataNascimento?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   amizadesIniciadas?: Prisma.AmigosListRelationFilter
   amizadesRecebidas?: Prisma.AmigosListRelationFilter
@@ -243,6 +251,7 @@ export type UserOrderByWithRelationInput = {
   senha?: Prisma.SortOrder
   username?: Prisma.SortOrder
   dataNascimento?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   amizadesIniciadas?: Prisma.AmigosOrderByRelationAggregateInput
   amizadesRecebidas?: Prisma.AmigosOrderByRelationAggregateInput
@@ -267,6 +276,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.StringFilter<"User"> | string
   senha?: Prisma.StringFilter<"User"> | string
   dataNascimento?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   amizadesIniciadas?: Prisma.AmigosListRelationFilter
   amizadesRecebidas?: Prisma.AmigosListRelationFilter
@@ -288,6 +298,7 @@ export type UserOrderByWithAggregationInput = {
   senha?: Prisma.SortOrder
   username?: Prisma.SortOrder
   dataNascimento?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -307,6 +318,7 @@ export type UserScalarWhereWithAggregatesInput = {
   senha?: Prisma.StringWithAggregatesFilter<"User"> | string
   username?: Prisma.StringWithAggregatesFilter<"User"> | string
   dataNascimento?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
 export type UserCreateInput = {
@@ -320,6 +332,7 @@ export type UserCreateInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
@@ -341,6 +354,7 @@ export type UserUncheckedCreateInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
@@ -362,6 +376,7 @@ export type UserUpdateInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
@@ -383,6 +398,7 @@ export type UserUncheckedUpdateInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
@@ -404,6 +420,7 @@ export type UserCreateManyInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
 }
 
 export type UserUpdateManyMutationInput = {
@@ -417,6 +434,7 @@ export type UserUpdateManyMutationInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -430,6 +448,7 @@ export type UserUncheckedUpdateManyInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserScalarRelationFilter = {
@@ -448,6 +467,7 @@ export type UserCountOrderByAggregateInput = {
   senha?: Prisma.SortOrder
   username?: Prisma.SortOrder
   dataNascimento?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -461,6 +481,7 @@ export type UserMaxOrderByAggregateInput = {
   senha?: Prisma.SortOrder
   username?: Prisma.SortOrder
   dataNascimento?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -474,6 +495,7 @@ export type UserMinOrderByAggregateInput = {
   senha?: Prisma.SortOrder
   username?: Prisma.SortOrder
   dataNascimento?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type UserCreateNestedOneWithoutAccountsInput = {
@@ -603,6 +625,7 @@ export type UserCreateWithoutAccountsInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
@@ -623,6 +646,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
@@ -659,6 +683,7 @@ export type UserUpdateWithoutAccountsInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
@@ -679,6 +704,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -699,6 +725,7 @@ export type UserCreateWithoutSessionsInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
@@ -719,6 +746,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
@@ -755,6 +783,7 @@ export type UserUpdateWithoutSessionsInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
@@ -775,6 +804,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
@@ -795,6 +825,7 @@ export type UserCreateWithoutPostagensInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
@@ -815,6 +846,7 @@ export type UserUncheckedCreateWithoutPostagensInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
@@ -851,6 +883,7 @@ export type UserUpdateWithoutPostagensInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
@@ -871,6 +904,7 @@ export type UserUncheckedUpdateWithoutPostagensInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
@@ -891,6 +925,7 @@ export type UserCreateWithoutComentariosInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
@@ -911,6 +946,7 @@ export type UserUncheckedCreateWithoutComentariosInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
@@ -947,6 +983,7 @@ export type UserUpdateWithoutComentariosInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
@@ -967,6 +1004,7 @@ export type UserUncheckedUpdateWithoutComentariosInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
@@ -987,6 +1025,7 @@ export type UserCreateWithoutBibliotecaInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
@@ -1007,6 +1046,7 @@ export type UserUncheckedCreateWithoutBibliotecaInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
@@ -1043,6 +1083,7 @@ export type UserUpdateWithoutBibliotecaInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
@@ -1063,6 +1104,7 @@ export type UserUncheckedUpdateWithoutBibliotecaInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
@@ -1083,6 +1125,7 @@ export type UserCreateWithoutCurtidasInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
@@ -1103,6 +1146,7 @@ export type UserUncheckedCreateWithoutCurtidasInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
@@ -1139,6 +1183,7 @@ export type UserUpdateWithoutCurtidasInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
@@ -1159,6 +1204,7 @@ export type UserUncheckedUpdateWithoutCurtidasInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
@@ -1179,6 +1225,7 @@ export type UserCreateWithoutAmizadesIniciadasInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesRecebidas?: Prisma.AmigosCreateNestedManyWithoutAmigo2Input
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
@@ -1199,6 +1246,7 @@ export type UserUncheckedCreateWithoutAmizadesIniciadasInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesRecebidas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo2Input
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1224,6 +1272,7 @@ export type UserCreateWithoutAmizadesRecebidasInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosCreateNestedManyWithoutAmigo1Input
   biblioteca?: Prisma.BibliotecaCreateNestedManyWithoutUsuarioInput
@@ -1244,6 +1293,7 @@ export type UserUncheckedCreateWithoutAmizadesRecebidasInput = {
   senha: string
   username: string
   dataNascimento?: Date | string | null
+  createdAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   amizadesIniciadas?: Prisma.AmigosUncheckedCreateNestedManyWithoutAmigo1Input
   biblioteca?: Prisma.BibliotecaUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1280,6 +1330,7 @@ export type UserUpdateWithoutAmizadesIniciadasInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesRecebidas?: Prisma.AmigosUpdateManyWithoutAmigo2NestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
@@ -1300,6 +1351,7 @@ export type UserUncheckedUpdateWithoutAmizadesIniciadasInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesRecebidas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo2NestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1331,6 +1383,7 @@ export type UserUpdateWithoutAmizadesRecebidasInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUpdateManyWithoutAmigo1NestedInput
   biblioteca?: Prisma.BibliotecaUpdateManyWithoutUsuarioNestedInput
@@ -1351,6 +1404,7 @@ export type UserUncheckedUpdateWithoutAmizadesRecebidasInput = {
   senha?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   dataNascimento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   amizadesIniciadas?: Prisma.AmigosUncheckedUpdateManyWithoutAmigo1NestedInput
   biblioteca?: Prisma.BibliotecaUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1465,6 +1519,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   senha?: boolean
   username?: boolean
   dataNascimento?: boolean
+  createdAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   amizadesIniciadas?: boolean | Prisma.User$amizadesIniciadasArgs<ExtArgs>
   amizadesRecebidas?: boolean | Prisma.User$amizadesRecebidasArgs<ExtArgs>
@@ -1487,6 +1542,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   senha?: boolean
   username?: boolean
   dataNascimento?: boolean
+  createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1500,6 +1556,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   senha?: boolean
   username?: boolean
   dataNascimento?: boolean
+  createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1513,9 +1570,10 @@ export type UserSelectScalar = {
   senha?: boolean
   username?: boolean
   dataNascimento?: boolean
+  createdAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "email" | "emailVerified" | "foto" | "bio" | "role" | "senha" | "username" | "dataNascimento", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "email" | "emailVerified" | "foto" | "bio" | "role" | "senha" | "username" | "dataNascimento" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   amizadesIniciadas?: boolean | Prisma.User$amizadesIniciadasArgs<ExtArgs>
@@ -1553,6 +1611,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     senha: string
     username: string
     dataNascimento: Date | null
+    createdAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1994,6 +2053,7 @@ export interface UserFieldRefs {
   readonly senha: Prisma.FieldRef<"User", 'String'>
   readonly username: Prisma.FieldRef<"User", 'String'>
   readonly dataNascimento: Prisma.FieldRef<"User", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 

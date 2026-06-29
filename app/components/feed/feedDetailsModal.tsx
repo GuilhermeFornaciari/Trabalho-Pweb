@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Heart, MessageSquare, Send, CornerDownRight, Star } from "lucide-react";
+import { X, Heart, Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ComentarioList from "../comentario/comentarioList";

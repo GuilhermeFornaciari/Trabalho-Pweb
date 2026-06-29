@@ -27,6 +27,11 @@ export default function Header() {
           {session?.user?.role === "admin" &&
             (<Link href="/adm" className={navItemsStyle + (pathName.match("/adm") ? navItemDestacadoStyle : "")}>Gerenciamento</Link>)
           }
+
+          {/* {session?.user?.role === "admin" && */}
+          (<Link href="/estatisticas" className={navItemsStyle + (pathName.match("/estatisticas") ? navItemDestacadoStyle : "")}>Estatísticas</Link>)
+          {/* } */}
+
           <Link href="/catalogo" className={navItemsStyle + (pathName.match("/catalogo") ? navItemDestacadoStyle : "")}>Catalogo</Link>
           <Link href="/feed" className={navItemsStyle + (pathName.match("/feed") ? navItemDestacadoStyle : "")}>Feed</Link>
           <Link href="/amigos" className={navItemsStyle + (pathName.match("/amigos") ? navItemDestacadoStyle : "")}>Amizades</Link>

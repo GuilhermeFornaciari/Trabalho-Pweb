@@ -1455,7 +1455,8 @@ export const UserScalarFieldEnum = {
   role: 'role',
   senha: 'senha',
   username: 'username',
-  dataNascimento: 'dataNascimento'
+  dataNascimento: 'dataNascimento',
+  createdAt: 'createdAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1532,7 +1533,8 @@ export const ComentarioScalarFieldEnum = {
   texto: 'texto',
   usuarioId: 'usuarioId',
   postagemId: 'postagemId',
-  parentId: 'parentId'
+  parentId: 'parentId',
+  createdAt: 'createdAt'
 } as const
 
 export type ComentarioScalarFieldEnum = (typeof ComentarioScalarFieldEnum)[keyof typeof ComentarioScalarFieldEnum]

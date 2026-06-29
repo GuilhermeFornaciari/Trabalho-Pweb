@@ -57,6 +57,8 @@ model User {
   postagens         Postagem[]
   sessions          Session[]
 
+  createdAt DateTime @default(now())
+
   @@map("usuarios")
 }
 
@@ -151,6 +153,9 @@ model Comentario {
   postagem   Postagem     @relation(fields: [postagemId], references: [id], onDelete: Cascade)
   usuario    User         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   curtidas   Curtida[]
+
+
+  createdAt DateTime @default(now())
 
   @@index([postagemId, data])
   @@index([usuarioId])
