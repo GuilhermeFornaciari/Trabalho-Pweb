@@ -170,3 +170,25 @@ export async function ultimoProgresso(usuarioId: string, livroId: number) {
     }
   })
 }
+
+export async function updateProgresso(
+  usuarioId: string,
+  dados: {
+    postId: number;
+    texto?: string;
+    temSpoiler: boolean;
+  }
+) {
+  const data = {
+    temSpoiler: dados.temSpoiler,
+    ...(dados.texto !== undefined && { texto: dados.texto }),
+  };
+
+  return await prisma.postagem.update({
+    where: {
+      id: dados.postId,
+      usuarioId,
+    },
+    data,
+  });
+}

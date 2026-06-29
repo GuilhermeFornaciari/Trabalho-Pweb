@@ -9,6 +9,8 @@ import Modal from "../modal";
 import MenuAcoes from "../modalAcoes";
 // Importe o modal que modularizamos
 import ResenhaEditeCreateModal from "../resenha/resenhaEditCreate"; 
+import ProgressoForm from "../progresso/progressoForm";
+import { Postagem } from "@/lib/prisma/generated/client";
 
 type Props = {
   post: any;
@@ -23,6 +25,7 @@ type Props = {
   setApagarComentario: (id: number) => void;
   onDelete: (postId: number) => void;
   onUpdatePost?: () => void; // Callback opcional para atualizar a listagem após editar
+  onEdit: (post: any | null) => void;
 };
 
 export default function FeedDetails({
@@ -37,7 +40,8 @@ export default function FeedDetails({
   setIdComentarioSendoEditado,
   setApagarComentario,
   onDelete,
-  onUpdatePost
+  onUpdatePost,
+  onEdit
 }: Props) {
   if (!post) return null;
   const isProgresso = post.paginaAtual !== null;
@@ -46,6 +50,7 @@ export default function FeedDetails({
   const [curtidaId, setCurtidaId] = useState(-1);
   const [qtdCurtidas, setQtdCurtidas] = useState(0);
   const [modalAcoes, setModalAcoes] = useState(false);
+  const [postagemEmEdicao, setPostagemEmEdicao] = useState<Postagem | null>(null);
 
   const [replyTo, setReplyTo] = useState<{ id: number; username: string } | null>(null);
 
@@ -116,23 +121,37 @@ export default function FeedDetails({
   };
 
   return (
-    <>
-      <Modal open={!!post} onClose={onClose}>
-        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
-          
-          {/* Header do Modal */}
-          <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <div className="flex items-center gap-2">
-              <img src={post.usuario.foto && post.usuario.foto.trim() !== "" ? post.usuario.foto : "https://via.placeholder.com/150"} 
-                alt="" 
-                className="w-8 h-8 rounded-full object-cover" 
-              />
-              <span className="text-sm font-semibold text-slate-700">Publicação de @{post.usuario.username}</span>
-            </div>
-            <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-200 transition-colors">
-              <X size={20} />
-            </button>
+    <Modal open={!!post} onClose={onClose}>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        
+        {/* Header do Modal */}
+        <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <div className="flex items-center gap-2">
+            <img src={post.usuario.foto && post.usuario.foto.trim() !== "" ? post.usuario.foto : "https://via.placeholder.com/150"} 
+              alt="" 
+              className="w-8 h-8 rounded-full object-cover" 
+            />
+            <span className="text-sm font-semibold text-slate-700">Publicação de @{post.usuario.username}</span>
           </div>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-200 transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+
+        {postagemEmEdicao && (
+          <Modal open={postagemEmEdicao !== null} onClose={() => setPostagemEmEdicao(null)}>
+            <ProgressoForm 
+              livro={post.livro} 
+              progresso={postagemEmEdicao} 
+              edit={true} 
+              onClose={() => setPostagemEmEdicao(null)} 
+              onSave={(post) => {
+                onEdit(post)
+                onClose()
+              }}
+            />
+          </Modal>
+        )}
 
           <div className="relative flex-1 overflow-y-auto p-6 space-y-6">
             {(session?.user.id === post.usuarioId) && (
@@ -235,7 +254,6 @@ export default function FeedDetails({
             }}
           />
         </div>
-      </Modal>
 
       {/* --- RENDERIZAÇÃO DO MODAL DE EDIÇÃO --- */}
       <ResenhaEditeCreateModal
@@ -250,7 +268,8 @@ export default function FeedDetails({
         spoiler={editSpoiler}
         setSpoiler={setEditSpoiler}
         onSubmit={handleSuvmitEdicao}
-      />
-    </>
+        />
+        </Modal>
+
   );
 }
