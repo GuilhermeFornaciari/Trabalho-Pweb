@@ -169,7 +169,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
           </div>
 
           {/* Conteúdo Dinâmico baseado na Aba Ativa */}
-          <div className="text-center text-[#8A7A5B] border-t border-amber-400 text-sm min-h-[200px] bg-white p-3 rounded-lg">
+          <div className="text-[#8A7A5B] border-t border-amber-400 text-sm min-h-[200px] bg-white p-3 rounded-lg">
             {conteudos[abaAtiva]}
           </div>
         </div>
