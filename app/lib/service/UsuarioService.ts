@@ -1,4 +1,4 @@
-import { findByUsername } from "../data/userDAO";
+import { findByUsername, getUserPosts } from "../data/userDAO";
 
 export async function getByUsername(username: string) {
   try {
@@ -11,4 +11,14 @@ export async function getByUsername(username: string) {
     console.error(e);
     return {message: "Não foi possível buscar usuário.", status: 500}
   }
-} 
+}
+
+export async function buscarPostagensDoUsuario(usuario: string, ultimoId?: number, quantidade?: number) {
+  try{
+    const posts = await getUserPosts(usuario, ultimoId, quantidade);
+    return {dados: posts, status: 200};
+  } catch(e) {
+    console.error(e);
+    return {message: "Não foi possível buscar usuário.", status: 500}
+  }
+}

@@ -83,3 +83,94 @@ export async function updateUser(user: User) {
 
     return opa;
 }
+
+export async function getUserPosts(
+  user: string,
+  ultimoId?: number,
+  quantidade: number = 10
+) {
+  const [dados, total] = await Promise.all([
+    prisma.postagem.findMany({
+      where: {
+        usuarioId: user,
+      },
+
+      orderBy: [
+        { data: "desc" },
+        { id: "desc" },
+      ],
+
+      take: quantidade,
+
+      cursor: ultimoId
+        ? {
+            id: ultimoId,
+          }
+        : undefined,
+
+      skip: ultimoId ? 1 : 0,
+
+      include: {
+        usuario: {
+          select: {
+            id: true,
+            nome: true,
+            username: true,
+            foto: true,
+          },
+        },
+
+        livro: {
+          select: {
+            id: true,
+            titulo: true,
+            capa: true,
+            paginas: true,
+            autores: {
+              include: {
+                autor: {
+                  select: {
+                    nome: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+
+        curtidas: true,
+
+        comentarios: {
+          include: {
+            curtidas: true,
+            usuario: {
+              select: {
+                id: true,
+                nome: true,
+                username: true,
+                foto: true,
+              },
+            },
+          },
+          orderBy: {
+            data: "asc",
+          },
+        },
+      },
+    }),
+
+    prisma.postagem.count({
+      where: {
+        usuarioId: user,
+      },
+    }),
+  ]);
+
+  return {
+    posts: dados,
+    total,
+    temMais: dados.length === quantidade,
+    proximaPagina: dados.length > 0 ? dados[dados.length - 1].id : null,
+    paginaAnterior: ultimoId
+  };
+}
