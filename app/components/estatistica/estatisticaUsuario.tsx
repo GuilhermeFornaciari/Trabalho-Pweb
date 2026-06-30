@@ -85,11 +85,11 @@ export default function EstatisticasPerfil({ usuario }: EstatisticasPerfilProps)
       ) : (
         <>
           {(temLeiturasPorMes || temLivrosPorStatus || temAvaliacoes) ?
-            <>
+            <div className="flex flex-col items-center justify-center">
               {exibirLeiturasPorMes(leiturasPorMes, temLeiturasPorMes)}
               {exibirLivrosPorStatus(livrosPorStatus, temLivrosPorStatus)}
               {exibirAvaliacoes(avaliacoes,temAvaliacoes)}
-            </>
+            </div>
             :
             <h1>Não há dados de estatísticas para exibir no momento. Adicione novos livros na biblioteca.</h1>
           }
@@ -123,7 +123,6 @@ function exibirLivrosPorStatus(dados: { status: string; quantidade: number}[], t
   return (
     <>
       {temDados && (
-        <div className="">
           <GraficoDeBarras<{status: string; quantidade: number}>
             dados={dados}
             titulo=""
@@ -133,7 +132,6 @@ function exibirLivrosPorStatus(dados: { status: string; quantidade: number}[], t
             nomeLegenda="Livros"
             className="flex flex-col items-center justify-center w-full max-w-3xl p-4 rounded-lg"
             />
-        </div>
       )}
     </>
   );
@@ -143,7 +141,6 @@ function exibirAvaliacoes(dados: {notaEstrelas: string; quantidade: number }[], 
   return (
     <>
       {temDados && (
-        <div className="">
           <GraficoDeBarras<{ notaEstrelas: string; quantidade: number }>
             dados={dados}
             titulo="Distribuição de Avaliações"
@@ -151,10 +148,8 @@ function exibirAvaliacoes(dados: {notaEstrelas: string; quantidade: number }[], 
             eixoYKey="quantidade"
             orientacao="horizontal"
             nomeLegenda="Livros Avaliados"
-            sufixoValue=" avaliações"
             className="flex flex-col items-center justify-center w-full max-w-3xl p-4 rounded-lg"
           />
-        </div>
       )}
     </>
   )

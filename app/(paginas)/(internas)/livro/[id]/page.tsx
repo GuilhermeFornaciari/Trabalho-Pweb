@@ -14,6 +14,7 @@ import Modal from "@/components/modal";
 import ProgressoForm from "@/components/progresso/progressoForm";
 import Paginacao from "@/components/paginacao";
 import { UsuarioPerfil } from "@/lib/types/usuarioPerfil";
+import EditarDatas from "@/components/biblioteca/bibliotecaDates";
 import ResenhaEditeCreateModal from "@/components/resenha/resenhaEditCreate";
 import GraficoDeLinha from "@/components/estatistica/graficoDeLinha";
 
@@ -43,6 +44,7 @@ export default function DetalhesLivro({
   const [mostrarModalResenhaCreate, setMostrarModalResenhaCreate] = useState(false);
   const [modalProgresso, setModalProgresso] = useState(false);
   const [progresso, setProgresso] = useState<Postagem | null>(null);
+  const [editarDatas, setEditarDatas] = useState(false);
 
   const [titulo, setTitulo] = useState("");
   const [resenha, setResenha] = useState("");
@@ -301,7 +303,8 @@ const notaMediaLivro =
         id,
         setMostrarModalDeletar, 
         (dados) => setLivro((prev) => prev ? { ...prev, biblioteca: dados } : prev),
-        adm
+        adm,
+        setEditarDatas
       )}
       
       <div className="w-4xl m-auto flex justify-end gap-3 mb-6">
@@ -437,6 +440,21 @@ const notaMediaLivro =
             <ProgressoForm livro={livro} progresso={progresso} onClose={() => setModalProgresso(false)} onSave={(dados: any|null) => carregarProgresso}/>
           </Modal>
         )}
+
+        {editarDatas && (
+          <Modal
+              open={true}
+              onClose={() => setEditarDatas(false)}
+          >
+            <EditarDatas
+                livroId={livro.id}
+                dataInicio={livro.biblioteca?.dataInicio ?? null}
+                dataFim={livro.biblioteca?.dataConclusao ?? null}
+                onClose={() => setEditarDatas(false)}
+                onSuccess={() => setEditarDatas(false)}
+            />
+         </Modal>
+)}
       </>      
     ) : ''
   );
@@ -448,7 +466,8 @@ function informacoesDoLivro(
   id: string,
   setMostrarModal: (value: boolean) => void,
   setBiblioteca: (value: Biblioteca) => void,
-  adm: boolean
+  adm: boolean,
+  setEditarDatas: (value: boolean) => void
 ) {
   const spanStyle = "font-semibold";
   const buttonStyle = "px-5 py-3 rounded-md";
@@ -460,6 +479,9 @@ function informacoesDoLivro(
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
             <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}/>
+            <button className={buttonStyle + " w-full mt-3 bg-amber-400"} onClick={() => setEditarDatas(true)}>
+              Editar datas
+            </button>
           </div>
         )}
       </div>
@@ -498,9 +520,11 @@ function informacoesDoLivro(
                       className="fill-amber-400 text-amber-400"
                     />
                   </div>
+                  
                 </div>
               );
             })}
+            <p className="font-bold text-xl ml-2">{notaMediaLivro}</p>
           </div>
         </div>
 
