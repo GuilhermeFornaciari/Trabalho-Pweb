@@ -21,6 +21,8 @@ export default function ResenhaCard({ resenha, onClick, curtir }: Props) {
       const [curtido, setCurtido] = useState(false);
       const [curtidaId, setCurtidaId] = useState(-1);
       const [qtdCurtidas, setQtdCurtidas] = useState(resenha.curtidas.length);
+
+      const [revelarSpoiler, setRevelarSpoiler] = useState(false);
   
       useEffect(() => {
         if (!session?.user?.id) return;
@@ -64,8 +66,30 @@ export default function ResenhaCard({ resenha, onClick, curtir }: Props) {
           ))}
         </div>
       </div>
+      <div 
 
-      <p className="text-sm text-slate-600 mb-4 line-clamp-2">{resenha.texto}</p>
+        className="relative mb-4 group"
+        onClick={(e) => {
+          if (resenha.temSpoiler && !revelarSpoiler) {
+            e.stopPropagation(); 
+            setRevelarSpoiler(true);
+          }
+        }}
+      >
+        <p className={`text-sm text-slate-600 line-clamp-2 transition-all duration-300 ${
+          resenha.temSpoiler && !revelarSpoiler 
+            ? "blur-sm select-none bg-slate-50/50 p-1 rounded cursor-eye-off" 
+            : ""
+        }`}>
+          {resenha.texto}
+        </p>
+        
+        {resenha.temSpoiler && !revelarSpoiler && (
+          <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-slate-700 tracking-wider uppercase bg-white/20 backdrop-blur-[1px] rounded">
+            Contém spoiler!
+          </span>
+        )}
+      </div>
 
       <div className="flex items-center gap-4 text-xs text-slate-400">
         <button onClick={(e) => {e.stopPropagation();
