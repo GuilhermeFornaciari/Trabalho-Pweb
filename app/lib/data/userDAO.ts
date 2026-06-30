@@ -80,7 +80,6 @@ export async function getUserPosts(
   pagina: number = 1,
   quantidade: number = 10
 ) {
-  console.log("POSTS:", user)
   const [dados, total] = await Promise.all([
     prisma.postagem.findMany({
       where: {

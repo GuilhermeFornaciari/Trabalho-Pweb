@@ -38,6 +38,11 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
     postagens: postagens(posts, loadingPosts, pagina, totalPaginas, setPagina, carregarFeed, deletePost, updatePost),
     estatisticas: estatisticas(usuario),
   };
+  const quantidadeLivros = usuario?.biblioteca.length ?? 0;
+  const paginasLidas = usuario?.biblioteca.reduce(
+    (total, item) => total + (item.paginaAtual ?? 0),
+    0
+  ) ?? 0;
   
   function deletePost(postId: number) {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
@@ -147,6 +152,18 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
                 </span>
               )}
             <p className="text-[#8A7A5B] text-sm max-w-xs"> {usuario?.bio} </p>
+
+          
+            <div className="mt-30 flex justify-around items-center w-full">
+              <div className="font-bold text-center text-yellow-900 uppercase">
+                <span className="text-4xl">{quantidadeLivros}</span>
+                <p className="text-lg">{quantidadeLivros === 1 ? "Livro" : "Livros"}</p>
+              </div>
+              <div className="font-bold text-center text-yellow-900 uppercase">
+                <span className="text-4xl">{paginasLidas}</span>
+               <p className="text-lg">{paginasLidas === 1 ? "Página" : "Páginas"}</p>
+              </div>
+            </div>
           </div>
         </div>
 

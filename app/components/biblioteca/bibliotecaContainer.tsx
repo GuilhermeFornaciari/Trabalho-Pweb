@@ -24,12 +24,11 @@ export default function BibliotecaContainer({
   }
 
   return (
-    <div className="w-5xl m-auto">
+    <div className="w-5xl m-auto flex gap-5 flex-wrap">
       {livros.map((elemento) => (
         <Link 
           key={elemento.livroId} 
           href={`/livro/${elemento.livro.id}`}
-          className="block transition-transform hover:scale-[1.01]" // pra ficar bonito
         >
           <LivroCard livro={elemento.livro} imgBorder={statusStyle[elemento.status].border}>
             {cardConteudo(elemento)}
