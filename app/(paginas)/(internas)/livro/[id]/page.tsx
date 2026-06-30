@@ -479,9 +479,10 @@ function informacoesDoLivro(
          {!adm && (
           <div className="py-3 flex flex-col justify-center items-center">
             <BibliotecaButton livro={livro} buttonStyle={buttonStyle} onUpdate={setBiblioteca}/>
-            <button className={buttonStyle + " w-full mt-3 bg-amber-400"} onClick={() => setEditarDatas(true)}>
-              Editar datas
-            </button>
+            {livro.biblioteca?.status === StatusLeitura.LIDO  && 
+              <button className={buttonStyle + " w-full mt-3 bg-amber-400"} onClick={() => setEditarDatas(true)}>
+                Editar datas
+              </button>}
           </div>
         )}
       </div>

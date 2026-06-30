@@ -208,7 +208,7 @@ async function updateUser() {
         <div className="flex flex-col items-center mb-6">
           <div className="relative">
             <img
-              src={form?.foto || "/temp/caju.jpeg"}
+              src={form?.foto || "/temp/unkown.jpg"}
               alt="Foto"
               className="rounded-full object-cover w-[150px] h-[150px]"
             />

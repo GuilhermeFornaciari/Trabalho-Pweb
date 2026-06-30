@@ -126,7 +126,7 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
           <div className="flex flex-col justify-center items-center gap-2">
             <div className="relative flex-shrink-0">
               <img
-                src={usuario?.foto || "/temp/caju.jpeg"}
+                src={usuario?.foto || "/temp/unkown.jpg"}
                 alt="Foto do usuário"
                 
                 className="rounded-full object-cover border-4 border-[#F7D774] w-[250px] h-[250px]"
