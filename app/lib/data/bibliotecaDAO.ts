@@ -22,7 +22,7 @@ export async function salvarLivro(dados: Biblioteca) {
       usuarioId: dados.usuarioId,
       livroId: dados.livroId,
       status: dados.status,
-      dataInicio: dados.dataInicio,
+      dataInicio: (dados.dataInicio) ? dados.dataInicio : new Date(),
       dataConclusao: dados.dataConclusao,
     },
   });

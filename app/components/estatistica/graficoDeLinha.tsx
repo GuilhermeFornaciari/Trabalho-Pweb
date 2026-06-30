@@ -22,6 +22,12 @@ export default function GraficoDeLinha<T>({
   sufixoX = "",
   sufixoY = "",
 }: GraficoLinhaProps<T>) {
+  if(!dados || dados.length === 0) {
+    return(
+      <h1>Não há dados para exibir</h1>
+    )
+  }
+
   return (
     <div className="flex flex-col items-center justify-center w-full max-w-3xl p-4 bg-white rounded-lg shadow">
       <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">

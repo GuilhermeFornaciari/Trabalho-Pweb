@@ -227,3 +227,32 @@ export async function discussao(livroId: number) {
 
   return faixas;
 }
+
+export async function leiturasPorMes(usuarioId: string, ano: number=2026) {
+  const leituras = await prisma.biblioteca.findMany({
+    where: {
+      usuarioId: usuarioId,
+      dataInicio: {
+        gte: new Date(`${ano}-01-01`),
+        lte: new Date(`${ano}-12-31`),
+      },
+    },
+    select: {
+      dataInicio: true,
+    },
+  });
+
+
+  const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+  const dadosAgrupados = meses.map((mes) => ({ mes, quantidade: 0 }));
+
+  leituras.forEach((item) => {
+    if (item.dataInicio) {
+      const mesIndice = new Date(item.dataInicio).getMonth();
+      dadosAgrupados[mesIndice].quantidade++;
+    }
+  });
+
+  return dadosAgrupados;
+}
+

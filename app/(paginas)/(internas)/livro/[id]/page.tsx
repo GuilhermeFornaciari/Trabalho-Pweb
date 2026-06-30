@@ -94,13 +94,13 @@ export default function DetalhesLivro({
   }
 
   async function carregarPostsPorPorcentagem() {
-      const response = await fetch(`/api/livro/discussions?id=${id}`);
+    const response = await fetch(`/api/livro/discussions?id=${id}`);
 
-      if (!response.ok) return;
+    if (!response.ok) return;
 
-      const resultado = await response.json();
-      setPostsPorPorcentagem(resultado);
-    }
+    const resultado = await response.json();
+    setPostsPorPorcentagem(resultado);
+  }
 
   useEffect(() => {
     carregarResenhas();
@@ -108,7 +108,6 @@ export default function DetalhesLivro({
 
   useEffect(() => {
     carregarPostsPorPorcentagem();
-
   }, [id]);
 
   useEffect(() => {
