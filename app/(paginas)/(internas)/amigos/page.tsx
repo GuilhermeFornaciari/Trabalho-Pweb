@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 type UsuarioBusca = {
@@ -133,7 +132,7 @@ export default function AmigosPage() {
                 <div key={amigo.id} className="flex items-center justify-between rounded-xl border border-[#E8D89A] bg-white p-3">
                   <div className="flex items-center gap-3">
                     <Link href={`/perfil/${amigo.username}`} className="relative h-12 w-12 overflow-hidden rounded-full cursor-pointer">
-                      <Image src={amigo.foto || '/temp/calca.jpeg'} alt={amigo.nome} fill className="object-cover" />
+                      <img src={amigo.foto || '/temp/calca.jpeg'} alt={amigo.nome} className="object-cover" />
                     </Link>
                     <div>
                       <Link href={`/perfil/${amigo.username}`} className="font-semibold text-[#4F442E] cursor-pointer">
