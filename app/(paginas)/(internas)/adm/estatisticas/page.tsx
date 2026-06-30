@@ -87,7 +87,7 @@ export default function AdminEstatisticas() {
         </div>
         <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-[#E8D89A] shadow-sm text-xs font-medium text-[#4F442E]">
           <Calendar size={14} className="text-[#8A7A5B]" />
-          <span>Métricas Semanais Ativas</span>
+          <span>Métricas Semanais</span>
         </div>
       </div>
 
