@@ -189,3 +189,41 @@ export async function getLivrosRecentes(quantidade: number){
       .map(a => a.autor)
   }));
 }
+
+export async function discussao(livroId: number) {
+  const postagens = await prisma.postagem.findMany({
+    where: {
+      livroId,
+      paginaAtual: {
+        not: null,
+      },
+    },
+    select: {
+      paginaAtual: true,
+      livro: {
+        select: {
+          paginas: true,
+        },
+      },
+    },
+  });
+
+  const faixas = Array.from({ length: 21 }, (_, i) => ({
+    porcentagem: i * 5,
+    quantidade: 0,
+  }));
+
+  for (const postagem of postagens) {
+    if (!postagem.livro.paginas || postagem.livro.paginas === 0) continue;
+    const porcentagem = (postagem.paginaAtual! / postagem.livro.paginas) * 100;
+    
+    const indice = Math.min(
+      Math.round(porcentagem / 5),
+      faixas.length - 1
+    );
+
+    faixas[indice].quantidade++;
+  }
+
+  return faixas;
+}
