@@ -15,6 +15,7 @@ import ProgressoForm from "@/components/progresso/progressoForm";
 import Paginacao from "@/components/paginacao";
 import { UsuarioPerfil } from "@/lib/types/usuarioPerfil";
 import ResenhaEditeCreateModal from "@/components/resenha/resenhaEditCreate";
+import GraficoDeLinha from "@/components/estatistica/graficoDeLinha";
 
 type ResenhaDetalhes = Postagem & {
   usuario: {
@@ -34,19 +35,15 @@ export default function DetalhesLivro({
 }) {
   const { id } = use(params);
   const [livro, setLivro] = useState<LivroDetalhes | null>(null);
-
-  // Estados de Controle de Modais distintos
   const [mostrarModalDeletar, setMostrarModalDeletar] = useState(false);  
-  const [mostrarModalResenhasLista, setMostrarModalResenhasLista] = useState(false); // Novo estado isolado
-
+  const [mostrarModalResenhasLista, setMostrarModalResenhasLista] = useState(false); 
   const { data: session } = useSession();
   const adm = session?.user?.role === "admin";
-  
   const [mostrarModalResenha, setMostrarModalResenha] = useState<ResenhaDetalhes | null>(null);
-  
   const [mostrarModalResenhaCreate, setMostrarModalResenhaCreate] = useState(false);
   const [modalProgresso, setModalProgresso] = useState(false);
   const [progresso, setProgresso] = useState<Postagem | null>(null);
+
   const [titulo, setTitulo] = useState("");
   const [resenha, setResenha] = useState("");
   const [spoiler, setSpoiler] = useState(false);
@@ -60,6 +57,8 @@ export default function DetalhesLivro({
   const [comentario, setComentario] = useState("");
 
   const [apagarComentario, setApagarComentario] = useState(-1)
+
+  const [postsPorPorcentagem, setPostsPorPorcentagem] = useState<{quantidade: number, porcentagem: number}[]>([]);
 
   async function carregarResenhas() {
     const response = await fetch(`/api/resenha/get?livroId=${id}&pagina=${pagina}`);
@@ -79,8 +78,6 @@ export default function DetalhesLivro({
           setMostrarModalResenha(novaResenha);
         }
       }
-
-      // console.log(mostrarModalResenha)
     }
   }
   
@@ -96,9 +93,23 @@ export default function DetalhesLivro({
     setProgresso(dados.dados);
   }
 
+  async function carregarPostsPorPorcentagem() {
+      const response = await fetch(`/api/livro/discussions?id=${id}`);
+
+      if (!response.ok) return;
+
+      const resultado = await response.json();
+      setPostsPorPorcentagem(resultado);
+    }
+
   useEffect(() => {
     carregarResenhas();
   }, [id, pagina]);
+
+  useEffect(() => {
+    carregarPostsPorPorcentagem();
+
+  }, [id]);
 
   useEffect(() => {
     if(!livro) return;
@@ -114,8 +125,6 @@ async function submitComentario(idPost: number, parentId?: number) {
     return;
   }
 
-  // Enviamos tudo para a mesma rota. 
-  // Se 'idComentarioSendoEditado' for nulo, a API entende como criação.
   const response = await fetch("../api/comentario/upsert", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -123,8 +132,8 @@ async function submitComentario(idPost: number, parentId?: number) {
       postagemId: idPost,
       usuarioId: session.user.id,
       texto: comentario,
-      parentId: parentId, // preenchido se for uma resposta a outro comentário
-      idComentarioSendoEditado: idComentarioSendoEditado, // preenchido se for edição do próprio comentário
+      parentId: parentId, 
+      idComentarioSendoEditado: idComentarioSendoEditado, 
     }),
   });
 
@@ -136,14 +145,12 @@ async function submitComentario(idPost: number, parentId?: number) {
 
   alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário criado!");
 
-  // Resetar estados
   setIdComentarioSendoEditado(null);
   setComentario("");
   await carregarResenhas();
   setMostrarModalResenha(null);
 }
 
-// Lógica separada e exclusiva para DELETAR (atrelada ao estado apagarComentario que você já possui)
 useEffect(() => {
   async function deletarComentario() {
     if (apagarComentario === -1) return;
@@ -298,7 +305,6 @@ const notaMediaLivro =
         adm
       )}
       
-      {/* Barra de Ações - Removemos o botão "Ver Resenhas" antigo */}
       <div className="w-4xl m-auto flex justify-end gap-3 mb-6">
         {livro?.biblioteca?.status === "LIDO" && (
           <button
@@ -318,6 +324,18 @@ const notaMediaLivro =
           </button>
         )}
       </div>
+      {postsPorPorcentagem && (
+        <div className="flex justify-center items-center">
+          <GraficoDeLinha<{quantidade:number, porcentagem:number}>
+            dados={postsPorPorcentagem}
+            titulo="Quantidade de progressos publicados por porcentagem do livro."
+            eixoXKey="porcentagem"
+            eixoYKey="quantidade"
+            nomeLegenda="Quantidade de progressos"
+            sufixoX="%"
+          ></GraficoDeLinha>
+        </div>
+      )}
       
       {/* Seção Fixa de Resenhas na Página */}
       <div className="w-4xl m-auto border-t border-slate-100 pt-8 my-6">
