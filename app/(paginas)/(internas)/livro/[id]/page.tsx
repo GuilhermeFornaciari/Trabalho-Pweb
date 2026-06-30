@@ -142,7 +142,7 @@ async function submitComentario(idPost: number, parentId?: number) {
     return;
   }
 
-  alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário criado!");
+  // alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário criado!");
 
   setIdComentarioSendoEditado(null);
   setComentario("");
@@ -166,7 +166,7 @@ useEffect(() => {
       const erro = await req.json();
       alert(JSON.stringify(erro, null, 2));
     } else {
-      alert("Comentário apagado com sucesso!");
+      // alert("Comentário apagado com sucesso!");
       await carregarResenhas();
       setMostrarModalResenha(null);
     }
@@ -210,7 +210,7 @@ useEffect(() => {
     setNota(0);
     setSpoiler(false);
     await carregarResenhas();
-    alert("Resenha criada com sucesso!");
+    // alert("Resenha criada com sucesso!");
   }
 
   const route = useRouter();

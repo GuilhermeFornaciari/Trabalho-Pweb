@@ -81,7 +81,7 @@ export default function CatalogoPage() {
             Autor
           </button>
 
-          <button
+          {/* <button
             onClick={() => setFiltro("ano")}
             className={`px-4 py-2 rounded-xl transition ${
               filtro === "ano"
@@ -90,7 +90,7 @@ export default function CatalogoPage() {
             }`}
           >
             Ano
-          </button>
+          </button> */}
 
           <button
             onClick={() => setFiltro("genero")}

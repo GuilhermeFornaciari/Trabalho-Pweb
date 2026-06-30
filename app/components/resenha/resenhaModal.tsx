@@ -104,13 +104,13 @@ export default function ResenhaModal({
         return;
       }
 
-      alert("Resenha atualizada!");
+      // alert("Resenha atualizada!");
       setMostrarModalEditar(false);
       if (onUpdateResenha) onUpdateResenha();
       onClose(); 
     } catch (e) {
       console.error(e);
-      alert("Erro ao editar resenha.");
+      // alert("Erro ao editar resenha.");
     }
   };
 
@@ -126,11 +126,11 @@ export default function ResenhaModal({
       })
       });
       if (!resultado.ok) {
-        alert("Erro ao apagar resenha");
+        // alert("Erro ao apagar resenha");
         return;
       }
 
-      alert("Resenha removida com sucesso!");
+      // alert("Resenha removida com sucesso!");
       if (onUpdateResenha) onUpdateResenha();
       onClose();
     } catch (error) {

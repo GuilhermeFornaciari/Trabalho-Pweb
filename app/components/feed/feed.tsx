@@ -79,7 +79,7 @@ export default function Feed({
       if (!response.ok) {
         alert("Erro ao apagar o comentário.");
       } else {
-        alert("Comentário apagado com sucesso!");
+        // alert("Comentário apagado com sucesso!");
         await atualizarFeed();
       }
       
@@ -110,7 +110,7 @@ export default function Feed({
       return;
     }
 
-    alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário enviado!");
+    // alert(idComentarioSendoEditado !== null ? "Comentário editado!" : "Comentário enviado!");
 
     setComentario("");
     setIdComentarioSendoEditado(null);

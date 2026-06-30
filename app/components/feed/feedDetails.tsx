@@ -104,7 +104,7 @@ export default function FeedDetails({
         return;
       }
 
-      alert("Publicação atualizada com sucesso!");
+      // alert("Publicação atualizada com sucesso!");
       setMostrarModalEditar(false);
       
       if (onUpdatePost) {

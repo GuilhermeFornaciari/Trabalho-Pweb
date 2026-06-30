@@ -58,7 +58,7 @@ export default function LoginPage() {
     if (!result.ok) {
       console.log("ERRO ZOD:", result.data);
 
-      alert("Erro ao criar usuário(ZOD)");
+      alert("Erro ao criar usuário. Campos preenchidos de forma inválida");
 
       return;
     }
