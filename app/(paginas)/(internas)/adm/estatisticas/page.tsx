@@ -64,32 +64,9 @@ export default function AdminEstatisticas() {
     );
   }
 
-  const BadgeCrescimento = ({ valor }: { valor: number }) => {
-    const positivo = valor >= 0;
-    return (
-      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5 ${
-        positivo ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"
-      }`}>
-        <TrendingUp size={12} className={positivo ? "" : "rotate-180"} />
-        {positivo ? `+${valor}%` : `${valor}%`} esta semana
-      </span>
-    );
-  };
-
   return (
     <div className="w-full max-w-6xl mx-auto p-4 animate-fadeIn space-y-8">
-      
-      {/* Cabeçalho */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-[#E8D89A] pb-4 gap-4">
-        <div>
-          <h2 className="text-slate-950 text-2xl font-bold tracking-tight">Painel do Administrador</h2>
-          <p className="text-gray-500 text-sm mt-0.5">Visão geral de crescimento, engajamento e atividade da plataforma.</p>
-        </div>
-        <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-[#E8D89A] shadow-sm text-xs font-medium text-[#4F442E]">
-          <Calendar size={14} className="text-[#8A7A5B]" />
-          <span>Métricas Semanais</span>
-        </div>
-      </div>
+    
 
       {/* Grid 1: Métricas de Crescimento e Engajamento */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -100,7 +77,6 @@ export default function AdminEstatisticas() {
             <div className="p-2 bg-amber-50 rounded-lg text-[#8A7A5B]">
               <Users size={20} />
             </div>
-            <BadgeCrescimento valor={dados?.usuarios?.crescimentoSemanal || 0} />
           </div>
           <div>
             <span className="block text-3xl font-extrabold text-[#4F442E]">{dados?.usuarios?.total.toLocaleString() ?? 0}</span>
@@ -114,7 +90,6 @@ export default function AdminEstatisticas() {
             <div className="p-2 bg-amber-50 rounded-lg text-[#8A7A5B]">
               <FileText size={20} />
             </div>
-            <BadgeCrescimento valor={dados?.resenhas?.crescimentoSemanal || 0} />
           </div>
           <div>
             <span className="block text-3xl font-extrabold text-[#4F442E]">{dados?.resenhas?.total.toLocaleString() ?? 0}</span>
@@ -128,7 +103,6 @@ export default function AdminEstatisticas() {
             <div className="p-2 bg-amber-50 rounded-lg text-[#8A7A5B]">
               <MessageSquare size={20} />
             </div>
-            <BadgeCrescimento valor={dados?.comentarios?.crescimentoSemanal || 0} />
           </div>
           <div>
             <span className="block text-3xl font-extrabold text-[#4F442E]">{dados?.comentarios?.total.toLocaleString() ?? 0}</span>
@@ -142,7 +116,6 @@ export default function AdminEstatisticas() {
             <div className="p-2 bg-amber-50 rounded-lg text-[#8A7A5B]">
               <Heart size={20} />
             </div>
-            <BadgeCrescimento valor={dados?.curtidas?.crescimentoSemanal || 0} />
           </div>
           <div>
             <span className="block text-3xl font-extrabold text-[#4F442E]">{dados?.curtidas?.total.toLocaleString() ?? 0}</span>

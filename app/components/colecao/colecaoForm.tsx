@@ -72,7 +72,7 @@ export default function ColecaoForm({
   const inputStyle = "px-2 border border-yellow-300 py-px outline-0 bg-white rounded-sm";
 
   return (
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 items-center">
         <h1 className="text-slate-700 text-3xl font-semibold mb-3">{descricao}</h1>
         <div className="w-md my-5 mx-auto border border-yellow-300 bg-amber-50 p-3 rounded-2xl">
           <form 
