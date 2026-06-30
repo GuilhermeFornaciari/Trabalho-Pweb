@@ -253,3 +253,29 @@ export async function leiturasPorMes(usuarioId: string, ano: number=2026) {
   return dadosAgrupados;
 }
 
+export async function livrosPorStatus(usuarioId: string) {
+  const agrupado = await prisma.biblioteca.groupBy({
+    by: ["status"],
+    where: {
+      usuarioId: usuarioId,
+    },
+    _count: {
+      livroId: true,
+    },
+  });
+
+  const traducaoStatus: Record<string, string> = {
+    LENDO: "Lendo",
+    LIDO: "Concluídos",
+    QUERO_LER: "Quero ler",
+    ABANDONADO: "Abandonados",
+  };
+
+  return Object.entries(traducaoStatus).map(([chaveEnum, nomeTraduzido]) => {
+    const item = agrupado.find((item) => item.status === chaveEnum);
+    return {
+      status: nomeTraduzido,
+      quantidade: item?._count.livroId ?? 0,
+    };
+});
+}

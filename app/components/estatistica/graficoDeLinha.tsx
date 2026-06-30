@@ -11,6 +11,7 @@ interface GraficoLinhaProps<T> {
   nomeLegenda: string;
   sufixoX?: string;
   sufixoY?: string;
+  className: string;
 }
 
 export default function GraficoDeLinha<T>({
@@ -21,6 +22,7 @@ export default function GraficoDeLinha<T>({
   nomeLegenda,
   sufixoX = "",
   sufixoY = "",
+  className,
 }: GraficoLinhaProps<T>) {
   if(!dados || dados.length === 0) {
     return(
@@ -29,7 +31,7 @@ export default function GraficoDeLinha<T>({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-3xl p-4 bg-white rounded-lg shadow">
+    <div className={className}>
       <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">
         {titulo}
       </h3>
