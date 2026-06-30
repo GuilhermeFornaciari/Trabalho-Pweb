@@ -162,7 +162,7 @@ export default function LivroForm({
                     <button
                     key={autor.id}
                     type="button"
-                    onClick={() => adicionarAutor(autor)}
+                    onClick={() => {adicionarAutor(autor), setBuscaAutor("")}}
                     className="box-border border-amber-400 text-sm bg-amber-400 border-2 hover:border-black hover:bg-yellow-400 w-full rounded-md text-start p-2 shadow-black"
                     >
                       {autor.nome}

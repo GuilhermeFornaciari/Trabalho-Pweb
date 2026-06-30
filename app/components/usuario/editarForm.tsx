@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { UsuarioPerfil } from "@/lib/types/usuarioPerfil";
-import { Trash2, AlertTriangle } from "lucide-react";
+import { Trash2, AlertTriangle, Eye, EyeOff } from "lucide-react";
+import bcrypt from "bcryptjs";
 
 export default function EditarUsuario({
   onRefresh,
@@ -18,7 +19,11 @@ export default function EditarUsuario({
   const { data: session, status, update } = useSession();
   const [form, setForm] = useState(usuario);
 
-  // Estados para o fluxo de dupla confirmação de exclusão
+  // Novos estados para gerenciamento de senha
+  const [novaSenha, setNovaSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [verSenha, setVerSenha] = useState(false);
+
   const [confirmarExclusao1, setConfirmarExclusao1] = useState(false);
   const [confirmarExclusao2, setConfirmarExclusao2] = useState(false);
 
@@ -26,32 +31,53 @@ export default function EditarUsuario({
     setForm(usuario);
   }, [usuario]);
 
-  async function updateUser() {
-    if (form === undefined) return;
+  const formatarDataParaInput = (dataForm: any) => {
+    if (!dataForm) return "";
+    const d = new Date(dataForm);
+    if (isNaN(d.getTime())) return "";
+    return d.toISOString().split("T")[0];
+  };
 
-    const response = await fetch("../api/usuario/update", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: form.id,
-        nome: form.nome,
-        email: form.email,
-        foto: form.foto,
-        bio: form.bio,
-        role: form.role,
-        username: form.username,
-        dataNascimento: form.dataNascimento
-      }),
-    });
+async function updateUser() {
+  if (form === undefined) return;
 
-    if (!response.ok) {
-      alert("falha em update user");
-    }
+  const dataNascimentoFormatada = form.dataNascimento 
+    ? new Date(form.dataNascimento).toISOString() 
+    : null;
+
+  // Prepara o corpo da requisição
+  const corpoRequisicao: any = {
+    id: form.id,
+    nome: form.nome,
+    email: form.email,
+    foto: form.foto,
+    bio: form.bio,
+    role: form.role,
+    username: form.username,
+    dataNascimento: dataNascimentoFormatada,
+  };
+
+  // Se o usuário digitou uma nova senha, fazemos o Hash AQUI no Front-end
+  if (novaSenha.trim() !== "") {
+    corpoRequisicao.senha =  await bcrypt.hash(novaSenha, 10);
   }
 
-  // Função para deletar a conta da API e deslogar o usuário
+  const response = await fetch("../api/usuario/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(corpoRequisicao),
+  });
+
+  if (!response.ok) {
+    alert("falha em update user");
+  } else {
+    setNovaSenha("");
+    setConfirmarSenha("");
+  }
+}
+
   async function handleDeleteUser() {
     if (!form?.id) return;
 
@@ -63,7 +89,7 @@ export default function EditarUsuario({
         })
       });
 
-      if (response.ok) {''
+      if (response.ok) {
         alert("Sua conta foi excluída permanentemente.");
         signOut({ callbackUrl: "/" });
       } else {
@@ -82,8 +108,20 @@ export default function EditarUsuario({
       form.email === "" ||
       form.username === ""
     ) {
-      alert("Preencha os campos");
+      alert("Preencha os campos obrigatórios");
       return;
+    }
+
+    // Validação da troca de senha
+    if (novaSenha !== "" || confirmarSenha !== "") {
+      if (novaSenha !== confirmarSenha) {
+        alert("As senhas não coincidem!");
+        return;
+      }
+      // if (novaSenha.length < 6) {
+      //   alert("A nova senha deve ter pelo menos 6 caracteres.");
+      //   return;
+      // }
     }
 
     await updateUser();
@@ -95,7 +133,7 @@ export default function EditarUsuario({
   return (
     <div className="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto relative animate-fadeIn">
       
-      {/* Fluxo de Confirmação 1 (Primeiro Modal/Overlay de aviso) */}
+      {/* Fluxo de Confirmação 1 */}
       {confirmarExclusao1 && (
         <div className="absolute inset-0 bg-white z-20 p-8 flex flex-col justify-center items-center text-center">
           <AlertTriangle size={48} className="text-red-500 mb-4 animate-bounce" />
@@ -125,7 +163,7 @@ export default function EditarUsuario({
         </div>
       )}
 
-      {/* Fluxo de Confirmação 2 (Segundo aviso definitivo) */}
+      {/* Fluxo de Confirmação 2 */}
       {confirmarExclusao2 && (
         <div className="absolute inset-0 bg-red-50 z-20 p-8 flex flex-col justify-center items-center text-center">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
@@ -164,8 +202,6 @@ export default function EditarUsuario({
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Editar Perfil</h2>
-          
-          {/* Botão para iniciar o gatilho de exclusão */}
           <button
             type="button"
             onClick={() => setConfirmarExclusao1(true)}
@@ -224,6 +260,20 @@ export default function EditarUsuario({
         />
 
         <label className="block text-sm font-medium mb-1 text-slate-700">
+          Data de Nascimento
+        </label>
+        <input
+          type="date"
+          value={formatarDataParaInput(form?.dataNascimento)}
+          onChange={(e) =>
+            setForm((prev) =>
+              prev ? { ...prev, dataNascimento: e.target.value ? new Date(e.target.value) : null } : prev
+            )
+          }
+          className="w-full mb-4 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-slate-200 text-slate-700 cursor-pointer"
+        />
+
+        <label className="block text-sm font-medium mb-1 text-slate-700">
           Bio
         </label>
         <input
@@ -248,6 +298,42 @@ export default function EditarUsuario({
               prev ? { ...prev, email: e.target.value } : prev
             )
           }
+          className="w-full mb-6 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-slate-200"
+        />
+
+        <hr className="my-6 border-slate-100" />
+        <h3 className="text-sm font-bold text-slate-800 mb-3">Alterar Senha</h3>
+
+        {/* CAMPO: Nova Senha */}
+        <label className="block text-sm font-medium mb-1 text-slate-700">
+          Nova Senha
+        </label>
+        <div className="relative mb-4">
+          <input
+            type={verSenha ? "text" : "password"}
+            value={novaSenha}
+            onChange={(e) => setNovaSenha(e.target.value)}
+            placeholder="Deixe em branco para não alterar"
+            className="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-slate-200 pr-11"
+          />
+          <button
+            type="button"
+            onClick={() => setVerSenha(!verSenha)}
+            className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600"
+          >
+            {verSenha ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
+
+        {/* CAMPO: Confirmar Senha */}
+        <label className="block text-sm font-medium mb-1 text-slate-700">
+          Confirmar Nova Senha
+        </label>
+        <input
+          type={verSenha ? "text" : "password"}
+          value={confirmarSenha}
+          onChange={(e) => setConfirmarSenha(e.target.value)}
+          placeholder="Repita a nova senha"
           className="w-full mb-6 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-slate-200"
         />
 

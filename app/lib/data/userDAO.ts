@@ -64,24 +64,15 @@ export async function findByUsername(username: string){
   return user;
 }
 
-export async function updateUser(user: User) {
-    const opa  = await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        nome: user.nome,
-        email: user.email,
-        foto: user.foto,
-        bio: user.bio,
-        username: user.username,
-        dataNascimento: user.dataNascimento
-      },
-    });
-    
-    console.log(JSON.stringify(opa));
+export async function updateUser(id: string, dados: Partial<User>) {
+  const usuarioAtualizado = await prisma.user.update({
+    where: {
+      id: id,
+    },
+    data: dados, // O Prisma aceita Partial<User> nativamente no 'data'
+  });
 
-    return opa;
+  return usuarioAtualizado;
 }
 
 export async function getUserPosts(
