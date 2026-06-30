@@ -26,7 +26,7 @@ export default function Header() {
         <div>
           {session?.user?.role === "admin" &&
             (<>
-              <Link href="/adm" className={navItemsStyle + (pathName.match("/adm") ? navItemDestacadoStyle : "")}>Gerenciamento</Link>
+              <Link href="/adm" className={navItemsStyle + ((pathName.match("/adm") && !pathName.match("/estatisticas")) ? navItemDestacadoStyle : "")}>Gerenciamento</Link>
               <Link href="/adm/estatisticas" className={navItemsStyle + (pathName.match("/estatisticas") ? navItemDestacadoStyle : "")}>Estatísticas</Link>
             </>)
           }
