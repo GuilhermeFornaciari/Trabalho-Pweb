@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import EditarUsuario from "@/components/usuario/editarForm";
 import Modal from "@/components/modal";
 import BibliotecaContainer from "@/components/biblioteca/bibliotecaContainer";
-import EstatisticasPerfil from "@/components/estatistica/estatisiciaUsuario";
+import EstatisticasPerfil from "@/components/estatistica/estatisticaUsuario";
 import Feed from "@/components/feed/feed";
 
 export type UsuarioPerfil = User & {
@@ -25,7 +25,6 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
   const {user} = use(params);
   const [loadingPage, setLoadingPage] = useState(true);
   const { data: session } = useSession();
-  const backgroundImage = "/images/fundo-perfil.jpg";
   const [modalAberto, setModalAberto] = useState(false);
   const [usuario, setUsuario] = useState<UsuarioPerfil>();
   const [refreshKey, setRefreshKey] = useState(0);
