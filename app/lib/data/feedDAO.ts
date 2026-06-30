@@ -10,7 +10,9 @@ export async function buscarPostagensFeed(
 ) {
   
   let whereClause: any = {};
+  let orderByClause: any = { data: "desc" };
 
+  // 1. CONFIGURAÇÃO DOS FILTROS 
   if (filtro === "Amigos" && usuarioId) {
     const amizades = await prisma.amigos.findMany({
       where: {
@@ -32,12 +34,20 @@ export async function buscarPostagensFeed(
     };
   }
 
+  // 2. CONFIGURAÇÃO DA ORDENAÇÃO
+  if (filtro === "popular") {
+    orderByClause = {
+      curtidas: {
+        _count: "desc" 
+      }
+    };
+  }
+
+  // 3. EXECUÇÃO 
   const [dados, total] = await Promise.all([
     prisma.postagem.findMany({
       where: whereClause, 
-      orderBy: {
-        data: "desc", 
-      },
+      orderBy: orderByClause, 
       skip: (pagina - 1) * limite,
       take: limite,
       include: {

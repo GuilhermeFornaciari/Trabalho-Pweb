@@ -9,7 +9,7 @@ export default function FeedPage() {
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
-  const [filtro, setFiltro] = useState<"recentes" | "Amigos">("recentes");
+  const [filtro, setFiltro] = useState<"recentes" | "Amigos" | "popular">("recentes");
 
   function deletePost(postId: number) {
     setPosts((prev) => prev.filter((post) => post.id !== postId));
@@ -54,7 +54,7 @@ export default function FeedPage() {
     carregarFeed();
   }, [pagina, filtro]);
 
-  const alterarFiltro = (novoFiltro: "recentes" | "Amigos") => {
+  const alterarFiltro = (novoFiltro: "recentes" | "Amigos" | "popular") => {
     setFiltro(novoFiltro);
     setPagina(1);
   };
@@ -73,6 +73,7 @@ export default function FeedPage() {
         >
           Recentes
         </button>
+
         <button
           onClick={() => alterarFiltro("Amigos")}
           className={`pb-2 px-1 font-medium text-sm transition-colors ${
@@ -82,6 +83,17 @@ export default function FeedPage() {
           }`}
         >
           Amigos
+        </button>
+        
+        <button
+          onClick={() => alterarFiltro("popular")}
+          className={`pb-2 px-1 font-medium text-sm transition-colors ${
+            filtro === "popular"
+              ? "border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
+              : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+          }`}
+        >
+          Em Alta
         </button>
       </div>
 
