@@ -41,13 +41,14 @@ model User {
   id                String       @id @default(cuid())
   nome              String
   email             String       @unique
+  senha             String
   emailVerified     DateTime?    @map("email_verified")
   foto              String
   bio               String
   role              String       @default("user")
-  senha             String
   username          String       @unique
   dataNascimento    DateTime?
+  
   accounts          Account[]
   amizadesIniciadas Amigos[]     @relation("Amigo1")
   amizadesRecebidas Amigos[]     @relation("Amigo2")
@@ -82,10 +83,12 @@ model Livro {
   sinopse         String
   colecaoId       Int?
   posicao_colecao Float?
+
   bibliotecas     Biblioteca[]
   autores         Escrito_por[]
-  colecao         Colecao?      @relation(fields: [colecaoId], references: [id])
   postagens       Postagem[]
+
+  colecao         Colecao?      @relation(fields: [colecaoId], references: [id])
 
   @@unique([colecaoId, posicao_colecao])
   @@map("livros")
@@ -128,6 +131,7 @@ model Postagem {
   usuarioId    String       @map("usuario_id")
   livroId      Int          @map("livro_id")
   titulo       String?
+
   comentarios  Comentario[]
   curtidas     Curtida[]
   livro        Livro        @relation(fields: [livroId], references: [id], onDelete: Cascade)
@@ -138,6 +142,8 @@ model Postagem {
   @@index([livroId])
   @@index([livroId, data])
 
+  @@index([usuarioId, livroId], map: "apenas_uma_resenha_por_livro")
+  
   @@map("postagens")
 }
 
@@ -148,6 +154,7 @@ model Comentario {
   usuarioId  String       @map("usuario_id")
   postagemId Int          @map("postagem_id")
   parentId   Int?         @map("parent_id")
+
   parent     Comentario?  @relation("RespostasComent", fields: [parentId], references: [id])
   respostas  Comentario[] @relation("RespostasComent")
   postagem   Postagem     @relation(fields: [postagemId], references: [id], onDelete: Cascade)
@@ -172,6 +179,7 @@ model Biblioteca {
   nota          Int?
   paginaAtual   Int?         
   status        StatusLeitura
+
   livro         Livro         @relation(fields: [livroId], references: [id], onDelete: Cascade)
   usuario       User          @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
@@ -184,6 +192,7 @@ model Curtida {
   usuarioId    String      @map("usuario_id")
   postagemId   Int?        @map("postagem_id")
   comentarioId Int?        @map("comentario_id")
+
   comentario   Comentario? @relation(fields: [comentarioId], references: [id], onDelete: Cascade)
   postagem     Postagem?   @relation(fields: [postagemId], references: [id], onDelete: Cascade)
   usuario      User        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
@@ -200,6 +209,7 @@ model Curtida {
 model Amigos {
   amigo1Id String @map("amigo1_id")
   amigo2Id String @map("amigo2_id")
+
   amigo1   User   @relation("Amigo1", fields: [amigo1Id], references: [id], onDelete: Cascade)
   amigo2   User   @relation("Amigo2", fields: [amigo2Id], references: [id], onDelete: Cascade)
 
