@@ -25,16 +25,22 @@ export default function Header() {
         <Link href="/catalogo"><Image loading="eager" src="/libris.png" width={70} height={70} alt="Libris logo"/></Link>
         <div>
           {session?.user?.role === "admin" &&
-            (<Link href="/adm" className={navItemsStyle + (pathName.match("/adm") ? navItemDestacadoStyle : "")}>Gerenciamento</Link>)
+            (<>
+              <Link href="/adm" className={navItemsStyle + (pathName.match("/adm") ? navItemDestacadoStyle : "")}>Gerenciamento</Link>
+              <Link href="/adm/estatisticas" className={navItemsStyle + (pathName.match("/estatisticas") ? navItemDestacadoStyle : "")}>Estatísticas</Link>
+            </>)
           }
 
           {/* {session?.user?.role === "admin" && */}
-          (<Link href="/estatisticas" className={navItemsStyle + (pathName.match("/estatisticas") ? navItemDestacadoStyle : "")}>Estatísticas</Link>)
           {/* } */}
 
           <Link href="/catalogo" className={navItemsStyle + (pathName.match("/catalogo") ? navItemDestacadoStyle : "")}>Catalogo</Link>
-          <Link href="/feed" className={navItemsStyle + (pathName.match("/feed") ? navItemDestacadoStyle : "")}>Feed</Link>
-          <Link href="/amigos" className={navItemsStyle + (pathName.match("/amigos") ? navItemDestacadoStyle : "")}>Amizades</Link>
+          {session?.user.role !== "admin" && (
+            <>
+              <Link href="/feed" className={navItemsStyle + (pathName.match("/feed") ? navItemDestacadoStyle : "")}>Feed</Link>
+              <Link href="/amigos" className={navItemsStyle + (pathName.match("/amigos") ? navItemDestacadoStyle : "")}>Amizades</Link>
+            </>
+          )}
         </div>
 
          <div className="relative">
