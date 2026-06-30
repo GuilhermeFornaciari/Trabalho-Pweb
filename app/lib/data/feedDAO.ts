@@ -2,16 +2,45 @@ import PrismaSingleton from "../prisma/PrismaSingleton";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
-export async function buscarPostagensFeed(pagina: number, limite = 10) {
+export async function buscarPostagensFeed(
+  pagina: number, 
+  filtro: string, 
+  usuarioId?: string, 
+  limite = 10
+) {
+  
+  let whereClause: any = {};
+
+  if (filtro === "Amigos" && usuarioId) {
+    const amizades = await prisma.amigos.findMany({
+      where: {
+        OR: [
+          { amigo1Id: usuarioId },
+          { amigo2Id: usuarioId }
+        ]
+      }
+    });
+
+    const listaIdsAmigos = amizades.map(amizade => 
+      amizade.amigo1Id === usuarioId ? amizade.amigo2Id : amizade.amigo1Id
+    );
+
+    whereClause = {
+      usuarioId: {
+        in: listaIdsAmigos
+      }
+    };
+  }
+
   const [dados, total] = await Promise.all([
     prisma.postagem.findMany({
+      where: whereClause, 
       orderBy: {
-        data: "desc", // Mostra as postagens mais recentes primeiro
+        data: "desc", 
       },
       skip: (pagina - 1) * limite,
       take: limite,
       include: {
-        // Traz os dados de quem postou
         usuario: {
           select: {
             id: true,
@@ -20,7 +49,6 @@ export async function buscarPostagensFeed(pagina: number, limite = 10) {
             foto: true,
           },
         },
-        // Traz as informações do livro comentado ou lido
         livro: {
           select: {
             id: true,
@@ -38,13 +66,9 @@ export async function buscarPostagensFeed(pagina: number, limite = 10) {
             }
           },
         },
-        // Traz APENAS as curtidas do Post Principal
         curtidas: true,
-        
-        // Traz os comentários já com os dados de quem comentou E as curtidas de cada um
         comentarios: {
           include: {
-            // CRUCIAL: Traz as curtidas específicas deste comentário
             curtidas: true, 
             usuario: {
               select: {
@@ -56,18 +80,17 @@ export async function buscarPostagensFeed(pagina: number, limite = 10) {
             },
           },
           orderBy: {
-            data: "asc", // Comentários antigos primeiro (ordem cronológica)
+            data: "asc", 
           },
         },
       },
     }),
 
-    prisma.postagem.count(),
+    prisma.postagem.count({ where: whereClause }),
   ]);
 
-  // Retorna o mesmo formato de objeto estruturado da outra listagem
   return {
-    resenhas: dados, // Se preferir manter o padrão exato da opção A anterior
+    resenhas: dados,
     total,
     totalPaginas: Math.ceil(total / limite),
     paginaAtual: pagina,
