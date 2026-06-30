@@ -104,6 +104,7 @@ export default function ResenhaModal({
         return;
       }
 
+      
       // alert("Resenha atualizada!");
       setMostrarModalEditar(false);
       if (onUpdateResenha) onUpdateResenha();
