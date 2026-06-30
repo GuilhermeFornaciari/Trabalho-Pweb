@@ -165,3 +165,29 @@ export async function deleteUser(usuarioId: string){
     }
   })
 }
+
+export async function avaliacoes(usuarioId: string) {
+  const agrupado = await prisma.biblioteca.groupBy({
+    by: ["nota"],
+    where: {
+      usuarioId: usuarioId,
+      nota: {
+        not: null,
+      },
+    },
+    _count: {
+      nota: true,
+    },
+  });
+
+  const notasPossiveis = [1, 2, 3, 4, 5];
+
+  return notasPossiveis.map((nota) => {
+    const itemBanco = agrupado.find((item) => item.nota === nota);
+
+    return {
+      notaEstrelas: `${nota} ⭐`, 
+      quantidade: itemBanco?._count.nota ?? 0, 
+    };
+  });
+}

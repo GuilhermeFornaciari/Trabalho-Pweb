@@ -12,6 +12,7 @@ interface EstatisticasPerfilProps {
 export default function EstatisticasPerfil({ usuario }: EstatisticasPerfilProps) {
   const [leiturasPorMes, setLeiturasPorMes] = useState<{ mes: string; quantidade: number }[]>([]);
   const [livrosPorStatus, setLivrosPorStatus] = useState<{ status: string; quantidade: number}[]>([]);
+  const [avaliacoes, setAvaliacoes] = useState<{ notaEstrelas: string; quantidade: number }[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   async function carregarLeiturasPorMes() {
@@ -48,13 +49,32 @@ export default function EstatisticasPerfil({ usuario }: EstatisticasPerfilProps)
     }
   }
 
+  async function carregarAvaliacoes() {
+    if(!usuario?.id) return;
+    try {
+      setCarregando(true);
+      const response = await fetch(`/api/usuario/avaliacoes?usuario=${usuario.id}`);
+      if(!response.ok) return;
+      
+      const resultado = await response.json();
+      console.log(resultado);
+      setAvaliacoes(Array.isArray(resultado) ? resultado : []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCarregando(false);
+    }
+  }
+
   useEffect(() => {
     carregarLeiturasPorMes();
     carregarLivrosPorStatus();
+    carregarAvaliacoes();
   }, [usuario]);
 
   const temLeiturasPorMes = leiturasPorMes.some(item => item.quantidade > 0);
   const temLivrosPorStatus = livrosPorStatus.some(item => item.quantidade > 0);
+  const temAvaliacoes = avaliacoes.some(item => item.quantidade > 0);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 animate-fadeIn">
@@ -64,10 +84,11 @@ export default function EstatisticasPerfil({ usuario }: EstatisticasPerfilProps)
         </div>
       ) : (
         <>
-          {(temLeiturasPorMes || temLivrosPorStatus) ?
+          {(temLeiturasPorMes || temLivrosPorStatus || temAvaliacoes) ?
             <>
               {exibirLeiturasPorMes(leiturasPorMes, temLeiturasPorMes)}
               {exibirLivrosPorStatus(livrosPorStatus, temLivrosPorStatus)}
+              {exibirAvaliacoes(avaliacoes,temAvaliacoes)}
             </>
             :
             <h1>Não há dados de estatísticas para exibir no momento. Adicione novos livros na biblioteca.</h1>
@@ -102,7 +123,7 @@ function exibirLivrosPorStatus(dados: { status: string; quantidade: number}[], t
   return (
     <>
       {temDados && (
-        <div className="w-sm">
+        <div className="">
           <GraficoDeBarras<{status: string; quantidade: number}>
             dados={dados}
             titulo=""
@@ -116,4 +137,25 @@ function exibirLivrosPorStatus(dados: { status: string; quantidade: number}[], t
       )}
     </>
   );
+}
+
+function exibirAvaliacoes(dados: {notaEstrelas: string; quantidade: number }[], temDados: boolean) {
+  return (
+    <>
+      {temDados && (
+        <div className="">
+          <GraficoDeBarras<{ notaEstrelas: string; quantidade: number }>
+            dados={dados}
+            titulo="Distribuição de Avaliações"
+            eixoXKey="notaEstrelas"
+            eixoYKey="quantidade"
+            orientacao="horizontal"
+            nomeLegenda="Livros Avaliados"
+            sufixoValue=" avaliações"
+            className="flex flex-col items-center justify-center w-full max-w-3xl p-4 rounded-lg"
+          />
+        </div>
+      )}
+    </>
+  )
 }

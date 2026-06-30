@@ -277,5 +277,5 @@ export async function livrosPorStatus(usuarioId: string) {
       status: nomeTraduzido,
       quantidade: item?._count.livroId ?? 0,
     };
-});
+  });
 }
