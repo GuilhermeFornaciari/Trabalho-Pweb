@@ -47,7 +47,7 @@ export default function FeedCard({ post, onClick, onCurtir }: Props) {
       {/* Cabeçalho do Card (Comum a ambos) */}
       <div className="p-5 pb-3 flex items-center gap-3">
         <img 
-          src={post.usuario.foto && post.usuario.foto.trim() !== "" ? post.usuario.foto : "https://via.placeholder.com/150"} 
+          src={post.usuario.foto && post.usuario.foto.trim() !== "" ? post.usuario.foto : "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} 
           alt={post.usuario.nome} 
           className="w-10 h-10 rounded-full object-cover border border-slate-200"
         />
