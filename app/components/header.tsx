@@ -51,8 +51,8 @@ export default function Header() {
                   <span className="max-w-sm truncate font-bold">{session?.user?.nome}</span>
                 </div>
               )}
-              <div className="relative w-14 h-14 cursor-pointer" onClick={() => setPerfilOpc(!perfilOpc)}>
-                <Image src={foto} alt="Foto do usuário" fill className="rounded-full object-cover border-2 border-black"/>
+              <div className="relative cursor-pointer" onClick={() => setPerfilOpc(!perfilOpc)}>
+                <img src={foto} alt="Foto do usuário" className="rounded-full object-cover border-2 border-black w-[50px] h-[50px]"/>
                 {/* <span className="absolute right-0 top-16">Olá, </span> */}
               </div>
             </div>

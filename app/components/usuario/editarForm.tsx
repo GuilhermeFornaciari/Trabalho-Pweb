@@ -114,10 +114,6 @@ async function updateUser() {
         alert("As senhas não coincidem!");
         return;
       }
-      // if (novaSenha.length < 6) {
-      //   alert("A nova senha deve ter pelo menos 6 caracteres.");
-      //   return;
-      // }
     }
 
     await updateUser();
@@ -210,21 +206,13 @@ async function updateUser() {
         </div>
 
         <div className="flex flex-col items-center mb-6">
-          <div className="relative w-24 h-24">
-            <Image
+          <div className="relative">
+            <img
               src={form?.foto || "/temp/caju.jpeg"}
               alt="Foto"
-              fill
-              className="rounded-full object-cover"
+              className="rounded-full object-cover w-[150px] h-[150px]"
             />
           </div>
-
-          <button
-            type="button"
-            className="mt-3 text-sm text-blue-600 font-medium hover:underline"
-          >
-            Alterar Foto
-          </button>
         </div>
 
         <label className="block text-sm font-medium mb-1 text-slate-700">
@@ -250,6 +238,20 @@ async function updateUser() {
           onChange={(e) =>
             setForm((prev) =>
               prev ? { ...prev, username: e.target.value } : prev
+            )
+          }
+          className="w-full mb-4 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-slate-200"
+        />
+
+         <label className="block text-sm font-medium mb-1 text-slate-700">
+          Foto
+        </label>
+        <input
+          type="text"
+          value={form?.foto ?? ""}
+          onChange={(e) =>
+            setForm((prev) =>
+              prev ? { ...prev, foto: e.target.value } : prev
             )
           }
           className="w-full mb-4 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-slate-200"

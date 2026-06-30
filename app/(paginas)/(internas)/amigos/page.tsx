@@ -100,7 +100,7 @@ export default function AmigosPage() {
                 <div key={usuario.id} className="flex items-center justify-between rounded-xl border border-[#E8D89A] bg-white p-3">
                   <div className="flex items-center gap-3">
                     <Link href={`/perfil/${usuario.username}`} className="relative h-12 w-12 overflow-hidden rounded-full cursor-pointer">
-                      <Image src={usuario.foto || '/temp/calca.jpeg'} alt={usuario.nome} fill className="object-cover" />
+                      <img src={usuario.foto || '/temp/calca.jpeg'} alt={usuario.nome} className="object-cover w-[50px] h-[50px]" />
                     </Link>
                     <div>
                       <Link href={`/perfil/${usuario.username}`} className="font-semibold text-[#4F442E] cursor-pointer">

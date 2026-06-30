@@ -119,12 +119,12 @@ export default function PerfilPage({params,}: {params: Promise<{ user: string }>
         <div className="flex items-start justify-around gap-13 pb-8 border-b border-amber-400 w-full bg-white p-3 rounded-lg">
           {/* Foto */}
           <div className="flex flex-col justify-center items-center gap-2">
-            <div className="relative w-50 h-50 flex-shrink-0">
-              <Image
+            <div className="relative flex-shrink-0">
+              <img
                 src={usuario?.foto || "/temp/caju.jpeg"}
                 alt="Foto do usuário"
-                fill
-                className="rounded-full object-cover border-4 border-[#F7D774]"
+                
+                className="rounded-full object-cover border-4 border-[#F7D774] w-[250px] h-[250px]"
                 />
             </div>
             { session?.user.id === usuario?.id && 
