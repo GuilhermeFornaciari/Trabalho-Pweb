@@ -332,6 +332,7 @@ const notaMediaLivro =
             eixoYKey="quantidade"
             nomeLegenda="Quantidade de progressos"
             sufixoX="%"
+            className="flex flex-col items-center justify-center w-full max-w-3xl p-4 bg-white rounded-lg shadow"
           ></GraficoDeLinha>
         </div>
       )}

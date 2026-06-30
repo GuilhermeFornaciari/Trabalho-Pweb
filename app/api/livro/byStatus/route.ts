@@ -1,10 +1,9 @@
-import { leiturasPorMes } from "@/lib/data/livroDAO";
+import { livrosPorStatus } from "@/lib/data/livroDAO";
 import { auth } from "@/lib/auth";
 import { z } from "zod";
 
 const idSchema = z.object({
   usuarioId: z.string().min(1),
-  ano: z.coerce.number().optional()
 });
 
 export async function GET(request: Request) {
@@ -19,11 +18,9 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const usuarioId = searchParams.get("usuario");
-    const ano = searchParams.get("ano");
 
     const resultado = idSchema.safeParse({
-      usuarioId,
-      ano
+      usuarioId
     });
 
     if (!resultado.success) {
@@ -34,7 +31,7 @@ export async function GET(request: Request) {
     }
 
     const dados = resultado.data;
-    const search = (dados.ano) ? await leiturasPorMes(dados.usuarioId, dados.ano) : await leiturasPorMes(dados.usuarioId);
+    const search = await livrosPorStatus(dados.usuarioId);
 
     if (!search) {
       return Response.json(
@@ -48,7 +45,7 @@ export async function GET(request: Request) {
   } catch (e) {
     console.error(e);
     return Response.json(
-      { message: "Erro ao buscar livros mensais adicionados." },
+      { message: "Erro ao buscar quantidade de livros por status" },
       { status: 500 }
     );
   }
