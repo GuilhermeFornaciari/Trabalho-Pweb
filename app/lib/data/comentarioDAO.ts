@@ -7,7 +7,7 @@ export async function upsertComentario(
   dados: Omit<Comentario, "id" | "createdAt">, 
   id?: number
 ) {
-  // Se não receber um ID válido de edição, usamos -1 para forçar o Prisma a ir para o bloco 'create'
+  // Se não receber um ID válido de edição,  -1 para forçar o Prisma a ir para o bloco 'create'
   const idParaBuscar = id ?? -1;
 
   return prisma.comentario.upsert({

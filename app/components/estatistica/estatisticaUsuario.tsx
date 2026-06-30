@@ -3,7 +3,7 @@
 import { UsuarioPerfil } from "@/lib/types/usuarioPerfil"; 
 import { useEffect, useState } from "react";
 import GraficoDeLinha from "./graficoDeLinha";
-import { BookOpen } from "lucide-react"; // Opcional: Se usar lucide-react para ícones
+import { BookOpen } from "lucide-react"; 
 
 interface EstatisticasPerfilProps {
   usuario: UsuarioPerfil | undefined;

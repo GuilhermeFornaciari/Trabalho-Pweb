@@ -28,7 +28,7 @@ export async function GET(request: Request) {
 
     if (!resultado.success) {
       return Response.json(
-        { erro: resultado.error.flatten().fieldErrors },
+        { erro: resultado.error.issues },
         { status: 400 }
       );
     }

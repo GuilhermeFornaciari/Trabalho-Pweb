@@ -54,9 +54,7 @@ export async function updateLivro(livro: Livro) {
       capa: livro.capa,
       sinopse: livro.sinopse,
       autores: {
-        // Deleta os vínculos antigos desse livro na tabela intermediária
         deleteMany: {}, 
-        // Cria os novos vínculos com os IDs atuais
         create: livro.autores.map((id: number) => ({
           autor: {
             connect: { id: id }
@@ -67,7 +65,6 @@ export async function updateLivro(livro: Livro) {
   });
 }
 
-// se der erro, retorna excessao
 export async function deleteLivro(id: number, colecaoId: number | null){
   await prisma.livro.delete({
     where: { id }

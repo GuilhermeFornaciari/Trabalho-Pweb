@@ -69,7 +69,7 @@ export async function updateUser(id: string, dados: Partial<User>) {
     where: {
       id: id,
     },
-    data: dados, // O Prisma aceita Partial<User> nativamente no 'data'
+    data: dados, 
   });
 
   return usuarioAtualizado;

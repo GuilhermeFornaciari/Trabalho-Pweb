@@ -40,7 +40,6 @@ export default function AdminEstatisticas() {
         const response = await fetch("../api/admin/estatisticas");
         
         if (response.ok) {
-          // CORREÇÃO: Lendo o json apenas uma vez e salvando na variável
           const data = await response.json();
           
           console.log("Dados recebidos do backend:", data);

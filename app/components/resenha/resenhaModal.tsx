@@ -28,7 +28,7 @@ type Props = {
   setIdComentarioSendoEditado: (id: number | null) => void;
   setApagarComentario: (id: number) => void;
   // onDeleteResenha?: (idResenha: number) => void;
-  onUpdateResenha?: () => void; // Callback opcional para recarregar a listagem após edição
+  onUpdateResenha?: () => void; 
 };
 
 export default function ResenhaModal({
@@ -73,7 +73,6 @@ export default function ResenhaModal({
 
   const [replyTo, setReplyTo] = useState<{ id: number; username: string } | null>(null);
 
-  // Popula os dados atuais da resenha e abre o modal de edição
   const handleAbrirEdicao = () => {
     setEditTitulo(resenha.titulo || "");
     setEditTexto(resenha.texto || "");
@@ -83,7 +82,6 @@ export default function ResenhaModal({
     setMostrarModalEditar(true);
   };
 
-  // Envia a atualização para a rota cadastrada de upsert
   const handleSaveEdicao = async () => {
     try {
       const response = await fetch("/api/resenha/upsert", {
@@ -109,18 +107,16 @@ export default function ResenhaModal({
       alert("Resenha atualizada!");
       setMostrarModalEditar(false);
       if (onUpdateResenha) onUpdateResenha();
-      onClose(); // Fecha o modal de visualização
+      onClose(); 
     } catch (e) {
       console.error(e);
       alert("Erro ao editar resenha.");
     }
   };
 
-  // Executa a exclusão da resenha
   const handleDeletarResenha = async () => {
     if (!confirm("Tem certeza que deseja apagar esta resenha?")) return;
 
-    // Fallback padrão de deleção caso o componente pai não forneça a prop onDeleteResenha
     try {
       const resultado = await fetch(`/api/post/delete`, {
       method: "DELETE",

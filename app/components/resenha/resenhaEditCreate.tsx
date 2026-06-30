@@ -27,7 +27,6 @@ export default function ResenhaEditeCreateModal({
   setSpoiler,
   onSubmit,
 }: Props) {
-  // Se o modal não estiver aberto, não renderiza nada
   if (!isOpen) return null;
 
   return (

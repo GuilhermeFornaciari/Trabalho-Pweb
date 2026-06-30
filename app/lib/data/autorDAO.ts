@@ -3,7 +3,7 @@ import PrismaSingleton from "@/lib/prisma/PrismaSingleton";
 
 const prisma = PrismaSingleton.getInstance().prismaClient;
 
-export async function createAutor(autor: Autor): Promise<Autor> { // cade service, tabares??
+export async function createAutor(autor: Autor): Promise<Autor> { 
   return await prisma.autor.create({
     data: {
       nome: autor.nome

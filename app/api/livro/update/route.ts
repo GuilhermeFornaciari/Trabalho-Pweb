@@ -9,7 +9,7 @@ const livroSchema = z.object({
   genero: z.string().min(1),
   paginas: z.number().positive(),
   capa: z.string().min(1),
-  autores: z.array(z.number()).min(1), // se tem min depois
+  autores: z.array(z.number()).min(1), 
   sinopse: z.string().min(1),
 });
 

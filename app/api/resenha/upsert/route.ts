@@ -1,14 +1,13 @@
 import { z } from "zod";
-import { Postagem } from "@/lib/prisma/generated/client";
-import { upsertResenha } from "@/lib/data/postagemDAO"; // Nome alterado para refletir a nova lógica
+import { upsertResenha } from "@/lib/data/postagemDAO"; 
 
 const upsertSchema = z.object({
-  id: z.coerce.number().int().positive().optional(), // ID opcional para update
+  id: z.coerce.number().int().positive().optional(), 
   livroId: z.coerce.number().int().positive(),
   usuarioId: z.string(),
   titulo: z.string(),
   texto: z.string(),
-  nota: z.number().int().min(0).max(5), // Corrigido z.int() para z.number().int()
+  nota: z.number().int().min(0).max(5),
   spoiler: z.boolean(),
 });
 
@@ -21,13 +20,12 @@ export async function POST(request: Request) {
     if (!resultado.success) {
       return Response.json(
         { erros: resultado.error.issues },
-        { status: 400 } // Status corrigido de 411 para 400 (Bad Request)
+        { status: 400 } 
       );
     }
 
     const dados = resultado.data;
 
-    // Monta o objeto base sem o ID
     const dadosPostagem = {
       livroId: dados.livroId,
       usuarioId: dados.usuarioId,
@@ -40,7 +38,6 @@ export async function POST(request: Request) {
       paginasLidas: null,
     };
 
-    // Executa a função passando o ID (se houver) e os dados
     const res = await upsertResenha(dados.id, dadosPostagem);
 
     // Retorna 200 se foi atualização (dados.id existe) ou 201 se foi criação

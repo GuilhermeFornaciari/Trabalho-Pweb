@@ -7,7 +7,6 @@ type Props = {
   onSubmitComentario: (idPost: number, comentarioId?: number) => void;
   replyTo: { id: number; username: string } | null;
   setReplyTo: (value: { id: number; username: string } | null) => void;
-  // Novas Props essenciais para controlar a Edição:
   isEditing?: boolean; 
   onCancelarEdicao?: () => void;
 };
@@ -71,10 +70,8 @@ export default function ComentarioInput({
           e.preventDefault();
           
           if (isEditing) {
-            // Se estiver a editar, a lógica de submissão lida com o update
             onSubmitComentario(postId); 
           } else {
-            // Se for criação normal ou resposta
             const paiId = replyTo ? replyTo.id : undefined;
             onSubmitComentario(postId, paiId);
             setReplyTo(null);

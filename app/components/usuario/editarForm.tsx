@@ -19,7 +19,6 @@ export default function EditarUsuario({
   const { data: session, status, update } = useSession();
   const [form, setForm] = useState(usuario);
 
-  // Novos estados para gerenciamento de senha
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [verSenha, setVerSenha] = useState(false);
@@ -45,7 +44,6 @@ async function updateUser() {
     ? new Date(form.dataNascimento).toISOString() 
     : null;
 
-  // Prepara o corpo da requisição
   const corpoRequisicao: any = {
     id: form.id,
     nome: form.nome,
@@ -57,7 +55,6 @@ async function updateUser() {
     dataNascimento: dataNascimentoFormatada,
   };
 
-  // Se o usuário digitou uma nova senha, fazemos o Hash AQUI no Front-end
   if (novaSenha.trim() !== "") {
     corpoRequisicao.senha =  await bcrypt.hash(novaSenha, 10);
   }
@@ -112,7 +109,6 @@ async function updateUser() {
       return;
     }
 
-    // Validação da troca de senha
     if (novaSenha !== "" || confirmarSenha !== "") {
       if (novaSenha !== confirmarSenha) {
         alert("As senhas não coincidem!");

@@ -3,7 +3,7 @@ interface PaginacaoProps {
   totalPaginas: number;
   onPaginaChange: (pagina: number) => void;
   children?: React.ReactNode;
-  isModal?: boolean; // Adicionamos essa propriedade opcional
+  isModal?: boolean; 
 }
 
 export default function Paginacao({
@@ -11,16 +11,15 @@ export default function Paginacao({
   totalPaginas,
   onPaginaChange,
   children,
-  isModal = false, // Por padrão, se não passar, você escolhe se é modal ou não
+  isModal = false, 
 }: PaginacaoProps) {
   
-  // 1. Renderização caso você QUEIRA que seja um Modal (com fundo escuro)
   if (isModal) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
         <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-xl">
           {children}
-          {/* Controles de página aqui debaixo */}
+          
           <div className="flex justify-between items-center mt-4 pt-4 border-t">
             <button disabled={paginaAtual === 1} onClick={() => onPaginaChange(paginaAtual - 1)}>Anterior</button>
             <span>{paginaAtual} de {totalPaginas}</span>
@@ -31,7 +30,6 @@ export default function Paginacao({
     );
   }
 
-// 2. Renderização INLINE (Sem amarras de tamanho do modal antigo)
   return (
     <div className="w-full"> 
       <div className="w-full">

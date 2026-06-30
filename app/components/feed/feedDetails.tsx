@@ -7,7 +7,6 @@ import ComentarioList from "../comentario/comentarioList";
 import ComentarioInput from "../comentario/comentarioInput";
 import Modal from "../modal";
 import MenuAcoes from "../modalAcoes";
-// Importe o modal que modularizamos
 import ResenhaEditeCreateModal from "../resenha/resenhaEditCreate"; 
 import ProgressoForm from "../progresso/progressoForm";
 import { Postagem } from "@/lib/prisma/generated/client";
@@ -24,7 +23,7 @@ type Props = {
   setIdComentarioSendoEditado: (id: number | null) => void;
   setApagarComentario: (id: number) => void;
   onDelete: (postId: number) => void;
-  onUpdatePost?: () => void; // Callback opcional para atualizar a listagem após editar
+  onUpdatePost?: () => void; 
   onEdit: (post: any | null) => void;
 };
 
@@ -74,7 +73,6 @@ export default function FeedDetails({
     }
   }, [session, post]);
 
-  // Função que popula os dados do formulário e abre o modal de edição
   const handleAbrirEdicao = () => {
     setEditTitulo(post.titulo || "");
     setEditResenha(post.texto || "");
@@ -84,10 +82,9 @@ export default function FeedDetails({
     setMostrarModalEditar(true); // Abre o modal de edição
   };
 
-  // Função de submit da edição (chama a sua API de Update via Upsert ou rota específica)
   const handleSuvmitEdicao = async () => {
     try {
-      const response = await fetch("/api/resenha/upsert", { // ou a sua rota correspondente de update/create
+      const response = await fetch("/api/resenha/upsert", { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -111,9 +108,9 @@ export default function FeedDetails({
       setMostrarModalEditar(false);
       
       if (onUpdatePost) {
-        onUpdatePost(); // Atualiza os dados na tela principal se a prop existir
+        onUpdatePost(); 
       }
-      onClose(); // Fecha o modal de detalhes atual
+      onClose();
     } catch (error) {
       console.error("Erro ao editar postagem:", error);
       alert("Erro ao salvar alterações.");
@@ -166,7 +163,7 @@ export default function FeedDetails({
                 </div>
                 {modalAcoes && <MenuAcoes 
                   style="absolute right-5 top-10 z-30 min-w-[170px] overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
-                  onEditar={(isProgresso) ? () => setPostagemEmEdicao(post) : handleAbrirEdicao} // Atribuído a função de preenchimento
+                  onEditar={(isProgresso) ? () => setPostagemEmEdicao(post) : handleAbrirEdicao} 
                   onApagar={async () => {
                     await onDelete(post.id);
                     onClose();

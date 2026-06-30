@@ -224,7 +224,6 @@ export default function ComentarioList({
   );
 }
 
-// O SEU COMPONENTE DO MODAL REAJUSTADO
 type MenuProps = {
   idComentarioSendoEditado: number | null;
   setIdComentarioSendoEditado: (value: number | null) => void;
@@ -248,13 +247,12 @@ function MenuTresPontinhos({
     <div className="absolute right-0 top-6 bg-white border border-gray-200 rounded-md shadow-lg min-w-[150px] overflow-hidden z-30 text-slate-700">
       <button 
         onClick={() => {
-          // Se já for este comentário, cancela. Se não, ativa a edição dele.
           if (idComentarioSendoEditado === idComentario) {
             setIdComentarioSendoEditado(null);
             setComentario("");
           } else {
             setIdComentarioSendoEditado(idComentario);
-            setComentario(comentario); // Joga o texto atual para o input do formulário
+            setComentario(comentario);
           }
           fecharMenu();
         }} 

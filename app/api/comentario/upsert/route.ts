@@ -24,7 +24,6 @@ export async function POST(request: Request) {
 
   const dados = resultado.data;
 
-  // Monta a estrutura padrão exigida pelo Omit<Comentario, "id" | "createdAt">
   const dadosComentario: Omit<Comentario, "id" | "createdAt"> = {
     postagemId: dados.postagemId,
     usuarioId: dados.usuarioId,
@@ -33,7 +32,6 @@ export async function POST(request: Request) {
     parentId: dados.parentId ?? null,
   };
 
-  // Chama o DAO passando os dados e o ID de edição (se houver)
   const idEdicao = dados.idComentarioSendoEditado ?? undefined;
   const res = await upsertComentario(dadosComentario, idEdicao);
 

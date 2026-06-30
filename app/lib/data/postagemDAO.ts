@@ -71,14 +71,11 @@ export async function upsertResenha(id: number | undefined, resenha: Omit<Postag
         texto: resenha.texto,
         nota: resenha.nota,
         temSpoiler: resenha.temSpoiler,
-        // Opcional: remover ou manter a data original. 
-        // Se quiser atualizar a data da resenha para a data da edição, descomente a linha abaixo:
-        // data: resenha.data 
+        data: resenha.data 
       },
       create: resenha,
     });
 
-    // Mantém a sincronização da biblioteca em ambos os casos
     await sincronizarBiblioteca(tx, resenha.usuarioId, resenha.livroId);
     
     return postagem;
